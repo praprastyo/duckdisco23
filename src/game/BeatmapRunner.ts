@@ -167,6 +167,10 @@ export class BeatmapRunner {
   }
 
 
+  public getWindows(): ScoringWindows {
+    return this.windows;
+  }
+
   public markHit(eventId: string): void {
     this.hitStates.set(eventId, true);
   }

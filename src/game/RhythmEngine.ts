@@ -28,6 +28,7 @@ export class RhythmEngine {
   private frameId: number | null = null;
   private isAutoplay = false;
   private maxMisses = 10;
+  private levelId: string = 'level1';
 
   private onJudgementCb: ((e: JudgementEvent) => void) | null = null;
   private onCueCb: ((e: BeatmapEvent) => void) | null = null;
@@ -36,6 +37,7 @@ export class RhythmEngine {
   private onInputCb: ((action: InputAction) => void) | null = null;
 
   constructor(timingOffsetMs = 0, levelId = 'level1') {
+    this.levelId = levelId;
     const windows = getScoringWindows(levelId);
     this.beatmapRunner = new BeatmapRunner(windows);
     this.scoringEngine = new ScoringEngine(windows);
@@ -64,6 +66,13 @@ export class RhythmEngine {
     this.inputManager.subscribe((action) => {
       if (this.status !== 'playing' || this.isAutoplay) return;
       this.onInputCb?.(action);
+
+      // In Level 2 (OSU 2D target clicking), global window clicks must NOT auto-hit notes!
+      // Hits only register when the player clicks the actual circle target via handleTargetClick.
+      if (this.levelId === 'level2') {
+        return;
+      }
+
       this.handlePlayerAction(action);
     });
   }
@@ -135,7 +144,11 @@ export class RhythmEngine {
         if (this.isAutoplay) {
           const target = this.beatmapRunner.getActiveTarget(time);
           if (target && Math.abs(target.deltaSec) <= 0.015) {
-            this.handlePlayerAction('tap');
+            if (this.levelId === 'level2') {
+              this.handleTargetClick(target.event.id);
+            } else {
+              this.handlePlayerAction('tap');
+            }
           }
         }
         this.beatmapRunner.update(time);
@@ -190,6 +203,13 @@ export class RhythmEngine {
 
     const time = (clickTime ?? this.audioEngine.getCurrentTime()) - this.inputManager.getLatencyOffsetSec();
     const deltaSec = time - ev.time;
+
+    // In OSU rhythm games, if clicked way before the hit window opens, ignore early click
+    // so the player can still click when the approach ring closes into the target
+    const maxWindow = this.beatmapRunner.getWindows().good;
+    if (deltaSec < -maxWindow) {
+      return null;
+    }
 
     const result = this.scoringEngine.judge(deltaSec);
     this.beatmapRunner.markHit(noteId);
