@@ -6,6 +6,9 @@ import { BeachDiscoBackdrop } from './BeachDiscoBackdrop';
 import { DanceNoteTrack, LANE_ORDER, LaneDir, POSE_BY_DIR } from './DanceNoteTrack';
 import { DancePose, QuackDancer } from './QuackDancer';
 import { VirtualPad } from './VirtualPad';
+import { BeachCameos } from './BeachCameos';
+import { StagePyrotechnics } from './StagePyrotechnics';
+
 
 interface QuackDanceStageProps {
   currentBeat: number;
@@ -80,12 +83,20 @@ export const QuackDanceStage: React.FC<QuackDanceStageProps> = ({
   }, []);
 
   const isFever = combo >= 25;
+  const isPunch = (currentBeat % 2 === 0) && combo >= 10;
 
   return (
-    <div className="fixed inset-0 w-full h-full z-0 overflow-hidden select-none">
+    <div className={`fixed inset-0 w-full h-full z-0 overflow-hidden select-none transition-transform duration-100 ${isPunch ? 'scale-[1.012]' : 'scale-100'}`}>
       <BeachDiscoBackdrop beat={currentBeat} combo={combo} />
 
+      {/* Cameos across beach, sky, and stage */}
+      <BeachCameos beat={currentBeat} combo={combo} isHit={lastJudgement === 'perfect' || lastJudgement === 'great'} />
+
+      {/* Pulsing neon strobe screen border, flame jets, and confetti */}
+      <StagePyrotechnics beat={currentBeat} combo={combo} isHit={lastJudgement === 'perfect'} />
+
       <div className="relative z-10 h-full w-full flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-8 px-3 pt-24 pb-4">
+
         {/* Arrow track */}
         <div className="w-full max-w-[320px] lg:max-w-[360px] shrink-0">
           <div className="rounded-3xl border border-white/20 bg-black/35 backdrop-blur-sm p-3">
