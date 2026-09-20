@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 interface Level2PyrotechnicsProps {
   currentBeat: number;
@@ -12,67 +12,107 @@ export const Level2Pyrotechnics: React.FC<Level2PyrotechnicsProps> = ({
   songTime,
 }) => {
   const isEven = currentBeat % 2 === 0;
-  const isDisco = combo >= 20 || songTime >= 35;
-  const isMega = combo >= 45 || songTime >= 65;
+  const isFever = combo >= 10 || songTime >= 20;
+  const isDisco = combo >= 25 || songTime >= 40;
+  const isMega = combo >= 50 || songTime >= 70;
   const isQuackFever = combo >= 80 || songTime >= 100;
 
   const strobeColors = [
-    'rgba(6,182,212,0.85)',   // cyan
-    'rgba(236,72,153,0.85)',  // magenta
-    'rgba(250,204,21,0.9)',   // gold
-    'rgba(168,85,247,0.85)',  // purple
+    'rgba(6,182,212,0.9)',   // cyan
+    'rgba(236,72,153,0.9)',  // magenta
+    'rgba(250,204,21,0.95)', // gold
+    'rgba(168,85,247,0.9)',  // purple
   ];
   const activeColor = strobeColors[currentBeat % strobeColors.length];
 
-  // Pure geometric confetti streamers (Zero emojis)
+  // Colorful confetti ribbons (pure geometric CSS strips, zero emojis)
   const confettiRibbons = [
-    { left: '6%', color: '#facc15', w: 8, h: 20 },
-    { left: '16%', color: '#ec4899', w: 10, h: 16 },
-    { left: '26%', color: '#06b6d4', w: 7, h: 22 },
-    { left: '38%', color: '#a855f7', w: 9, h: 18 },
-    { left: '50%', color: '#f43f5e', w: 11, h: 16 },
-    { left: '62%', color: '#10b981', w: 8, h: 20 },
-    { left: '74%', color: '#facc15', w: 10, h: 16 },
-    { left: '84%', color: '#06b6d4', w: 7, h: 21 },
-    { left: '94%', color: '#ec4899', w: 9, h: 17 },
+    { left: '7%', color: '#facc15', w: 8, h: 22 },
+    { left: '17%', color: '#ec4899', w: 10, h: 18 },
+    { left: '28%', color: '#06b6d4', w: 7, h: 24 },
+    { left: '39%', color: '#a855f7', w: 9, h: 20 },
+    { left: '50%', color: '#f43f5e', w: 11, h: 18 },
+    { left: '61%', color: '#10b981', w: 8, h: 22 },
+    { left: '72%', color: '#facc15', w: 10, h: 18 },
+    { left: '83%', color: '#06b6d4', w: 7, h: 23 },
+    { left: '93%', color: '#ec4899', w: 9, h: 19 },
   ];
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-15">
-      {/* 1. Pulsating Neon Strobe Border around playfield (turns on at combo >= 10) */}
-      {combo >= 10 && (
+      {/* 1. Pulsating Neon Strobe Border around playfield */}
+      {isFever && (
         <div
           className="absolute inset-0 transition-all duration-75 border-4 sm:border-6 rounded-3xl"
           style={{
             borderColor: activeColor,
             boxShadow: isEven
-              ? `inset 0 0 30px ${activeColor}, 0 0 40px ${activeColor}`
-              : `inset 0 0 10px ${activeColor}`,
-            opacity: isQuackFever ? 0.95 : isMega ? 0.8 : isDisco ? 0.65 : 0.45,
+              ? `inset 0 0 35px ${activeColor}, 0 0 45px ${activeColor}`
+              : `inset 0 0 12px ${activeColor}`,
+            opacity: isQuackFever ? 0.95 : isMega ? 0.85 : isDisco ? 0.7 : 0.5,
           }}
         />
       )}
 
-      {/* 2. Sweeping Disco Laser Cones across screen */}
+      {/* 2. Four Sweeping Multi-Color Disco Laser Searchlights */}
       {isDisco && (
         <>
+          {/* Laser 1: Cyan Left */}
           <div
-            className="absolute -top-10 left-10 w-48 h-[550px] origin-top bg-gradient-to-b from-cyan-400/30 via-cyan-400/10 to-transparent blur-md transition-transform duration-300"
-            style={{
-              transform: isEven ? 'rotate(35deg)' : 'rotate(15deg)',
-            }}
+            className="absolute -top-12 left-8 w-44 h-[600px] origin-top bg-gradient-to-b from-cyan-400/40 via-cyan-400/10 to-transparent blur-sm transition-transform duration-200"
+            style={{ transform: `rotate(${isEven ? 38 : 16}deg)` }}
           />
+          {/* Laser 2: Magenta Right */}
           <div
-            className="absolute -top-10 right-10 w-48 h-[550px] origin-top bg-gradient-to-b from-fuchsia-500/30 via-fuchsia-500/10 to-transparent blur-md transition-transform duration-300"
-            style={{
-              transform: isEven ? 'rotate(-35deg)' : 'rotate(-15deg)',
-            }}
+            className="absolute -top-12 right-8 w-44 h-[600px] origin-top bg-gradient-to-b from-fuchsia-500/40 via-fuchsia-500/10 to-transparent blur-sm transition-transform duration-200"
+            style={{ transform: `rotate(${isEven ? -38 : -16}deg)` }}
           />
+          {/* Laser 3: Gold Center-Left (unlocks on mega) */}
+          {isMega && (
+            <div
+              className="absolute -top-12 left-1/3 w-36 h-[600px] origin-top bg-gradient-to-b from-yellow-400/35 via-yellow-400/10 to-transparent blur-sm transition-transform duration-200"
+              style={{ transform: `rotate(${!isEven ? 24 : -18}deg)` }}
+            />
+          )}
+          {/* Laser 4: Purple Center-Right (unlocks on mega) */}
+          {isMega && (
+            <div
+              className="absolute -top-12 right-1/3 w-36 h-[600px] origin-top bg-gradient-to-b from-purple-500/35 via-purple-500/10 to-transparent blur-sm transition-transform duration-200"
+              style={{ transform: `rotate(${!isEven ? -24 : 18}deg)` }}
+            />
+          )}
         </>
       )}
 
-      {/* 3. Confetti Ribbon Rain (bursts when combo >= 20, pure geometric shapes) */}
-      {combo >= 20 && (
+      {/* 3. Left & Right Stage Flame / Spark Columns (Shoots up on 146 BPM beats) */}
+      {isDisco && (
+        <>
+          <div className="absolute bottom-12 left-28 sm:left-36 flex flex-col items-center">
+            <div
+              className={`w-9 rounded-full transition-all duration-100 origin-bottom ${
+                isEven
+                  ? 'h-32 sm:h-44 bg-gradient-to-t from-orange-500 via-yellow-300 to-transparent shadow-[0_0_30px_#f97316] opacity-90 scale-110'
+                  : 'h-6 bg-orange-600/20 opacity-20'
+              }`}
+            />
+            <div className="w-10 h-3 bg-black rounded-full border border-yellow-400 shadow-[0_0_10px_#facc15]" />
+          </div>
+
+          <div className="absolute bottom-12 right-28 sm:right-36 flex flex-col items-center">
+            <div
+              className={`w-9 rounded-full transition-all duration-100 origin-bottom ${
+                !isEven
+                  ? 'h-32 sm:h-44 bg-gradient-to-t from-pink-500 via-cyan-300 to-transparent shadow-[0_0_30px_#06b6d4] opacity-90 scale-110'
+                  : 'h-6 bg-pink-600/20 opacity-20'
+              }`}
+            />
+            <div className="w-10 h-3 bg-black rounded-full border border-cyan-400 shadow-[0_0_10px_#06b6d4]" />
+          </div>
+        </>
+      )}
+
+      {/* 4. Confetti Ribbon Rain */}
+      {isFever && (
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
           {confettiRibbons.map((c, i) => (
             <div
@@ -80,23 +120,23 @@ export const Level2Pyrotechnics: React.FC<Level2PyrotechnicsProps> = ({
               className="absolute animate-bounce"
               style={{
                 left: c.left,
-                top: isEven ? '6%' : '14%',
+                top: isEven ? '6%' : '16%',
                 width: `${c.w}px`,
                 height: `${c.h}px`,
                 backgroundColor: c.color,
-                boxShadow: `0 0 10px ${c.color}`,
-                transform: `rotate(${(i * 45) + (isEven ? 20 : -20)}deg)`,
+                boxShadow: `0 0 12px ${c.color}`,
+                transform: `rotate(${(i * 45) + (isEven ? 25 : -25)}deg)`,
                 transition: 'all 0.3s ease-out',
-                opacity: isMega ? 0.9 : 0.6,
+                opacity: isMega ? 0.95 : 0.65,
               }}
             />
           ))}
         </div>
       )}
 
-      {/* 4. Quack Fever Gold Sparkle Shower (combo >= 80) */}
+      {/* 5. Quack Fever Gold Sparkle Shower */}
       {isQuackFever && (
-        <div className="absolute inset-0 bg-yellow-400/20 animate-pulse" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-400/30 via-transparent to-transparent animate-pulse" />
       )}
     </div>
   );

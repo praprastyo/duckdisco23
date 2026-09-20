@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+﻿import React, { useRef } from 'react';
 import { RhythmEngine } from '../../game/RhythmEngine';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { QuackTargetCircle } from './QuackTargetCircle';
@@ -35,7 +35,7 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
   onTargetClick,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { songTime, particles, popups, sortedUpcoming, handlePointerDown } = useLevel2Game(
+  const { songTime, particles, popups, shockwaves, sortedUpcoming, handlePointerDown } = useLevel2Game(
     engine,
     events,
     onTargetClick
@@ -55,8 +55,29 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
           : 'border-cyan-500/50 shadow-[0_0_35px_rgba(6,182,212,0.3)]'
       }`}
     >
-      {/* 2D Retro Disco Grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:28px_28px]" />
+      {/* Dynamic Animated Disco Floor Tiles (Color shift on beat) */}
+      <div className="absolute inset-0 pointer-events-none opacity-25">
+        <div
+          className={`w-full h-full transition-all duration-150 ${
+            currentBeat % 4 === 0
+              ? 'bg-[radial-gradient(#ec4899_1.5px,transparent_1.5px)] [background-size:32px_32px]'
+              : currentBeat % 4 === 1
+              ? 'bg-[radial-gradient(#06b6d4_1.5px,transparent_1.5px)] [background-size:32px_32px]'
+              : currentBeat % 4 === 2
+              ? 'bg-[radial-gradient(#facc15_1.5px,transparent_1.5px)] [background-size:32px_32px]'
+              : 'bg-[radial-gradient(#a855f7_1.5px,transparent_1.5px)] [background-size:32px_32px]'
+          }`}
+        />
+      </div>
+
+      {/* Moving Ambient Disco Spotlight Cones */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-35 blur-2xl transition-transform duration-300"
+        style={{
+          transform: currentBeat % 2 === 0 ? 'scale(1.06) translate(12px, -8px)' : 'scale(1.0) translate(-12px, 8px)',
+          background: 'radial-gradient(circle at 50% 35%, rgba(6,182,212,0.28), rgba(236,72,153,0.18), transparent 70%)',
+        }}
+      />
 
       {/* Top Playfield HUD */}
       <div className="absolute top-4 inset-x-6 z-20 flex items-center justify-between pointer-events-none">
@@ -100,19 +121,20 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
       {/* Safe Play Area (X: 8-92%, Y: 12-88%) */}
       <div className="absolute inset-x-[8%] inset-y-[12%] border border-white/5 rounded-2xl pointer-events-none" />
 
-      {/* Pyrotechnics, Lasers & Strobe Border */}
+      {/* Pyrotechnics, Lasers, Strobe Border & Flame Columns */}
       <Level2Pyrotechnics currentBeat={currentBeat} combo={combo} songTime={songTime} />
 
       {/* Podium Backup Dancers & Side Spectator Fans */}
       <Level2Dancers currentBeat={currentBeat} combo={combo} songTime={songTime} />
 
-      {/* Dynamic Moving Cameos (Skater, Glider, Breakdancer) */}
+      {/* Dynamic Moving Cameos (Skater with Neon Speed Trail, Glider, Breakdancer) */}
       <Level2Cameos currentBeat={currentBeat} combo={combo} songTime={songTime} />
 
-      {/* Visual Effects, Large DJ Donald Booth, Particles, Popups */}
+      {/* Visual Effects, Shockwaves, Large DJ Donald Booth, Particles, Popups */}
       <Level2Effects
         particles={particles}
         popups={popups}
+        shockwaves={shockwaves}
         isComplete={isComplete}
         accuracy={accuracy}
         isBeatOdd={currentBeat % 2 === 1}

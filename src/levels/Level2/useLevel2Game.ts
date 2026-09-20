@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { RhythmEngine } from '../../game/RhythmEngine';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { AudioEngine } from '../../audio/AudioEngine';
 import { JudgementType } from '../../config/scoring';
-import { Particle, HitPopup } from './Level2Effects';
+import { Particle, HitPopup, Shockwave } from './Level2Effects';
 
 const DEFAULT_APPROACH_DURATION = 0.85;
 
@@ -15,6 +15,7 @@ export function useLevel2Game(
   const [songTime, setSongTime] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [popups, setPopups] = useState<HitPopup[]>([]);
+  const [shockwaves, setShockwaves] = useState<Shockwave[]>([]);
   const [hitNoteIds, setHitNoteIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -30,17 +31,25 @@ export function useLevel2Game(
         setHitNoteIds(new Set());
         setParticles([]);
         setPopups([]);
+        setShockwaves([]);
       }
       prevTime = currentT;
       setSongTime(currentT);
 
       const now = performance.now();
-      setPopups((prev) => (prev.length > 0 ? prev.filter((p) => now - p.createdAt < 600) : prev));
+      setPopups((prev) => (prev.length > 0 ? prev.filter((p) => now - p.createdAt < 650) : prev));
+      setShockwaves((prev) => (prev.length > 0 ? prev.filter((s) => now - s.createdAt < 450) : prev));
       setParticles((prev) =>
         prev.length === 0
           ? prev
           : prev
-              .map((p) => ({ ...p, x: p.x + p.vx, y: p.y + p.vy, life: p.life - 0.05 }))
+              .map((p) => ({
+                ...p,
+                x: p.x + p.vx,
+                y: p.y + p.vy,
+                rot: p.rot + p.vRot,
+                life: p.life - 0.035,
+              }))
               .filter((p) => p.life > 0)
       );
     };
@@ -55,39 +64,64 @@ export function useLevel2Game(
       const ev = jEv.event;
       if (!ev || ev.x === undefined || ev.y === undefined) return;
 
-      const colors = { perfect: '#facc15', great: '#06b6d4', good: '#4ade80', miss: '#f43f5e' };
+      const colors = {
+        perfect: '#facc15',
+        great: '#06b6d4',
+        good: '#4ade80',
+        miss: '#f43f5e',
+      };
+      const color = colors[jEv.judgement] || '#ffffff';
+
+      // 1. Add glowing popup
       setPopups((prev) => [
-        ...prev.slice(-6),
+        ...prev.slice(-8),
         {
           id: `pop_${Date.now()}_${Math.random()}`,
           x: ev.x!,
           y: ev.y!,
           text: jEv.judgement.toUpperCase(),
-          color: colors[jEv.judgement] || '#ffffff',
+          color,
           createdAt: performance.now(),
         },
       ]);
 
       if (jEv.judgement !== 'miss') {
         setHitNoteIds((prev) => new Set([...prev, ev.id]));
-        const count = jEv.judgement === 'perfect' ? 10 : 6;
-        const pColors = ['#facc15', '#06b6d4', '#ec4899', '#ffffff'];
+
+        // 2. Add expanding shockwave ring
+        setShockwaves((prev) => [
+          ...prev.slice(-6),
+          {
+            id: `sw_${Date.now()}_${Math.random()}`,
+            x: ev.x!,
+            y: ev.y!,
+            color,
+            createdAt: performance.now(),
+          },
+        ]);
+
+        // 3. Add explosion particles
+        const count = jEv.judgement === 'perfect' ? 18 : jEv.judgement === 'great' ? 12 : 6;
+        const pColors = ['#facc15', '#06b6d4', '#ec4899', '#ffffff', '#a855f7'];
         const newPts: Particle[] = [];
 
         for (let i = 0; i < count; i++) {
-          const a = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-          const spd = 2 + Math.random() * 4;
+          const a = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
+          const spd = (jEv.judgement === 'perfect' ? 3.5 : 2.5) + Math.random() * 4.5;
           newPts.push({
             id: `pt_${Date.now()}_${i}`,
             x: ev.x!,
             y: ev.y!,
-            vx: Math.cos(a) * spd * 0.3,
-            vy: Math.sin(a) * spd * 0.3,
+            vx: Math.cos(a) * spd * 0.35,
+            vy: Math.sin(a) * spd * 0.35,
+            size: 4 + Math.random() * 6,
+            rot: Math.random() * 360,
+            vRot: (Math.random() - 0.5) * 20,
             color: pColors[i % pColors.length],
             life: 1.0,
           });
         }
-        setParticles((prev) => [...prev.slice(-25), ...newPts]);
+        setParticles((prev) => [...prev.slice(-45), ...newPts]);
       }
     };
 
@@ -118,6 +152,7 @@ export function useLevel2Game(
     songTime,
     particles,
     popups,
+    shockwaves,
     sortedUpcoming,
     handlePointerDown,
   };

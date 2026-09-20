@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 
 interface QuackTargetCircleProps {
@@ -21,14 +21,17 @@ export const QuackTargetCircle: React.FC<QuackTargetCircleProps> = ({
   const progress = 1 - remaining / duration;
   const clampedProgress = Math.max(0, Math.min(1.2, progress));
 
-  // Approach ring shrinks smoothly from ~2.2 down to 1.0 at note.time
-  const approachScale = Math.max(1.0, 2.2 - clampedProgress * 1.2);
+  // Approach ring shrinks smoothly from 2.4 down to 1.0 at hit moment
+  const approachScale = Math.max(1.0, 2.4 - clampedProgress * 1.4);
   const diameter = note.size || 82;
+
+  // Flash brightly when entering the hit window (delta <= 110ms)
+  const isHitWindow = Math.abs(remaining) <= 0.11;
 
   return (
     <div
       onPointerDown={(e) => onPointerDown(e, note)}
-      className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 transition-opacity duration-150 active:scale-95"
+      className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 transition-opacity duration-150 active:scale-90"
       style={{
         left: `${note.x}%`,
         top: `${note.y}%`,
@@ -37,29 +40,42 @@ export const QuackTargetCircle: React.FC<QuackTargetCircleProps> = ({
         opacity,
       }}
     >
-      {/* Outer Approach Ring (Shrinks strictly with audio playback time) */}
+      {/* Outer Approach Ring (Vibrant neon, shrinking in sync with audio) */}
       <div
-        className="absolute inset-0 rounded-full border-2 border-cyan-400 pointer-events-none will-change-transform"
+        className={`absolute inset-0 rounded-full border-[3px] pointer-events-none will-change-transform ${
+          isHitWindow
+            ? 'border-yellow-300 shadow-[0_0_20px_#facc15,inset_0_0_10px_#facc15]'
+            : 'border-cyan-400 shadow-[0_0_16px_#06b6d4,inset_0_0_8px_#06b6d4]'
+        }`}
         style={{
           transform: `scale(${approachScale})`,
-          boxShadow: '0 0 14px #06b6d4, inset 0 0 8px #06b6d4',
-          opacity: Math.min(1, clampedProgress * 1.4),
+          opacity: Math.min(1, clampedProgress * 1.6),
         }}
       />
 
-      {/* Main Circular Target */}
-      <div className="absolute inset-0 rounded-full border-4 border-yellow-400 bg-gradient-to-br from-[#1e1b4b] to-[#0f172a] shadow-[0_0_24px_rgba(250,204,21,0.7)] flex items-center justify-center overflow-hidden">
-        {/* Concentric Vinyl Grooves */}
-        <div className="absolute inset-1 rounded-full border border-white/10" />
-        <div className="absolute inset-2.5 rounded-full border border-white/10" />
+      {/* Main Target Body with Vinyl Grooves & Neon Ring */}
+      <div
+        className={`absolute inset-0 rounded-full border-4 transition-all duration-75 flex items-center justify-center overflow-hidden ${
+          isHitWindow
+            ? 'border-yellow-300 bg-gradient-to-br from-amber-900 via-indigo-950 to-slate-900 shadow-[0_0_35px_rgba(250,204,21,0.9)] scale-105'
+            : 'border-yellow-400 bg-gradient-to-br from-[#1e1b4b] to-[#0f172a] shadow-[0_0_22px_rgba(250,204,21,0.6)]'
+        }`}
+      >
+        {/* Outer subtle halo ring */}
+        <div className="absolute inset-0 rounded-full bg-cyan-400/10 pointer-events-none" />
 
-        {/* Center Sequence Number */}
-        <div className="relative z-10 font-disco text-xl sm:text-2xl font-black text-yellow-300 drop-shadow-[0_0_8px_#facc15]">
+        {/* Concentric Vinyl Grooves */}
+        <div className="absolute inset-1.5 rounded-full border border-white/15" />
+        <div className="absolute inset-3 rounded-full border border-white/10" />
+        <div className="absolute inset-4.5 rounded-full border border-white/10" />
+
+        {/* Center Sequence Number with Golden Glow */}
+        <div className="relative z-10 font-disco text-2xl sm:text-3xl font-black text-yellow-300 drop-shadow-[0_0_10px_#facc15] select-none pointer-events-none">
           {note.seq || note.promptText || '●'}
         </div>
 
-        {/* Sub-label duck footprint detail */}
-        <div className="absolute bottom-1 text-[8px] text-cyan-300/80 font-mono-rhythm select-none pointer-events-none">
+        {/* Bottom POP tag */}
+        <div className="absolute bottom-1 text-[8px] font-disco font-black text-cyan-300/90 tracking-widest select-none pointer-events-none">
           POP
         </div>
       </div>
