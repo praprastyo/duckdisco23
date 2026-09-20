@@ -21,6 +21,7 @@ import { Level3Stage } from '../levels/Level3/Level3Stage';
 import { Level4Stage } from '../levels/Level4/Level4Stage';
 import { DebugOverlay } from '../components/DebugOverlay/DebugOverlay';
 import { BeatmapEditorModal } from '../components/BeatmapEditor/BeatmapEditorModal';
+import { DevModeService } from '../services/DevModeService';
 
 import { SaveService } from '../services/SaveService';
 
@@ -258,13 +259,13 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
             😵
           </div>
           <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
-            OUT OF GROOVE • 10 MISS REACHED
+            IRAMANYA TERLEPAS • BATAS 10 MISS
           </span>
           <h2 className="font-disco text-4xl sm:text-5xl text-white neon-glow-magenta mb-3">
-            STAGE FAILED!
+            AYO COBA LAGI!
           </h2>
           <p className="max-w-md text-white/70 text-xs sm:text-sm font-mono-rhythm mb-8 leading-relaxed">
-            DJ Quack kelelahan karena terlalu banyak langkah yang meleset (Batas maksimal 10 Miss). Jangan menyerah, coba lagi dan ikuti irama panah!
+            Langkah tarian masih sedikit meleset. Jangan menyerah, ayo coba lagi demi membuka kado rahasia!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
@@ -275,20 +276,19 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               }}
               className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco text-sm font-bold tracking-wider uppercase shadow-[0_0_25px_rgba(234,179,8,0.5)] active:scale-95 transition-all cursor-pointer"
             >
-              🔁 TRY AGAIN
+              🔁 COBA LAGI
             </button>
             <button
               onClick={onExit}
               className="flex-1 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco text-sm tracking-wider uppercase border border-white/20 active:scale-95 transition-all cursor-pointer"
             >
-              🚪 EXIT
+              🚪 KELUAR
             </button>
           </div>
         </div>
       )}
 
       <PauseMenu
-
         isOpen={status === 'paused'}
         onResume={() => engineRef.current?.resume()}
         onRestart={() => engineRef.current?.restart()}
@@ -296,17 +296,21 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         onOpenEditor={() => setIsEditorOpen(true)}
       />
 
-      <DebugOverlay
-        engine={engineRef.current}
-        lastJudgement={lastJudgement}
-        onOpenEditor={() => setIsEditorOpen(true)}
-      />
+      {DevModeService.isEnabled() && (
+        <>
+          <DebugOverlay
+            engine={engineRef.current}
+            lastJudgement={lastJudgement}
+            onOpenEditor={() => setIsEditorOpen(true)}
+          />
 
-      <BeatmapEditorModal
-        isOpen={isEditorOpen}
-        onClose={() => setIsEditorOpen(false)}
-        onApplyBeatmap={handleApplyBeatmap}
-      />
+          <BeatmapEditorModal
+            isOpen={isEditorOpen}
+            onClose={() => setIsEditorOpen(false)}
+            onApplyBeatmap={handleApplyBeatmap}
+          />
+        </>
+      )}
     </div>
   );
 };

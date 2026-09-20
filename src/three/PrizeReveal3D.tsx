@@ -150,17 +150,33 @@ export const PrizeReveal3D: React.FC<PrizeReveal3DProps> = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[340px] sm:h-[400px] rounded-3xl overflow-hidden border-2 border-yellow-400/50 shadow-[0_0_50px_rgba(234,179,8,0.4)]">
-      <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
-      <div className="absolute top-4 left-4 pointer-events-none">
-        <span className="px-3 py-1 rounded-full bg-black/60 border border-yellow-400/60 text-xs font-mono-rhythm text-yellow-300 font-bold uppercase">
-          ✨ 3D GOLDEN DISCO DUCK PRIZE
-        </span>
+    <div className="w-full">
+      <div className="relative w-full h-[320px] sm:h-[380px] rounded-3xl overflow-hidden border-2 border-yellow-400/50 shadow-[0_0_50px_rgba(234,179,8,0.4)]">
+        <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+        <div className="absolute top-4 left-4 pointer-events-none">
+          <span className="px-3 py-1 rounded-full bg-black/60 border border-yellow-400/60 text-xs font-mono-rhythm text-yellow-300 font-bold uppercase">
+            ✨ HADIAH 3D BEBEK EMAS DISKO
+          </span>
+        </div>
+        <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none">
+          <span className="text-[10px] font-mono-rhythm text-white/70 uppercase tracking-widest bg-black/60 px-4 py-1.5 rounded-full border border-white/10">
+            GESER UNTUK MELIHAT HADIAH DARI SEGALA SISI
+          </span>
+        </div>
       </div>
-      <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none">
-        <span className="text-[10px] font-mono-rhythm text-white/70 uppercase tracking-widest bg-black/60 px-4 py-1.5 rounded-full border border-white/10">
-          DRAG MOUSE TO INSPECT 3D PRIZE
-        </span>
+
+      {/* Kartu Ucapan Ulang Tahun & Reveal Hadiah (Mudah diedit di file ini) */}
+      <div className="mt-4 p-5 rounded-2xl bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-yellow-500/20 border border-yellow-400/50 text-center shadow-lg animate-fadeIn">
+        <div className="text-2xl mb-1">🎂🎉✨</div>
+        <h3 className="font-disco text-2xl sm:text-3xl text-yellow-300 neon-glow-gold mb-2">
+          HAPPY BIRTHDAY!
+        </h3>
+        <p className="font-body text-white/90 text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-2">
+          Selamat ulang tahun! Kamu berhasil menyelesaikan semua tantangan irama ini. Kado dan harapan terbaik dipersembahkan spesial khusus untukmu!
+        </p>
+        <p className="text-[11px] font-mono-rhythm text-pink-300">
+          🎁 Semoga harimu selalu dipenuhi kebahagiaan, tawa, dan kesuksesan!
+        </p>
       </div>
     </div>
   );
