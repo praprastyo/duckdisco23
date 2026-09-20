@@ -87,7 +87,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   }, [status]);
 
   return (
-    <div onClick={handleStart} className="relative min-h-screen w-full flex flex-col justify-between p-4 select-none overflow-hidden">
+    <div className="relative min-h-screen w-full flex flex-col justify-between p-4 select-none overflow-hidden">
       {/* Top Hanging Disco Ball */}
       <DiscoBall highEnergy={energy.high} bassEnergy={energy.bass} />
 
@@ -97,7 +97,13 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
       {/* Top HUD */}
       <div className="relative z-30 flex items-center justify-between w-full max-w-6xl mx-auto">
         <div className="flex items-center gap-3">
-          <button data-interactive="true" onClick={onExit} className="px-3 py-1.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono-rhythm text-white/70 hover:text-white">
+          <button
+            data-interactive="true"
+            tabIndex={-1}
+            onFocus={(e) => e.currentTarget.blur()}
+            onClick={onExit}
+            className="px-3 py-1.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono-rhythm text-white/70 hover:text-white"
+          >
             ← EXIT
           </button>
           <div className="hidden sm:flex flex-col">
@@ -113,6 +119,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
         <button
           data-interactive="true"
+          tabIndex={-1}
+          onFocus={(e) => e.currentTarget.blur()}
           onClick={() => status === 'playing' ? engineRef.current?.pause() : engineRef.current?.resume()}
           className="px-3 py-1.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono-rhythm text-white/70 hover:text-white"
         >

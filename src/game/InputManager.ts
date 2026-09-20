@@ -35,16 +35,16 @@ export class InputManager {
     this.detach();
     this.attachedElement = target;
 
-    window.addEventListener('keydown', this.handleKeyDown, { passive: false });
-    window.addEventListener('keyup', this.handleKeyUp, { passive: false });
+    window.addEventListener('keydown', this.handleKeyDown, { capture: true, passive: false });
+    window.addEventListener('keyup', this.handleKeyUp, { capture: true, passive: false });
     target.addEventListener('pointerdown', this.handlePointerDown as EventListener, { passive: false });
     target.addEventListener('pointerup', this.handlePointerUp as EventListener, { passive: false });
     target.addEventListener('pointercancel', this.handlePointerUp as EventListener, { passive: false });
   }
 
   public detach() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-    window.removeEventListener('keyup', this.handleKeyUp);
+    window.removeEventListener('keydown', this.handleKeyDown, { capture: true });
+    window.removeEventListener('keyup', this.handleKeyUp, { capture: true });
     if (this.attachedElement) {
       this.attachedElement.removeEventListener('pointerdown', this.handlePointerDown as EventListener);
       this.attachedElement.removeEventListener('pointerup', this.handlePointerUp as EventListener);
@@ -64,18 +64,24 @@ export class InputManager {
 
     if (code === 'Space' || code === 'Enter') {
       e.preventDefault();
+      e.stopImmediatePropagation();
+      (document.activeElement as HTMLElement)?.blur();
       this.startPress('tap');
     } else if (code === 'ArrowLeft' || code === 'KeyA') {
       e.preventDefault();
+      e.stopImmediatePropagation();
       this.triggerAction('left');
     } else if (code === 'ArrowRight' || code === 'KeyD') {
       e.preventDefault();
+      e.stopImmediatePropagation();
       this.triggerAction('right');
     } else if (code === 'ArrowUp' || code === 'KeyW') {
       e.preventDefault();
+      e.stopImmediatePropagation();
       this.triggerAction('up');
     } else if (code === 'ArrowDown' || code === 'KeyS') {
       e.preventDefault();
+      e.stopImmediatePropagation();
       this.triggerAction('down');
     }
   };
@@ -83,9 +89,11 @@ export class InputManager {
   private handleKeyUp = (e: KeyboardEvent) => {
     if (e.code === 'Space' || e.code === 'Enter') {
       e.preventDefault();
+      e.stopImmediatePropagation();
       this.endPress();
     }
   };
+
 
   private handlePointerDown = (e: PointerEvent) => {
     if (e.button !== 0) return;

@@ -39,10 +39,10 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
 
   const levelBadges: Record<string, { icon: string; tag: string; controls: string; desc: string }> = {
     level1: {
-      icon: '🕺',
-      tag: 'AYODANCE CATWALK',
-      controls: 'ARROW KEYS (← ↑ ↓ →) & SPACE',
-      desc: 'Bebek jalan dari belakang. Ikuti sekuens panah dan tekan Space di beat akhir!',
+      icon: '🏖️',
+      tag: 'DISCO BEACH WALK',
+      controls: 'SPACEBAR / CLICK / TAP',
+      desc: 'Bebek berjalan di pantai disko. Tekan SPACE / TAP tepat saat obstacle kepiting atau bola pantai menyentuh lingkaran target!',
     },
     level2: {
       icon: '🦖',
@@ -114,6 +114,8 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
 
           {/* Start Button */}
           <button
+            tabIndex={-1}
+            onFocus={(e) => e.currentTarget.blur()}
             onClick={startCountdown}
             className="group relative px-10 py-4 rounded-2xl bg-gradient-to-r from-yellow-400 via-pink-500 to-fuchsia-600 text-black font-disco text-lg font-black tracking-widest uppercase hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(236,72,153,0.6)] transition-all cursor-pointer"
           >
