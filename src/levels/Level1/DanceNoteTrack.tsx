@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { AudioEngine } from '../../audio/AudioEngine';
 import { ARROW_ICONS, DancePose } from './QuackDancer';
@@ -37,6 +38,7 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
 }) => {
   const noteRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeLaneRef = useRef<LaneDir | null>(null);
+  const [showStealthNotice, setShowStealthNotice] = useState(false);
 
   useEffect(() => {
     let frameId: number;
@@ -48,6 +50,11 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
       const t = AudioEngine.getInstance().getCurrentTime();
       let nearest: LaneDir | null = null;
       let nearestDelta = Infinity;
+
+      // Notice banner for 40s - 45s
+      setShowStealthNotice(t >= 40 && t <= 45);
+
+      const isPast40s = t > 40;
 
       events.forEach((ev, i) => {
         const el = noteRefs.current[i];
@@ -61,7 +68,24 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
           el.style.opacity = '0';
           el.style.pointerEvents = 'none';
         } else {
-          el.style.opacity = delta < -0.25 ? '0.25' : '1';
+          // Progress: 0 = top of track, 1 = target box line
+          const progress = 1 - delta / APPROACH_SEC;
+
+          let opacity = 1;
+          if (delta < -0.25) {
+            opacity = 0.25;
+          } else if (isPast40s) {
+            // Smooth proximity fade: visible at top, gently fading as it nears the box
+            if (progress >= 0.38 && progress <= 0.92) {
+              const ratio = (progress - 0.38) / (0.92 - 0.38); // 0 to 1
+              opacity = 1.0 - ratio * 0.85; // 1.0 down to 0.15 smoothly
+            } else if (progress > 0.92) {
+              opacity = 0.15;
+            } else {
+              opacity = 1.0;
+            }
+          }
+          el.style.opacity = String(opacity);
         }
 
         // Progress 0 = top of track, 1 = hit line
@@ -90,6 +114,14 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
 
   return (
     <div className="relative w-full" style={{ height: TRACK_HEIGHT }}>
+      {/* 40s Stealth Fade Notice */}
+      {showStealthNotice && (
+        <div className="absolute -top-6 inset-x-0 z-30 flex justify-center animate-bounce pointer-events-none">
+          <span className="px-2.5 py-0.5 rounded-full bg-purple-900/80 border border-purple-400 text-[9px] font-mono-rhythm text-yellow-300 font-bold shadow-[0_0_12px_#c084fc]">
+            👻 STEALTH FADE: PANAH MEMUDAR MENDEKATI TARGET!
+          </span>
+        </div>
+      )}
       {/* Approach guide lines */}
       <div className="absolute inset-0 flex justify-around opacity-25">
         {LANE_ORDER.map((dir) => (
