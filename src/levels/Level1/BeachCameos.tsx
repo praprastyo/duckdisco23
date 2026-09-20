@@ -152,14 +152,15 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
   const isEven = beat % 2 === 0;
   const isFever = combo >= 15;
 
-  // Surfer duck travels across ocean based on beat
+  // Surfer ducks travel across ocean based on beat
   const surferLeft = `${((beat * 8) % 110) - 10}%`;
+  const surfer2Left = `${(((beat * 8) + 40) % 110) - 10}%`;
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-10">
-      {/* 1. Disco Seagulls Flying Across Sky (Vector SVG) */}
+      {/* 1. Disco Seagulls Flock Flying Across Sky */}
       <div
-        className="absolute top-10 flex gap-12 transition-all duration-700 ease-linear"
+        className="absolute top-8 flex gap-8 transition-all duration-700 ease-linear"
         style={{ left: `${((beat * 6) % 120) - 20}%` }}
       >
         <div className={`flex items-center transition-transform duration-200 ${isEven ? '-translate-y-2 rotate-6' : 'translate-y-2 -rotate-6'}`}>
@@ -168,9 +169,19 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
         <div className={`flex items-center transition-transform duration-200 ${!isEven ? '-translate-y-3' : 'translate-y-1'}`}>
           <SeagullSVG wingUp={!isEven} />
         </div>
+        {combo >= 8 && (
+          <div className={`flex items-center transition-transform duration-200 ${isEven ? '-translate-y-1' : 'translate-y-3'}`}>
+            <SeagullSVG wingUp={isEven} />
+          </div>
+        )}
+        {combo >= 20 && (
+          <div className="flex items-center -translate-y-2 rotate-12">
+            <SeagullSVG wingUp={!isEven} />
+          </div>
+        )}
       </div>
 
-      {/* 2. Surfer Donald Duck Riding Ocean Waves (Vector SVG) */}
+      {/* 2. Surfer Ducks Riding Ocean Waves */}
       <div
         className="absolute top-[59%] transition-all duration-300 ease-out"
         style={{ left: surferLeft }}
@@ -180,7 +191,34 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
         </div>
       </div>
 
-      {/* 3. Paparazzi Donald Duck with Camera Flashes (Vector SVG) */}
+      {/* Second Tandem Surfer Duck when combo >= 12 */}
+      {combo >= 12 && (
+        <div
+          className="absolute top-[62%] transition-all duration-300 ease-out"
+          style={{ left: surfer2Left }}
+        >
+          <div className={`flex flex-col items-center ${!isEven ? '-translate-y-3 -rotate-12 scale-95' : 'translate-y-0 rotate-6'}`}>
+            <SurferDuckSVG tilt={!isEven} />
+          </div>
+        </div>
+      )}
+
+      {/* Giant Inflatable Duck floating in the water when combo >= 15 */}
+      {combo >= 15 && (
+        <div
+          className="absolute top-[54%] right-12 flex flex-col items-center transition-transform duration-300"
+          style={{ transform: isEven ? 'translateY(-4px) rotate(3deg)' : 'translateY(2px) rotate(-3deg)' }}
+        >
+          <div className="w-16 h-16 rounded-full bg-yellow-400 border-2 border-yellow-300 shadow-[0_0_20px_#facc15] flex items-center justify-center text-3xl">
+            🦆
+          </div>
+          <span className="text-[7px] font-disco text-black bg-yellow-300 px-1.5 rounded-full -mt-1 font-black">
+            MEGA DUCK
+          </span>
+        </div>
+      )}
+
+      {/* 3. Paparazzi Donald Duck with Camera Flashes */}
       <div className="absolute bottom-2 left-2 sm:left-8 flex flex-col items-center">
         <div className={`flex items-end ${isEven ? 'scale-105' : 'scale-95'}`}>
           <PaparazziDuckSVG isFlashing={isEven || isHit} />
@@ -190,7 +228,7 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
         </span>
       </div>
 
-      {/* 4. Coconut Drink Barista Duck (Vector SVG) */}
+      {/* 4. Coconut Drink Barista Duck */}
       <div className="absolute bottom-2 right-2 sm:right-8 flex flex-col items-center">
         <div className={`flex items-end ${!isEven ? 'scale-110 -rotate-6' : 'scale-100 rotate-6'}`}>
           <BeachBaristaDuckSVG />
@@ -200,7 +238,7 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
         </span>
       </div>
 
-      {/* 5. Club Bouncer Security Duck (Vector SVG) */}
+      {/* 5. Club Bouncer Security Duck */}
       {combo >= 10 && (
         <div className="absolute bottom-24 left-4 sm:left-16 flex flex-col items-center animate-fadeIn">
           <div className={`flex flex-col items-center ${isEven ? 'translate-y-1' : '-translate-y-2'}`}>
@@ -212,9 +250,12 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
         </div>
       )}
 
-      {/* 6. VIP Beach Party Duck (Vector SVG) */}
-      {isFever && (
+      {/* 6. VIP Beach Party Duck with celebratory banner when combo >= 25 */}
+      {combo >= 25 && (
         <div className="absolute bottom-24 right-4 sm:right-16 flex flex-col items-center animate-bounce">
+          <div className="px-2 py-0.5 mb-1 rounded bg-pink-600 text-white font-disco font-black text-[8px] shadow-[0_0_10px_#ec4899] animate-pulse">
+            HAPPY BIRTHDAY! 🎂
+          </div>
           <VipDuckSVG />
           <span className="text-[9px] font-bold text-fuchsia-300 bg-black/80 px-2 py-0.5 rounded-full -mt-2 border border-fuchsia-400/50 shadow-[0_0_10px_#ec4899]">
             VIP DUCK

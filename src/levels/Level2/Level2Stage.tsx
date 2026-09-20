@@ -3,6 +3,7 @@ import { RhythmEngine } from '../../game/RhythmEngine';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { QuackTargetCircle } from './QuackTargetCircle';
 import { Level2Effects } from './Level2Effects';
+import { Level2Cameos } from './Level2Cameos';
 import { useLevel2Game } from './useLevel2Game';
 
 interface Level2StageProps {
@@ -96,6 +97,9 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
 
       {/* Safe Play Area (X: 8-92%, Y: 12-88%) */}
       <div className="absolute inset-x-[8%] inset-y-[12%] border border-white/5 rounded-2xl pointer-events-none" />
+
+      {/* Dynamic Cameos in the background */}
+      <Level2Cameos currentBeat={currentBeat} combo={combo} songTime={songTime} />
 
       {/* Visual Effects, Particles, Mascot, Reward */}
       <Level2Effects
