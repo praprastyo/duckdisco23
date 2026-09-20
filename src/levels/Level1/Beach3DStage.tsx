@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { JudgementType } from '../../config/scoring';
+import { AudioEngine } from '../../audio/AudioEngine';
 import { Beach3DScene } from './Beach3DScene';
 
 interface Beach3DStageProps {
@@ -8,6 +9,7 @@ interface Beach3DStageProps {
   currentCue: BeatmapEvent | null;
   lastJudgement?: JudgementType | null;
   combo: number;
+  events?: BeatmapEvent[];
   externalAction?: 'left' | 'right' | 'tap';
   onLaneSwitch?: (lane: 'left' | 'right') => void;
 }
@@ -15,6 +17,7 @@ interface Beach3DStageProps {
 export const Beach3DStage: React.FC<Beach3DStageProps> = ({
   lastJudgement,
   combo,
+  events = [],
   externalAction,
   onLaneSwitch,
 }) => {
@@ -29,7 +32,6 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     onLaneSwitch?.(lane);
   };
 
-  // React to external input action from RhythmEngine
   useEffect(() => {
     if (externalAction === 'left') switchLane('left');
     else if (externalAction === 'right') switchLane('right');
@@ -49,11 +51,9 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     return () => window.removeEventListener('keydown', handleKey);
   }, [duckLane]);
 
-
   useEffect(() => {
     if (!lastJudgement) return;
     if (lastJudgement === 'miss') {
-      sceneRef.current?.triggerCollision();
       setFeedback('💥 NABRAK!');
     } else {
       setFeedback('💨 LEWAT!');
@@ -67,8 +67,16 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     if (!container) return;
 
     const scene = new Beach3DScene();
-    scene.init(container);
+    scene.init(container, events);
     sceneRef.current = scene;
+
+    let animId: number;
+    const loop = () => {
+      animId = requestAnimationFrame(loop);
+      const audioTime = AudioEngine.getInstance().getCurrentTime();
+      scene.update(audioTime);
+    };
+    animId = requestAnimationFrame(loop);
 
     const handleResize = () => {
       scene.resize(container.clientWidth || window.innerWidth, container.clientHeight || window.innerHeight);
@@ -76,11 +84,13 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     window.addEventListener('resize', handleResize);
 
     return () => {
+      cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
       scene.dispose();
       sceneRef.current = null;
     };
-  }, []);
+  }, [events]);
+
 
   return (
     <div className="fixed inset-0 w-full h-full z-0 overflow-hidden select-none pointer-events-none">

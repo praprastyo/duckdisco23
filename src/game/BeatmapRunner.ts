@@ -8,9 +8,11 @@ export interface BeatmapEvent {
   action: 'tap' | 'hold' | 'release' | 'special';
   cue?: string;
   promptText?: string;
+  lane?: 'left' | 'right';
   bar?: number;
   beat?: number;
 }
+
 
 export interface BeatmapData {
   bpm: number;

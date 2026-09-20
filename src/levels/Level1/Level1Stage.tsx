@@ -8,6 +8,7 @@ interface Level1StageProps {
   currentCue: BeatmapEvent | null;
   lastJudgement?: JudgementType | null;
   combo: number;
+  events?: BeatmapEvent[];
   externalAction?: 'left' | 'right' | 'tap';
   onLaneSwitch?: (lane: 'left' | 'right') => void;
 }
@@ -15,6 +16,7 @@ interface Level1StageProps {
 export const Level1Stage: React.FC<Level1StageProps> = (props) => {
   return <Beach3DStage {...props} />;
 };
+
 
 
 

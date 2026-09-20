@@ -6,77 +6,45 @@ function buildLevel1Beatmap() {
   const events = [];
   let id = 1;
 
-  // Phase A: "1, 2, 3, QUACK!" -> Tap on 4
-  for (const bar of [2, 3, 4, 5]) {
+  // Predictable, learnable rhythmic beach lane sequence:
+  // Starts early at bar 1 (approx 2.4s in)
+  const pattern = [
+    { bar: 1, beat: 4, lane: 'right' },
+    { bar: 2, beat: 4, lane: 'left' },
+    { bar: 3, beat: 4, lane: 'right' },
+    { bar: 4, beat: 4, lane: 'left' },
+    { bar: 5, beat: 3, lane: 'right' },
+    { bar: 6, beat: 3, lane: 'left' },
+    { bar: 7, beat: 4, lane: 'right' },
+    { bar: 8, beat: 4, lane: 'left' },
+    { bar: 9, beat: 3, lane: 'right' },
+    { bar: 10, beat: 4, lane: 'left' },
+    { bar: 11, beat: 3, lane: 'right' },
+    { bar: 12, beat: 1, lane: 'left' },
+    { bar: 12, beat: 3, lane: 'right' },
+    { bar: 13, beat: 1, lane: 'left' },
+    { bar: 13, beat: 3, lane: 'right' },
+  ];
+
+  for (const p of pattern) {
+    const targetTime = offset + (p.bar * 4 + (p.beat - 1)) * beatSec;
+    const cueTime = targetTime - beatSec * 1.5;
     events.push({
-      id: `l1_std_${id++}`,
-      cueTime: Number((offset + (bar * 4 + 2) * beatSec).toFixed(3)),
-      time: Number((offset + (bar * 4 + 3) * beatSec).toFixed(3)),
+      id: `l1_beach_${id++}`,
+      cueTime: Number(cueTime.toFixed(3)),
+      time: Number(targetTime.toFixed(3)),
       action: 'tap',
       cue: 'quack',
-      promptText: 'QUACK!',
-      bar,
-      beat: 4,
-    });
-  }
-
-  // Phase B: Variation -> "1, 2, TAP!" (Hit on Beat 3)
-  for (const bar of [6, 7]) {
-    events.push({
-      id: `l1_var_${id++}`,
-      cueTime: Number((offset + (bar * 4 + 1) * beatSec).toFixed(3)),
-      time: Number((offset + (bar * 4 + 2) * beatSec).toFixed(3)),
-      action: 'tap',
-      cue: 'quack',
-      promptText: 'FAST QUACK!',
-      bar,
-      beat: 3,
-    });
-  }
-
-  // Phase C: Offbeat Syncopation -> Hit on 3.5 (& of 3)
-  for (const bar of [8, 9]) {
-    events.push({
-      id: `l1_sync_${id++}`,
-      cueTime: Number((offset + (bar * 4 + 2) * beatSec).toFixed(3)),
-      time: Number((offset + (bar * 4 + 2.5) * beatSec).toFixed(3)),
-      action: 'tap',
-      cue: 'clap',
-      promptText: 'OFFBEAT QUACK!',
-      bar,
-      beat: 3.5,
-    });
-  }
-
-  // Phase D: Fake visual cue test
-  events.push({
-    id: `l1_fake_${id++}`,
-    cueTime: Number((offset + (10 * 4 + 1) * beatSec).toFixed(3)),
-    time: Number((offset + (10 * 4 + 3) * beatSec).toFixed(3)),
-    action: 'tap',
-    cue: 'visualFake',
-    promptText: 'WAIT FOR BEAT...',
-    bar: 10,
-    beat: 4,
-  });
-
-  // Flurry finale
-  for (let b = 0; b < 6; b++) {
-    const t = offset + (12 * 4 + b) * beatSec;
-    events.push({
-      id: `l1_flurry_${id++}`,
-      cueTime: Number((t - beatSec * 0.75).toFixed(3)),
-      time: Number(t.toFixed(3)),
-      action: 'tap',
-      cue: 'quack',
-      promptText: 'PARTY IN!',
-      bar: 12,
-      beat: b + 1,
+      lane: p.lane,
+      promptText: p.lane === 'left' ? 'AWAS KIRI!' : 'AWAS KANAN!',
+      bar: p.bar,
+      beat: p.beat,
     });
   }
 
   return { bpm, offset, duration: 36, events };
 }
+
 
 function buildLevel2Beatmap() {
   const bpm = 118, offset = 0.12, beatSec = 60 / bpm;

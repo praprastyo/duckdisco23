@@ -45,6 +45,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [triggerId, setTriggerId] = useState(0);
   const [energy, setEnergy] = useState<EnergyData>({ bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 });
   const [lastAction, setLastAction] = useState<'left' | 'right' | 'tap'>('tap');
+  const [beatmapEvents, setBeatmapEvents] = useState<BeatmapEvent[]>([]);
 
   useEffect(() => {
     const offset = SaveService.load().settings.timingOffset;
@@ -73,9 +74,12 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
     fetch(level.song.beatmap)
       .then((r) => r.json())
-      .then((d: BeatmapData) => engine.initializeLevel(level.song.src, d))
-
+      .then((d: BeatmapData) => {
+        setBeatmapEvents(d.events);
+        return engine.initializeLevel(level.song.src, d);
+      })
       .catch(() => setStatus('error'));
+
 
     const energyTimer = setInterval(() => {
       if (engine.getStatus() === 'playing') {
@@ -147,6 +151,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               currentCue={currentCue}
               lastJudgement={lastJudgement?.judgement}
               combo={combo}
+              events={beatmapEvents}
               externalAction={lastAction}
               onLaneSwitch={() => engineRef.current?.handlePlayerAction('tap')}
             />
