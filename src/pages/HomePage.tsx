@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { SettingsModal } from '../components/SettingsModal/SettingsModal';
 import { DevModeService } from '../services/DevModeService';
+import donaldLogo from '../assets/donald-logo.png';
 
 interface HomePageProps {
   onEnterClub: () => void;
@@ -61,12 +62,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onEnterClub }) => {
       }`}>
         {/* Neon Donald Duck Signboard (Secret 5-click trigger) */}
         <div className="relative mb-6 cursor-pointer select-none" onClick={handleDuckClick} title="Tap 5x for Dev Mode">
-          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full border-4 border-cyan-400 bg-gradient-to-b from-blue-600/30 via-yellow-500/20 to-fuchsia-600/30 flex items-center justify-center shadow-[0_0_60px_rgba(6,182,212,0.6)] animate-pulse relative">
-            {/* Sailor Hat Badge */}
-            <div className="absolute -top-3 right-3 text-2xl rotate-12 select-none pointer-events-none">
-              🧢
-            </div>
-            <span className="text-5xl sm:text-6xl select-none">🦆</span>
+          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-cyan-400 bg-black/40 overflow-hidden flex items-center justify-center shadow-[0_0_60px_rgba(6,182,212,0.6)] animate-pulse relative">
+            <img
+              src={donaldLogo}
+              alt="Donald Duck Logo"
+              className="w-full h-full object-cover select-none pointer-events-none"
+            />
           </div>
           <div className="absolute -inset-2 rounded-full border border-cyan-400/50 animate-ping opacity-30 pointer-events-none" />
         </div>
