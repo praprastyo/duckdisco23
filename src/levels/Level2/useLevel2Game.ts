@@ -85,9 +85,10 @@ export function useLevel2Game(
         },
       ]);
 
-      if (jEv.judgement !== 'miss') {
-        setHitNoteIds((prev) => new Set([...prev, ev.id]));
+      // ponytail: Always retire note from active target list so miss doesn't linger or block subsequent targets
+      setHitNoteIds((prev) => new Set([...prev, ev.id]));
 
+      if (jEv.judgement !== 'miss') {
         // 2. Add expanding shockwave ring
         setShockwaves((prev) => [
           ...prev.slice(-6),
@@ -133,7 +134,7 @@ export function useLevel2Game(
     (e: React.PointerEvent, note: BeatmapEvent) => {
       e.stopPropagation();
       e.preventDefault();
-      if (hitNoteIds.has(note.id)) return;
+      if (hitNoteIds.has(note.id) || (engine?.getBeatmapRunner().isHit(note.id) ?? false)) return;
       if (onTargetClick) onTargetClick(note.id);
       else if (engine) engine.handleTargetClick(note.id);
     },
@@ -141,7 +142,7 @@ export function useLevel2Game(
   );
 
   const visibleNotes = events.filter((note) => {
-    if (hitNoteIds.has(note.id)) return false;
+    if (hitNoteIds.has(note.id) || (engine?.getBeatmapRunner().isHit(note.id) ?? false)) return false;
     const dur = note.approachDuration || DEFAULT_APPROACH_DURATION;
     return songTime >= note.time - dur && songTime <= note.time + 0.2;
   });

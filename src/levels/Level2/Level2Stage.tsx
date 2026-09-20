@@ -140,13 +140,14 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
         isBeatOdd={currentBeat % 2 === 1}
       />
 
-      {/* Interactive Targets */}
+      {/* Interactive Targets - Earlier notes get higher zIndex so overlapping targets are clickable in sequence */}
       {sortedUpcoming.map((note, idx) => (
         <QuackTargetCircle
           key={note.id}
           note={note}
           songTime={songTime}
           opacity={idx === 0 ? 1.0 : idx === 1 ? 0.75 : 0.55}
+          zIndex={Math.max(10, 30 - idx)}
           onPointerDown={handlePointerDown}
         />
       ))}

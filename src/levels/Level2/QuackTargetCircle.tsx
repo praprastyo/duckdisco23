@@ -5,6 +5,7 @@ interface QuackTargetCircleProps {
   note: BeatmapEvent;
   songTime: number;
   opacity: number;
+  zIndex?: number;
   onPointerDown: (e: React.PointerEvent, note: BeatmapEvent) => void;
 }
 
@@ -14,6 +15,7 @@ export const QuackTargetCircle: React.FC<QuackTargetCircleProps> = ({
   note,
   songTime,
   opacity,
+  zIndex = 20,
   onPointerDown,
 }) => {
   const duration = note.approachDuration || DEFAULT_APPROACH_DURATION;
@@ -31,13 +33,14 @@ export const QuackTargetCircle: React.FC<QuackTargetCircleProps> = ({
   return (
     <div
       onPointerDown={(e) => onPointerDown(e, note)}
-      className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 transition-opacity duration-150 active:scale-90"
+      className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-150 active:scale-90"
       style={{
         left: `${note.x}%`,
         top: `${note.y}%`,
         width: `${diameter}px`,
         height: `${diameter}px`,
         opacity,
+        zIndex,
       }}
     >
       {/* Outer Approach Ring (Vibrant neon, shrinking in sync with audio) */}

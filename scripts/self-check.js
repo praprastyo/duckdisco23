@@ -88,4 +88,33 @@ assert.strictEqual(UnlockService.isLevelUnlocked('level4'), false, 'Dev unlock a
 // Reset mock timestamp
 TimeService.setMockTimestamp(null);
 
-console.log('All assert checks passed successfully! (10/10)');
+// 3. Test Level 2 Beatmap Runner & Target Retirement
+import { BeatmapRunner } from '../src/game/BeatmapRunner.ts';
+import { SCORING_WINDOWS_L2 } from '../src/config/scoring.ts';
+
+const runner = new BeatmapRunner(SCORING_WINDOWS_L2);
+runner.load({
+  bpm: 146,
+  offset: 0.08,
+  events: [
+    { id: 'n1', time: 1.0, action: 'tap' },
+    { id: 'n2', time: 1.25, action: 'tap' },
+  ],
+});
+
+let missedNoteId = '';
+runner.onMiss((ev) => {
+  missedNoteId = ev.id;
+});
+
+// At 1.19s, n1 has passed miss threshold (1.0 + 0.18 = 1.18s)
+runner.update(1.19);
+assert.strictEqual(missedNoteId, 'n1', 'n1 must trigger miss callback upon expiring');
+assert.strictEqual(runner.isHit('n1'), true, 'n1 must be marked as hit/retired');
+assert.strictEqual(runner.isHit('n2'), false, 'n2 must remain active');
+
+// n2 hit right on time at 1.25s
+runner.markHit('n2');
+assert.strictEqual(runner.isHit('n2'), true, 'n2 must be marked as hit');
+
+console.log('All assert checks passed successfully! (11/11)');
