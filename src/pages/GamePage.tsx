@@ -14,8 +14,13 @@ import { ComboCounter } from '../components/ComboCounter/ComboCounter';
 import { ScoreDisplay } from '../components/ScoreDisplay/ScoreDisplay';
 import { TutorialCue } from '../components/TutorialCue/TutorialCue';
 import { PauseMenu } from '../components/PauseMenu/PauseMenu';
-import { ReadyOverlay } from '../components/ReadyOverlay/ReadyOverlay';
+import { LevelSplashIntro } from '../components/SplashIntro/LevelSplashIntro';
+import { Level1Stage } from '../levels/Level1/Level1Stage';
+import { Level2Stage } from '../levels/Level2/Level2Stage';
+import { Level3Stage } from '../levels/Level3/Level3Stage';
+import { Level4Stage } from '../levels/Level4/Level4Stage';
 import { DebugOverlay } from '../components/DebugOverlay/DebugOverlay';
+
 import { SaveService } from '../services/SaveService';
 import { EnergyData } from '../audio/AudioAnalyser';
 
@@ -115,14 +120,54 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         </button>
       </div>
 
-      {/* Main Mascot & DJ Turntable Stage */}
-      <div className="relative z-20 flex flex-col items-center justify-center my-auto">
+      {/* Main Dynamic Level Stage */}
+      <div className="relative z-20 flex flex-col items-center justify-center my-auto w-full">
         <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />
-        <div className="flex flex-col items-center my-1">
-          <DuckCharacter currentBeat={currentBeat} lastJudgement={lastJudgement?.judgement} combo={combo} />
-          <TurntableBooth currentBeat={currentBeat} combo={combo} />
+
+        {/* Dynamic mini-game stage per level */}
+        <div className="my-2 flex flex-col items-center w-full">
+          {level.id === 'level1' && (
+            <Level1Stage
+              currentBeat={currentBeat}
+              currentCue={currentCue}
+              lastJudgement={lastJudgement?.judgement}
+              combo={combo}
+              onArrowInput={(dir) => engineRef.current?.handlePlayerAction(dir)}
+            />
+          )}
+
+          {level.id === 'level2' && (
+            <Level2Stage
+              currentBeat={currentBeat}
+              currentCue={currentCue}
+              lastJudgement={lastJudgement?.judgement}
+              combo={combo}
+            />
+          )}
+
+          {level.id === 'level3' && (
+            <Level3Stage
+              currentBeat={currentBeat}
+              currentCue={currentCue}
+              lastJudgement={lastJudgement?.judgement}
+              combo={combo}
+            />
+          )}
+
+          {level.id === 'level4' && (
+            <Level4Stage
+              currentBeat={currentBeat}
+              lastJudgement={lastJudgement?.judgement}
+              combo={combo}
+              score={score}
+              accuracy={accuracy}
+              isCompleted={status === 'completed'}
+            />
+          )}
         </div>
+
         <RhythmFeedback judgement={lastJudgement?.judgement ?? null} deltaMs={lastJudgement?.deltaMs} triggerId={triggerId} />
+
         <div className="mt-1">
           <ComboCounter combo={combo} maxCombo={maxCombo} />
         </div>
@@ -136,12 +181,26 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
           <span className="font-mono-rhythm text-[11px] text-white/70 tracking-widest uppercase">
-            SPACEBAR • CLICK • TOUCH ANYWHERE TO GROOVE
+            {level.id === 'level1'
+              ? 'ARROW KEYS (← ↑ ↓ →) / SPACEBAR'
+              : 'SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE'}
           </span>
         </div>
       </div>
 
-      <ReadyOverlay status={status} level={level} />
+      {/* Animated Level Splash Screen Intro */}
+      {status === 'readyToStart' && (
+        <LevelSplashIntro level={level} onStart={handleStart} />
+      )}
+
+      {/* Loading Indicator */}
+      {status === 'loading' && (
+        <div className="absolute inset-0 z-40 bg-black/90 flex flex-col items-center justify-center p-6 text-center">
+          <div className="w-12 h-12 rounded-full border-4 border-fuchsia-500 border-t-transparent animate-spin mb-4" />
+          <h3 className="font-disco text-xl text-yellow-300 mb-1">WARMING UP THE QUACK...</h3>
+          <span className="text-xs font-mono-rhythm text-white/50 tracking-widest uppercase">DECODING AUDIO</span>
+        </div>
+      )}
 
       <PauseMenu
         isOpen={status === 'paused'}
@@ -154,4 +213,5 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
     </div>
   );
 };
+
 

@@ -1,17 +1,16 @@
-export type InputCallback = (action: 'tap' | 'holdStart' | 'release', timestamp: number) => void;
+export type InputAction = 'tap' | 'holdStart' | 'release' | 'left' | 'right' | 'up' | 'down';
+export type InputCallback = (action: InputAction, timestamp: number) => void;
 
 /**
  * InputManager
- * Unifies keyboard (Spacebar), touch, and pointer events.
- * Manages input latency offset and prevents unwanted browser scrolling/zoom during gameplay.
+ * Unifies keyboard (Space, Arrow keys, WASD), touch, and pointer events.
+ * Supports directional cues for AyoDance-style step mechanics.
  */
 export class InputManager {
   private isHolding: boolean = false;
   private holdThresholdMs: number = 180;
   private holdTimer: number | null = null;
-  private pressStartTime: number = 0;
-
-  private latencyOffsetSec: number = 0; // Negative = earlier, positive = later
+  private latencyOffsetSec: number = 0;
   private callbacks: Set<InputCallback> = new Set();
   private attachedElement: HTMLElement | Window | null = null;
 
@@ -60,31 +59,42 @@ export class InputManager {
   }
 
   private handleKeyDown = (e: KeyboardEvent) => {
-    if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter') {
-      if (!e.repeat) {
-        e.preventDefault();
-        this.startPress();
-      }
+    const code = e.code;
+    if (e.repeat) return;
+
+    if (code === 'Space' || code === 'Enter') {
+      e.preventDefault();
+      this.startPress('tap');
+    } else if (code === 'ArrowLeft' || code === 'KeyA') {
+      e.preventDefault();
+      this.triggerAction('left');
+    } else if (code === 'ArrowRight' || code === 'KeyD') {
+      e.preventDefault();
+      this.triggerAction('right');
+    } else if (code === 'ArrowUp' || code === 'KeyW') {
+      e.preventDefault();
+      this.triggerAction('up');
+    } else if (code === 'ArrowDown' || code === 'KeyS') {
+      e.preventDefault();
+      this.triggerAction('down');
     }
   };
 
   private handleKeyUp = (e: KeyboardEvent) => {
-    if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter') {
+    if (e.code === 'Space' || e.code === 'Enter') {
       e.preventDefault();
       this.endPress();
     }
   };
 
   private handlePointerDown = (e: PointerEvent) => {
-    // Ignore right click
     if (e.button !== 0) return;
-    // Don't intercept clicks on interactive buttons inside HUD
     const target = e.target as HTMLElement | null;
     if (target?.closest('button, [data-interactive="true"]')) {
       return;
     }
     e.preventDefault();
-    this.startPress();
+    this.startPress('tap');
   };
 
   private handlePointerUp = (e: PointerEvent) => {
@@ -92,17 +102,18 @@ export class InputManager {
     this.endPress();
   };
 
-  private startPress() {
-    this.pressStartTime = performance.now();
+  public triggerAction(action: InputAction) {
+    const rawTime = performance.now();
+    this.callbacks.forEach((cb) => cb(action, rawTime));
+  }
+
+  private startPress(action: InputAction = 'tap') {
     this.isHolding = false;
+    this.triggerAction(action);
 
-    // Immediately trigger initial tap
-    this.dispatch('tap');
-
-    // Schedule hold detection
     this.holdTimer = window.setTimeout(() => {
       this.isHolding = true;
-      this.dispatch('holdStart');
+      this.triggerAction('holdStart');
     }, this.holdThresholdMs);
   }
 
@@ -111,15 +122,10 @@ export class InputManager {
       clearTimeout(this.holdTimer);
       this.holdTimer = null;
     }
-
     if (this.isHolding) {
       this.isHolding = false;
-      this.dispatch('release');
+      this.triggerAction('release');
     }
   }
-
-  private dispatch(action: 'tap' | 'holdStart' | 'release') {
-    const rawTime = performance.now();
-    this.callbacks.forEach((cb) => cb(action, rawTime));
-  }
 }
+

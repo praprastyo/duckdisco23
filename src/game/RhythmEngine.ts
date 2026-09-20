@@ -1,9 +1,10 @@
 import { AudioEngine } from '../audio/AudioEngine';
 import { BeatClock } from '../audio/BeatClock';
 import { BeatmapRunner, BeatmapEvent, BeatmapData } from './BeatmapRunner';
-import { InputManager } from './InputManager';
+import { InputManager, InputAction } from './InputManager';
 import { ScoringEngine, ScoreSummary } from './ScoringEngine';
 import { JudgementType } from '../config/scoring';
+
 
 export type GameStatus = 'loading' | 'readyToStart' | 'playing' | 'paused' | 'completed' | 'error';
 
@@ -132,7 +133,7 @@ export class RhythmEngine {
     this.frameId = requestAnimationFrame(loop);
   }
 
-  private handlePlayerAction(_action: 'tap' | 'holdStart' | 'release') {
+  public handlePlayerAction(_action: InputAction = 'tap') {
     const time = this.audioEngine.getCurrentTime() - this.inputManager.getLatencyOffsetSec();
     const target = this.beatmapRunner.getActiveTarget(time);
     if (!target) {
