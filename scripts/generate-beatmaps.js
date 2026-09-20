@@ -79,6 +79,18 @@ function buildLevel1Beatmap() {
 
 
 function buildLevel2Beatmap() {
+  const customPath = path.resolve('public/beatmaps/level2.json');
+  if (fs.existsSync(customPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(customPath, 'utf8'));
+      if (data.events && data.events.length > 50) {
+        return data; // Preserve full custom authored beatmap
+      }
+    } catch {
+      // fallback
+    }
+  }
+
   const bpm = 146;
   const offset = 0.08;
   const beatSec = 60 / bpm; // ≈ 0.41096s
