@@ -43,7 +43,7 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
 
         <div className="text-center">
           <span className="text-[10px] uppercase font-mono-rhythm text-white/40 tracking-widest block">
-            VENUE CLOCK (JAKARTA UTC+7)
+            LIVE VENUE CLOCK
           </span>
           <span className="font-mono-rhythm text-sm text-cyan-300 font-bold tracking-widest">
             {jakartaTime}

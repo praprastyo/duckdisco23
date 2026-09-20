@@ -76,7 +76,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
         {!unlocked ? (
           <div className="rounded-xl bg-black/50 border border-white/10 p-3 text-center">
             <span className="block text-[9px] uppercase font-mono-rhythm text-white/40 tracking-widest mb-1">
-              OPENS IN (JAKARTA TIME)
+              OPENS IN
             </span>
             <div className="font-mono-rhythm text-xl font-bold text-rose-400 tracking-widest">
               {countdown.hours} : {countdown.minutes} : {countdown.seconds}

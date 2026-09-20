@@ -21,7 +21,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onEnterClub }) => {
       {/* Settings trigger */}
       <div className="w-full flex justify-between items-center max-w-6xl z-20">
         <div className="text-xs font-mono-rhythm text-white/50 tracking-widest uppercase">
-          JAKARTA TIMEZONE • RETRO DISCO 2026
+          RETRO DISCO NIGHTCLUB • 2026
         </div>
         <button
           onClick={() => setIsSettingsOpen(true)}
