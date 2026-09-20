@@ -75,15 +75,16 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
           if (delta < -0.25) {
             opacity = 0;
           } else if (isPast40s) {
-            // Early stealth fade: visible at the top (0 - 15%), fades smoothly (15% - 55%),
-            // and completely invisible (0 opacity) from 55% all the way through the target box!
-            if (progress < 0.15) {
+            // Balanced stealth fade: clearly visible through majority of track (0 - 55%),
+            // then fades smoothly closer to the box (55% - 85%),
+            // and completely invisible (0 opacity) right at and inside the target box (>= 85%)!
+            if (progress < 0.55) {
               opacity = 1.0;
-            } else if (progress <= 0.55) {
-              const ratio = (progress - 0.15) / (0.55 - 0.15); // 0 to 1
+            } else if (progress <= 0.85) {
+              const ratio = (progress - 0.55) / (0.85 - 0.55); // 0 to 1
               opacity = Math.max(0, 1.0 - ratio);
             } else {
-              // Completely gone when nearing or at the target box!
+              // Completely invisible inside and just before target box
               opacity = 0;
             }
           }
