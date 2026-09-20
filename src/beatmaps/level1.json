@@ -1,3580 +1,623 @@
 {
   "bpm": 79,
   "offset": 0.2,
-  "duration": 250,
+  "duration": 120,
   "events": [
     {
-      "id": "custom_1789888513843_7qr3",
-      "cueTime": 0.601,
-      "time": 2.12,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888515046_jn14",
-      "cueTime": 1.801,
-      "time": 3.32,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888516931_l4hc",
-      "cueTime": 3.681,
-      "time": 5.2,
+      "id": "l1_dance_1",
+      "cueTime": 4.757,
+      "time": 6.276,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 2,
+      "beat": 1
     },
     {
-      "id": "custom_1789888518053_6fgw",
-      "cueTime": 4.812,
-      "time": 6.331,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888520061_lzsi",
-      "cueTime": 6.812,
-      "time": 8.331,
+      "id": "l1_dance_2",
+      "cueTime": 10.833,
+      "time": 12.352,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 4,
+      "beat": 1
     },
     {
-      "id": "custom_1789888520466_82lv",
-      "cueTime": 7.22,
-      "time": 8.739,
+      "id": "l1_dance_3",
+      "cueTime": 16.909,
+      "time": 18.428,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 6,
+      "beat": 1
     },
     {
-      "id": "custom_1789888520865_djph",
-      "cueTime": 7.62,
-      "time": 9.139,
+      "id": "l1_dance_4",
+      "cueTime": 22.985,
+      "time": 24.504,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 8,
+      "beat": 1
+    },
+    {
+      "id": "l1_dance_5",
+      "cueTime": 29.061,
+      "time": 30.58,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 10,
+      "beat": 1
     },
     {
-      "id": "custom_1789888521659_c0tp",
-      "cueTime": 8.412,
-      "time": 9.931,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888522807_vfua",
-      "cueTime": 9.561,
-      "time": 11.08,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888524932_awrl",
-      "cueTime": 11.681,
-      "time": 13.2,
+      "id": "l1_dance_6",
+      "cueTime": 32.099,
+      "time": 33.618,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 11,
+      "beat": 1
     },
     {
-      "id": "custom_1789888525381_9uzh",
-      "cueTime": 12.132,
-      "time": 13.651,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888525702_byas",
-      "cueTime": 12.452,
-      "time": 13.971,
+      "id": "l1_dance_7",
+      "cueTime": 38.175,
+      "time": 39.694,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 13,
+      "beat": 1
     },
     {
-      "id": "custom_1789888526436_v3uz",
-      "cueTime": 13.19,
-      "time": 14.709,
+      "id": "l1_dance_8",
+      "cueTime": 38.934,
+      "time": 40.453,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 13,
+      "beat": 2
     },
     {
-      "id": "custom_1789888527932_g4g2",
-      "cueTime": 14.681,
-      "time": 16.2,
+      "id": "l1_dance_9",
+      "cueTime": 39.694,
+      "time": 41.213,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "right",
+      "promptText": "Wing Spin",
+      "bar": 13,
+      "beat": 3
+    },
+    {
+      "id": "l1_dance_10",
+      "cueTime": 44.251,
+      "time": 45.77,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 15,
+      "beat": 1
     },
     {
-      "id": "custom_1789888528465_sqn7",
-      "cueTime": 15.22,
-      "time": 16.739,
+      "id": "l1_dance_11",
+      "cueTime": 45.01,
+      "time": 46.529,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 15,
+      "beat": 2
     },
     {
-      "id": "custom_1789888528922_eqwu",
-      "cueTime": 15.67,
-      "time": 17.189,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888529605_dj1f",
-      "cueTime": 16.361,
-      "time": 17.88,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888531240_ayud",
-      "cueTime": 17.99,
-      "time": 19.509,
+      "id": "l1_dance_12",
+      "cueTime": 45.77,
+      "time": 47.289,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 15,
+      "beat": 3
     },
     {
-      "id": "custom_1789888532367_mqaf",
-      "cueTime": 19.121,
-      "time": 20.64,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888532768_lt6p",
-      "cueTime": 19.521,
-      "time": 21.04,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888533207_frwq",
-      "cueTime": 19.961,
-      "time": 21.48,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888533618_ykxm",
-      "cueTime": 20.372,
-      "time": 21.891,
+      "id": "l1_dance_13",
+      "cueTime": 50.327,
+      "time": 51.846,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 17,
+      "beat": 1
     },
     {
-      "id": "custom_1789888534043_37k7",
-      "cueTime": 20.801,
-      "time": 22.32,
+      "id": "l1_dance_14",
+      "cueTime": 51.086,
+      "time": 52.605,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 17,
+      "beat": 2
+    },
+    {
+      "id": "l1_dance_15",
+      "cueTime": 51.846,
+      "time": 53.365,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 17,
+      "beat": 3
     },
     {
-      "id": "custom_1789888534863_9s3r",
-      "cueTime": 21.62,
-      "time": 23.139,
+      "id": "l1_dance_16",
+      "cueTime": 56.403,
+      "time": 57.922,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 19,
+      "beat": 1
     },
     {
-      "id": "custom_1789888537331_cuqn",
-      "cueTime": 24.081,
-      "time": 25.6,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888537796_bh08",
-      "cueTime": 24.55,
-      "time": 26.069,
+      "id": "l1_dance_17",
+      "cueTime": 57.162,
+      "time": 58.681,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 19,
+      "beat": 2
     },
     {
-      "id": "custom_1789888538607_3yh0",
-      "cueTime": 25.361,
-      "time": 26.88,
+      "id": "l1_dance_18",
+      "cueTime": 57.922,
+      "time": 59.441,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 19,
+      "beat": 3
     },
     {
-      "id": "custom_1789888538984_habd",
-      "cueTime": 25.74,
-      "time": 27.259,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888539373_htl1",
-      "cueTime": 26.132,
-      "time": 27.651,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888539731_t454",
-      "cueTime": 26.481,
-      "time": 28,
+      "id": "l1_dance_19",
+      "cueTime": 62.478,
+      "time": 63.997,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 21,
+      "beat": 1
     },
     {
-      "id": "custom_1789888540060_wbk2",
-      "cueTime": 26.812,
-      "time": 28.331,
+      "id": "l1_dance_20",
+      "cueTime": 63.238,
+      "time": 64.757,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 21,
+      "beat": 2
+    },
+    {
+      "id": "l1_dance_21",
+      "cueTime": 63.997,
+      "time": 65.516,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 21,
+      "beat": 3
     },
     {
-      "id": "custom_1789888541272_9909",
-      "cueTime": 28.02,
-      "time": 29.539,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888541673_b9nd",
-      "cueTime": 28.42,
-      "time": 29.939,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888542100_1kkg",
-      "cueTime": 28.852,
-      "time": 30.371,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888542457_jidp",
-      "cueTime": 29.212,
-      "time": 30.731,
+      "id": "l1_dance_22",
+      "cueTime": 68.554,
+      "time": 70.073,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 23,
+      "beat": 1
     },
     {
-      "id": "custom_1789888542847_ox9z",
-      "cueTime": 29.601,
-      "time": 31.12,
+      "id": "l1_dance_23",
+      "cueTime": 69.314,
+      "time": 70.833,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 23,
+      "beat": 2
     },
     {
-      "id": "custom_1789888543229_fvsa",
-      "cueTime": 29.98,
-      "time": 31.499,
+      "id": "l1_dance_24",
+      "cueTime": 70.073,
+      "time": 71.592,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 23,
+      "beat": 3
     },
     {
-      "id": "custom_1789888544350_gkky",
-      "cueTime": 31.1,
-      "time": 32.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888544578_4ztp",
-      "cueTime": 31.332,
-      "time": 32.851,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888544792_vnqb",
-      "cueTime": 31.54,
-      "time": 33.059,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888545206_69xq",
-      "cueTime": 31.961,
-      "time": 33.48,
+      "id": "l1_dance_25",
+      "cueTime": 74.63,
+      "time": 76.149,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 25,
+      "beat": 1
     },
     {
-      "id": "custom_1789888545900_ngv8",
-      "cueTime": 32.652,
-      "time": 34.171,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888547026_vnpf",
-      "cueTime": 33.78,
-      "time": 35.299,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888547476_9reh",
-      "cueTime": 34.23,
-      "time": 35.749,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888548254_vgim",
-      "cueTime": 35.012,
-      "time": 36.531,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888548631_bp2k",
-      "cueTime": 35.38,
-      "time": 36.899,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888549046_juga",
-      "cueTime": 35.801,
-      "time": 37.32,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888550953_ykb6",
-      "cueTime": 37.71,
-      "time": 39.229,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888551350_11a2",
-      "cueTime": 38.1,
-      "time": 39.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888551731_818o",
-      "cueTime": 38.481,
-      "time": 40,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888552127_lfxq",
-      "cueTime": 38.881,
-      "time": 40.4,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888552507_n62e",
-      "cueTime": 39.26,
-      "time": 40.779,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888552880_l4ix",
-      "cueTime": 39.63,
-      "time": 41.149,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888553622_h0ni",
-      "cueTime": 40.372,
-      "time": 41.891,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888555443_2u85",
-      "cueTime": 42.201,
-      "time": 43.72,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888556079_9omc",
-      "cueTime": 42.83,
-      "time": 44.349,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888556623_hr2c",
-      "cueTime": 43.38,
-      "time": 44.899,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888557384_jjvl",
-      "cueTime": 44.14,
-      "time": 45.659,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888559583_ntj3",
-      "cueTime": 46.34,
-      "time": 47.859,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888559799_utiq",
-      "cueTime": 46.55,
-      "time": 48.069,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888560035_knsa",
-      "cueTime": 46.79,
-      "time": 48.309,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888560802_uzs3",
-      "cueTime": 47.55,
-      "time": 49.069,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888561599_aubv",
-      "cueTime": 48.35,
-      "time": 49.869,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888562388_u0rc",
-      "cueTime": 49.14,
-      "time": 50.659,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888563618_de7d",
-      "cueTime": 50.372,
-      "time": 51.891,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888564350_9366",
-      "cueTime": 51.1,
-      "time": 52.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888564768_05mv",
-      "cueTime": 51.521,
-      "time": 53.04,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888565162_1afi",
-      "cueTime": 51.921,
-      "time": 53.44,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888565576_nv0m",
-      "cueTime": 52.332,
-      "time": 53.851,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888565953_vxtj",
-      "cueTime": 52.71,
-      "time": 54.229,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888566699_zlqq",
-      "cueTime": 53.452,
-      "time": 54.971,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888567457_qs0h",
-      "cueTime": 54.212,
-      "time": 55.731,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888567862_b8b1",
-      "cueTime": 54.62,
-      "time": 56.139,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888568257_6h5r",
-      "cueTime": 55.012,
-      "time": 56.531,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888568665_v69d",
-      "cueTime": 55.42,
-      "time": 56.939,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888569046_qkan",
-      "cueTime": 55.801,
-      "time": 57.32,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888569424_fsov",
-      "cueTime": 56.18,
-      "time": 57.699,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888569828_o9y1",
-      "cueTime": 56.58,
-      "time": 58.099,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888570212_cfrv",
-      "cueTime": 56.972,
-      "time": 58.491,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888570593_e6le",
-      "cueTime": 57.35,
-      "time": 58.869,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888570994_x800",
-      "cueTime": 57.75,
-      "time": 59.269,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888571370_f190",
-      "cueTime": 58.121,
-      "time": 59.64,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888572084_cy8e",
-      "cueTime": 58.841,
-      "time": 60.36,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888574058_ee6u",
-      "cueTime": 60.812,
-      "time": 62.331,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888574452_ghug",
-      "cueTime": 61.212,
-      "time": 62.731,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888574844_bqpx",
-      "cueTime": 61.601,
-      "time": 63.12,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888575201_z0dh",
-      "cueTime": 61.95,
-      "time": 63.469,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888575908_cq0g",
-      "cueTime": 62.66,
-      "time": 64.179,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888576685_wdwh",
-      "cueTime": 63.441,
-      "time": 64.96,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888577093_u5ye",
-      "cueTime": 63.852,
-      "time": 65.371,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888577478_aflq",
-      "cueTime": 64.23,
-      "time": 65.749,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888577908_pcea",
-      "cueTime": 64.66,
-      "time": 66.179,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888578286_gsrt",
-      "cueTime": 65.041,
-      "time": 66.56,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888579000_f3w9",
-      "cueTime": 65.75,
-      "time": 67.269,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888579741_t45y",
-      "cueTime": 66.492,
-      "time": 68.011,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888580151_pm4x",
-      "cueTime": 66.9,
-      "time": 68.419,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888580551_m8vz",
-      "cueTime": 67.3,
-      "time": 68.819,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888580966_5emq",
-      "cueTime": 67.721,
-      "time": 69.24,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888581348_7uuw",
-      "cueTime": 68.1,
-      "time": 69.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888581741_9tb9",
-      "cueTime": 68.492,
-      "time": 70.011,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888582129_sxab",
-      "cueTime": 68.881,
-      "time": 70.4,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888582488_9ted",
-      "cueTime": 69.241,
-      "time": 70.76,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888582866_mtfr",
-      "cueTime": 69.62,
-      "time": 71.139,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888584504_c9ci",
-      "cueTime": 71.26,
-      "time": 72.779,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888585030_9w1z",
-      "cueTime": 71.78,
-      "time": 73.299,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888585221_lsct",
-      "cueTime": 71.972,
-      "time": 73.491,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888585491_5ffj",
-      "cueTime": 72.241,
-      "time": 73.76,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888585745_om7s",
-      "cueTime": 72.5,
-      "time": 74.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888586359_b6pm",
-      "cueTime": 73.11,
-      "time": 74.629,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888586740_1d4w",
-      "cueTime": 73.492,
-      "time": 75.011,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888587137_qql5",
-      "cueTime": 73.892,
-      "time": 75.411,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888587496_rfob",
-      "cueTime": 74.252,
-      "time": 75.771,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888587884_5tu1",
-      "cueTime": 74.641,
-      "time": 76.16,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888588641_14km",
+      "id": "l1_dance_26",
       "cueTime": 75.39,
       "time": 76.909,
       "action": "tap",
       "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888589013_ktb5",
-      "cueTime": 75.772,
-      "time": 77.291,
-      "action": "tap",
-      "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 25,
+      "beat": 2
     },
     {
-      "id": "custom_1789888589449_6oqr",
-      "cueTime": 76.201,
-      "time": 77.72,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888589812_7ek3",
-      "cueTime": 76.561,
-      "time": 78.08,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888590212_4328",
-      "cueTime": 76.961,
-      "time": 78.48,
+      "id": "l1_dance_27",
+      "cueTime": 76.149,
+      "time": 77.668,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 25,
+      "beat": 3
     },
     {
-      "id": "custom_1789888590559_ywbx",
-      "cueTime": 77.31,
-      "time": 78.829,
+      "id": "l1_dance_28",
+      "cueTime": 76.909,
+      "time": 78.428,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 25,
+      "beat": 4
     },
     {
-      "id": "custom_1789888591303_aqb4",
-      "cueTime": 78.06,
-      "time": 79.579,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888592080_7526",
-      "cueTime": 78.83,
-      "time": 80.349,
+      "id": "l1_dance_29",
+      "cueTime": 80.706,
+      "time": 82.225,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 27,
+      "beat": 1
     },
     {
-      "id": "custom_1789888592455_l4h7",
-      "cueTime": 79.212,
-      "time": 80.731,
+      "id": "l1_dance_30",
+      "cueTime": 81.466,
+      "time": 82.985,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 27,
+      "beat": 2
     },
     {
-      "id": "custom_1789888592859_y5vf",
-      "cueTime": 79.612,
-      "time": 81.131,
+      "id": "l1_dance_31",
+      "cueTime": 82.225,
+      "time": 83.744,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 27,
+      "beat": 3
     },
     {
-      "id": "custom_1789888593276_jttk",
-      "cueTime": 80.03,
-      "time": 81.549,
+      "id": "l1_dance_32",
+      "cueTime": 82.985,
+      "time": 84.504,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 27,
+      "beat": 4
     },
     {
-      "id": "custom_1789888593673_5ofb",
-      "cueTime": 80.43,
-      "time": 81.949,
+      "id": "l1_dance_33",
+      "cueTime": 86.782,
+      "time": 88.301,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 29,
+      "beat": 1
     },
     {
-      "id": "custom_1789888594050_z6ls",
-      "cueTime": 80.801,
-      "time": 82.32,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888594390_d990",
-      "cueTime": 81.14,
-      "time": 82.659,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888594781_a70o",
-      "cueTime": 81.532,
-      "time": 83.051,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888595144_4p85",
-      "cueTime": 81.9,
-      "time": 83.419,
+      "id": "l1_dance_34",
+      "cueTime": 87.542,
+      "time": 89.061,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 29,
+      "beat": 2
     },
     {
-      "id": "custom_1789888595540_fpxa",
-      "cueTime": 82.292,
-      "time": 83.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888595901_0p6y",
-      "cueTime": 82.652,
-      "time": 84.171,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888596693_56yf",
-      "cueTime": 83.452,
-      "time": 84.971,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888598607_59p2",
-      "cueTime": 85.361,
-      "time": 86.88,
+      "id": "l1_dance_35",
+      "cueTime": 88.301,
+      "time": 89.82,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
+      "promptText": "Quack Jump",
+      "bar": 29,
+      "beat": 3
     },
     {
-      "id": "custom_1789888598974_31bx",
-      "cueTime": 85.732,
-      "time": 87.251,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888599346_07eb",
-      "cueTime": 86.1,
-      "time": 87.619,
+      "id": "l1_dance_36",
+      "cueTime": 89.061,
+      "time": 90.58,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 29,
+      "beat": 4
     },
     {
-      "id": "custom_1789888599768_3kbk",
-      "cueTime": 86.521,
-      "time": 88.04,
+      "id": "l1_dance_37",
+      "cueTime": 92.858,
+      "time": 94.377,
       "action": "tap",
       "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 31,
+      "beat": 1
     },
     {
-      "id": "custom_1789888600540_21ps",
-      "cueTime": 87.292,
-      "time": 88.811,
+      "id": "l1_dance_38",
+      "cueTime": 93.618,
+      "time": 95.137,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "left",
+      "promptText": "Duck Slide",
+      "bar": 31,
+      "beat": 2
+    },
+    {
+      "id": "l1_dance_39",
+      "cueTime": 94.377,
+      "time": 95.896,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "up",
+      "promptText": "Quack Jump",
+      "bar": 31,
+      "beat": 3
+    },
+    {
+      "id": "l1_dance_40",
+      "cueTime": 95.137,
+      "time": 96.656,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 31,
+      "beat": 4
     },
     {
-      "id": "custom_1789888601285_52j8",
-      "cueTime": 88.041,
-      "time": 89.56,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888601703_37q2",
-      "cueTime": 88.46,
-      "time": 89.979,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888602152_z3nt",
-      "cueTime": 88.9,
-      "time": 90.419,
+      "id": "l1_dance_41",
+      "cueTime": 101.972,
+      "time": 103.491,
       "action": "tap",
       "cue": "quack",
       "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Duck Slide",
+      "bar": 34,
+      "beat": 1
     },
     {
-      "id": "custom_1789888602635_kvrj",
-      "cueTime": 89.39,
-      "time": 90.909,
+      "id": "l1_dance_42",
+      "cueTime": 102.732,
+      "time": 104.251,
       "action": "tap",
       "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
+      "direction": "up",
+      "promptText": "Quack Jump",
+      "bar": 34,
+      "beat": 2
     },
     {
-      "id": "custom_1789888603010_kiq9",
-      "cueTime": 89.761,
-      "time": 91.28,
+      "id": "l1_dance_43",
+      "cueTime": 103.491,
+      "time": 105.01,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 34,
+      "beat": 3
     },
     {
-      "id": "custom_1789888604362_dz28",
-      "cueTime": 91.11,
-      "time": 92.629,
+      "id": "l1_dance_44",
+      "cueTime": 104.251,
+      "time": 105.77,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 34,
+      "beat": 4
+    },
+    {
+      "id": "l1_dance_45",
+      "cueTime": 105.01,
+      "time": 106.529,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "up",
+      "promptText": "Quack Jump",
+      "bar": 34,
+      "beat": 5
+    },
+    {
+      "id": "l1_dance_46",
+      "cueTime": 105.77,
+      "time": 107.289,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 34,
+      "beat": 6
+    },
+    {
+      "id": "l1_dance_47",
+      "cueTime": 106.529,
+      "time": 108.048,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "left",
+      "promptText": "Duck Slide",
+      "bar": 34,
+      "beat": 7
+    },
+    {
+      "id": "l1_dance_48",
+      "cueTime": 107.289,
+      "time": 108.808,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 34,
+      "beat": 8
     },
     {
-      "id": "custom_1789888604784_50ii",
-      "cueTime": 91.54,
-      "time": 93.059,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888605188_lrlu",
-      "cueTime": 91.94,
-      "time": 93.459,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888605622_ap4y",
-      "cueTime": 92.372,
-      "time": 93.891,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888605963_7t6o",
-      "cueTime": 92.721,
-      "time": 94.24,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888606348_o5a6",
-      "cueTime": 93.1,
-      "time": 94.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888606722_fcx3",
-      "cueTime": 93.481,
-      "time": 95,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888607067_2vbo",
-      "cueTime": 93.82,
-      "time": 95.339,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888607434_dxuv",
-      "cueTime": 94.19,
-      "time": 95.709,
+      "id": "l1_dance_49",
+      "cueTime": 111.086,
+      "time": 112.605,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 37,
+      "beat": 1
     },
     {
-      "id": "custom_1789888609350_rijz",
-      "cueTime": 96.1,
-      "time": 97.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888610125_mrzv",
-      "cueTime": 96.881,
-      "time": 98.4,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888610879_30lb",
-      "cueTime": 97.63,
-      "time": 99.149,
+      "id": "l1_dance_50",
+      "cueTime": 111.846,
+      "time": 113.365,
       "action": "tap",
       "cue": "quack",
       "direction": "down",
-      "promptText": "DOWN"
+      "promptText": "Low Groove",
+      "bar": 37,
+      "beat": 2
     },
     {
-      "id": "custom_1789888611683_4s9o",
-      "cueTime": 98.441,
-      "time": 99.96,
+      "id": "l1_dance_51",
+      "cueTime": 112.605,
+      "time": 114.124,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "left",
+      "promptText": "Duck Slide",
+      "bar": 37,
+      "beat": 3
+    },
+    {
+      "id": "l1_dance_52",
+      "cueTime": 113.365,
+      "time": 114.884,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "up",
+      "promptText": "Quack Jump",
+      "bar": 37,
+      "beat": 4
+    },
+    {
+      "id": "l1_dance_53",
+      "cueTime": 114.124,
+      "time": 115.643,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "down",
+      "promptText": "Low Groove",
+      "bar": 37,
+      "beat": 5
+    },
+    {
+      "id": "l1_dance_54",
+      "cueTime": 114.884,
+      "time": 116.403,
+      "action": "tap",
+      "cue": "quack",
+      "direction": "left",
+      "promptText": "Duck Slide",
+      "bar": 37,
+      "beat": 6
+    },
+    {
+      "id": "l1_dance_55",
+      "cueTime": 115.643,
+      "time": 117.162,
       "action": "tap",
       "cue": "quack",
       "direction": "right",
-      "promptText": "RIGHT"
+      "promptText": "Wing Spin",
+      "bar": 37,
+      "beat": 7
     },
     {
-      "id": "custom_1789888612094_3xw9",
-      "cueTime": 98.852,
-      "time": 100.371,
+      "id": "l1_dance_56",
+      "cueTime": 116.403,
+      "time": 117.922,
       "action": "tap",
       "cue": "quack",
       "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888612487_aq2i",
-      "cueTime": 99.241,
-      "time": 100.76,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888612861_lst2",
-      "cueTime": 99.612,
-      "time": 101.131,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888613291_zyey",
-      "cueTime": 100.041,
-      "time": 101.56,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888614323_65ua",
-      "cueTime": 101.081,
-      "time": 102.6,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888615144_9fyj",
-      "cueTime": 101.9,
-      "time": 103.419,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888617103_teux",
-      "cueTime": 103.86,
-      "time": 105.379,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888617674_2uwh",
-      "cueTime": 104.43,
-      "time": 105.949,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888618674_4p69",
-      "cueTime": 105.43,
-      "time": 106.949,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888619698_xkcv",
-      "cueTime": 106.452,
-      "time": 107.971,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888620860_n7sz",
-      "cueTime": 107.612,
-      "time": 109.131,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888621605_h6ym",
-      "cueTime": 108.361,
-      "time": 109.88,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888622202_obl9",
-      "cueTime": 108.961,
-      "time": 110.48,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888622559_kxet",
-      "cueTime": 109.31,
-      "time": 110.829,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888622937_jjjx",
-      "cueTime": 109.692,
-      "time": 111.211,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888623871_929w",
-      "cueTime": 110.62,
-      "time": 112.139,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888624701_tzmg",
-      "cueTime": 111.452,
-      "time": 112.971,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888625297_fj6p",
-      "cueTime": 112.052,
-      "time": 113.571,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888625665_ltkg",
-      "cueTime": 112.42,
-      "time": 113.939,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888626021_hsni",
-      "cueTime": 112.772,
-      "time": 114.291,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888626967_ngi1",
-      "cueTime": 113.721,
-      "time": 115.24,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888627785_9qgz",
-      "cueTime": 114.54,
-      "time": 116.059,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888629690_sp5z",
-      "cueTime": 116.441,
-      "time": 117.96,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888630108_zzy4",
-      "cueTime": 116.86,
-      "time": 118.379,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888630520_4iaf",
-      "cueTime": 117.27,
-      "time": 118.789,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888631383_7fhv",
-      "cueTime": 118.14,
-      "time": 119.659,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888632678_fzwd",
-      "cueTime": 119.43,
-      "time": 120.949,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888633104_ns7g",
-      "cueTime": 119.86,
-      "time": 121.379,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888633496_7icl",
-      "cueTime": 120.252,
-      "time": 121.771,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888634195_2xad",
-      "cueTime": 120.95,
-      "time": 122.469,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888634973_jc9n",
-      "cueTime": 121.732,
-      "time": 123.251,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888635383_i54u",
-      "cueTime": 122.14,
-      "time": 123.659,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888636866_z9ci",
-      "cueTime": 123.62,
-      "time": 125.139,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888637273_0ql1",
-      "cueTime": 124.03,
-      "time": 125.549,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888637651_btlg",
-      "cueTime": 124.401,
-      "time": 125.92,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888638083_a9de",
-      "cueTime": 124.841,
-      "time": 126.36,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888638755_1dnp",
-      "cueTime": 125.51,
-      "time": 127.029,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888639568_ck8f",
-      "cueTime": 126.321,
-      "time": 127.84,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888641744_d2uq",
-      "cueTime": 128.5,
-      "time": 130.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888642164_u3zn",
-      "cueTime": 128.921,
-      "time": 130.44,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888642549_ti7y",
-      "cueTime": 129.3,
-      "time": 130.819,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888643288_jf74",
-      "cueTime": 130.041,
-      "time": 131.56,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888644069_f8ui",
-      "cueTime": 130.82,
-      "time": 132.339,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888644810_gz6d",
-      "cueTime": 131.561,
-      "time": 133.08,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888645266_ybct",
-      "cueTime": 132.02,
-      "time": 133.539,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888645594_q8xl",
-      "cueTime": 132.35,
-      "time": 133.869,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888646271_8esa",
-      "cueTime": 133.02,
-      "time": 134.539,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888647060_6md9",
-      "cueTime": 133.812,
-      "time": 135.331,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888647804_ghui",
-      "cueTime": 134.561,
-      "time": 136.08,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888649009_grvf",
-      "cueTime": 135.761,
-      "time": 137.28,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888649370_tpzf",
-      "cueTime": 136.121,
-      "time": 137.64,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888649809_2zlf",
-      "cueTime": 136.561,
-      "time": 138.08,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888650169_hlm0",
-      "cueTime": 136.921,
-      "time": 138.44,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888650569_lopr",
-      "cueTime": 137.321,
-      "time": 138.84,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888651387_d7iy",
-      "cueTime": 138.14,
-      "time": 139.659,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888653834_3534",
-      "cueTime": 140.59,
-      "time": 142.109,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888654268_kxz3",
-      "cueTime": 141.02,
-      "time": 142.539,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888654693_57qy",
-      "cueTime": 141.452,
-      "time": 142.971,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888655142_c6a2",
-      "cueTime": 141.892,
-      "time": 143.411,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888655466_kz48",
-      "cueTime": 142.22,
-      "time": 143.739,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888655850_d02e",
-      "cueTime": 142.601,
-      "time": 144.12,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888656230_z6tj",
-      "cueTime": 142.98,
-      "time": 144.499,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888656575_sna7",
-      "cueTime": 143.332,
-      "time": 144.851,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888657663_sy5b",
-      "cueTime": 144.42,
-      "time": 145.939,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888658063_7j6o",
-      "cueTime": 144.82,
-      "time": 146.339,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888658548_e42u",
-      "cueTime": 145.3,
-      "time": 146.819,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888659254_bgsl",
-      "cueTime": 146.012,
-      "time": 147.531,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888660746_efi3",
-      "cueTime": 147.5,
-      "time": 149.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888660983_cwpo",
-      "cueTime": 147.74,
-      "time": 149.259,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888661198_cdmx",
-      "cueTime": 147.95,
-      "time": 149.469,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888661570_dicd",
-      "cueTime": 148.321,
-      "time": 149.84,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888662203_u1b4",
-      "cueTime": 148.961,
-      "time": 150.48,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888662603_o017",
-      "cueTime": 149.361,
-      "time": 150.88,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888663290_4cnf",
-      "cueTime": 150.041,
-      "time": 151.56,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888663720_vzw6",
-      "cueTime": 150.47,
-      "time": 151.989,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888664466_rema",
-      "cueTime": 151.22,
-      "time": 152.739,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888665723_mza9",
-      "cueTime": 152.481,
-      "time": 154,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888667068_p8rx",
-      "cueTime": 153.82,
-      "time": 155.339,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888667464_3mof",
-      "cueTime": 154.22,
-      "time": 155.739,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888667855_zkqa",
-      "cueTime": 154.612,
-      "time": 156.131,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888668235_rsml",
-      "cueTime": 154.99,
-      "time": 156.509,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888668630_7jp1",
-      "cueTime": 155.38,
-      "time": 156.899,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888668972_tiwk",
-      "cueTime": 155.732,
-      "time": 157.251,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888669689_6vzu",
-      "cueTime": 156.441,
-      "time": 157.96,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888671580_p6zq",
-      "cueTime": 158.332,
-      "time": 159.851,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888672129_w0gc",
-      "cueTime": 158.881,
-      "time": 160.4,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888672628_gssz",
-      "cueTime": 159.38,
-      "time": 160.899,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888673411_yo5z",
-      "cueTime": 160.161,
-      "time": 161.68,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888675512_3fq4",
-      "cueTime": 162.27,
-      "time": 163.789,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888675747_ub2q",
-      "cueTime": 162.5,
-      "time": 164.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888675944_t8tk",
-      "cueTime": 162.7,
-      "time": 164.219,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888676231_b41b",
-      "cueTime": 162.98,
-      "time": 164.499,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888676795_225i",
-      "cueTime": 163.55,
-      "time": 165.069,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888677538_oalk",
-      "cueTime": 164.292,
-      "time": 165.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888678315_vw4d",
-      "cueTime": 165.07,
-      "time": 166.589,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888679464_3hvl",
-      "cueTime": 166.22,
-      "time": 167.739,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888680243_jqie",
-      "cueTime": 167.001,
-      "time": 168.52,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888680626_ipc0",
-      "cueTime": 167.38,
-      "time": 168.899,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888680992_s6oj",
-      "cueTime": 167.75,
-      "time": 169.269,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888681393_iuba",
-      "cueTime": 168.15,
-      "time": 169.669,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888681731_2e0i",
-      "cueTime": 168.481,
-      "time": 170,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888682476_rvra",
-      "cueTime": 169.23,
-      "time": 170.749,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888683170_iqo1",
-      "cueTime": 169.921,
-      "time": 171.44,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888683536_1he2",
-      "cueTime": 170.292,
-      "time": 171.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888683978_zj36",
-      "cueTime": 170.732,
-      "time": 172.251,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888684376_uane",
-      "cueTime": 171.132,
-      "time": 172.651,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888684725_lp3v",
-      "cueTime": 171.481,
-      "time": 173,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888685112_decc",
-      "cueTime": 171.87,
-      "time": 173.389,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888685513_d7cj",
-      "cueTime": 172.27,
-      "time": 173.789,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888685863_25wq",
-      "cueTime": 172.62,
-      "time": 174.139,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888686200_tycb",
-      "cueTime": 172.95,
-      "time": 174.469,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888686606_nskz",
-      "cueTime": 173.361,
-      "time": 174.88,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888687002_xapd",
-      "cueTime": 173.761,
-      "time": 175.28,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888687746_821m",
-      "cueTime": 174.5,
-      "time": 176.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888687965_2dcv",
-      "cueTime": 174.721,
-      "time": 176.24,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888689591_al4s",
-      "cueTime": 176.35,
-      "time": 177.869,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888689941_af5w",
-      "cueTime": 176.692,
-      "time": 178.211,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888690349_w6ip",
-      "cueTime": 177.1,
-      "time": 178.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888690744_xmao",
-      "cueTime": 177.5,
-      "time": 179.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888691514_fkn9",
-      "cueTime": 178.27,
-      "time": 179.789,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888692269_795g",
-      "cueTime": 179.02,
-      "time": 180.539,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888692614_8mri",
-      "cueTime": 179.372,
-      "time": 180.891,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888692992_qhv5",
-      "cueTime": 179.75,
-      "time": 181.269,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888693409_j5w9",
-      "cueTime": 180.161,
-      "time": 181.68,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888693758_dw7d",
-      "cueTime": 180.51,
-      "time": 182.029,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888694459_0514",
-      "cueTime": 181.212,
-      "time": 182.731,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888695208_n5z8",
-      "cueTime": 181.961,
-      "time": 183.48,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888695607_b06p",
-      "cueTime": 182.361,
-      "time": 183.88,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888695961_jaw6",
-      "cueTime": 182.721,
-      "time": 184.24,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888696348_lpc5",
-      "cueTime": 183.1,
-      "time": 184.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888696749_afog",
-      "cueTime": 183.5,
-      "time": 185.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888697158_gd0u",
-      "cueTime": 183.91,
-      "time": 185.429,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888697524_xfda",
-      "cueTime": 184.281,
-      "time": 185.8,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888697857_d638",
-      "cueTime": 184.612,
-      "time": 186.131,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888698241_798g",
-      "cueTime": 184.99,
-      "time": 186.509,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888699708_n46f",
-      "cueTime": 186.46,
-      "time": 187.979,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888700429_s8or",
-      "cueTime": 187.18,
-      "time": 188.699,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888700839_0r0y",
-      "cueTime": 187.59,
-      "time": 189.109,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888701224_mug4",
-      "cueTime": 187.98,
-      "time": 189.499,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888701565_qiet",
-      "cueTime": 188.321,
-      "time": 189.84,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888701974_ly34",
-      "cueTime": 188.732,
-      "time": 190.251,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888702366_7vpa",
-      "cueTime": 189.121,
-      "time": 190.64,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888702716_f7wo",
-      "cueTime": 189.47,
-      "time": 190.989,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888703084_bvoj",
-      "cueTime": 189.841,
-      "time": 191.36,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888703816_91n5",
-      "cueTime": 190.572,
-      "time": 192.091,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888704224_chxy",
-      "cueTime": 190.98,
-      "time": 192.499,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888704616_zrc3",
-      "cueTime": 191.372,
-      "time": 192.891,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888704977_b744",
-      "cueTime": 191.732,
-      "time": 193.251,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888705346_adbi",
-      "cueTime": 192.1,
-      "time": 193.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888705700_p95m",
-      "cueTime": 192.452,
-      "time": 193.971,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888706440_wbzr",
-      "cueTime": 193.19,
-      "time": 194.709,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888707182_s8zo",
-      "cueTime": 193.94,
-      "time": 195.459,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888707574_tqhs",
-      "cueTime": 194.332,
-      "time": 195.851,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888707944_cgae",
-      "cueTime": 194.7,
-      "time": 196.219,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888708365_cvjm",
-      "cueTime": 195.121,
-      "time": 196.64,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888708745_j1lv",
-      "cueTime": 195.5,
-      "time": 197.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888709122_9t3v",
-      "cueTime": 195.881,
-      "time": 197.4,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888709473_xtxf",
-      "cueTime": 196.23,
-      "time": 197.749,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888709881_02sf",
-      "cueTime": 196.641,
-      "time": 198.16,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888710266_1e1t",
-      "cueTime": 197.02,
-      "time": 198.539,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888710617_16mu",
-      "cueTime": 197.372,
-      "time": 198.891,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888710992_1036",
-      "cueTime": 197.75,
-      "time": 199.269,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888711344_2tcj",
-      "cueTime": 198.1,
-      "time": 199.619,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888711707_k9jn",
-      "cueTime": 198.46,
-      "time": 199.979,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888712090_kn0d",
-      "cueTime": 198.841,
-      "time": 200.36,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888712748_u607",
-      "cueTime": 199.5,
-      "time": 201.019,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888713597_mmal",
-      "cueTime": 200.35,
-      "time": 201.869,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888713938_ycxs",
-      "cueTime": 200.692,
-      "time": 202.211,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888714358_z7a5",
-      "cueTime": 201.11,
-      "time": 202.629,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888714723_zleu",
-      "cueTime": 201.481,
-      "time": 203,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888715449_eb1p",
-      "cueTime": 202.201,
-      "time": 203.72,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888716149_j1gp",
-      "cueTime": 202.9,
-      "time": 204.419,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888716558_o52u",
-      "cueTime": 203.31,
-      "time": 204.829,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888716948_xz2u",
-      "cueTime": 203.7,
-      "time": 205.219,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888717290_i302",
-      "cueTime": 204.041,
-      "time": 205.56,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888717670_htiz",
-      "cueTime": 204.42,
-      "time": 205.939,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888718421_w3bq",
-      "cueTime": 205.18,
-      "time": 206.699,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888719072_iryh",
-      "cueTime": 205.83,
-      "time": 207.349,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888719535_5j3e",
-      "cueTime": 206.292,
-      "time": 207.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888719937_efle",
-      "cueTime": 206.692,
-      "time": 208.211,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888720355_xoa6",
-      "cueTime": 207.11,
-      "time": 208.629,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888720707_yphc",
-      "cueTime": 207.46,
-      "time": 208.979,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888721057_krc7",
-      "cueTime": 207.812,
-      "time": 209.331,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888721471_8lfp",
-      "cueTime": 208.22,
-      "time": 209.739,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888721820_tr11",
-      "cueTime": 208.572,
-      "time": 210.091,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888722191_g8lb",
-      "cueTime": 208.94,
-      "time": 210.459,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888724005_n0kh",
-      "cueTime": 210.761,
-      "time": 212.28,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888724838_x4es",
-      "cueTime": 211.59,
-      "time": 213.109,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888725533_jx2g",
-      "cueTime": 212.292,
-      "time": 213.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888726315_4d91",
-      "cueTime": 213.07,
-      "time": 214.589,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888727090_1ppt",
-      "cueTime": 213.841,
-      "time": 215.36,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888727787_d21e",
-      "cueTime": 214.54,
-      "time": 216.059,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888728554_kcha",
-      "cueTime": 215.31,
-      "time": 216.829,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888729304_d11m",
-      "cueTime": 216.06,
-      "time": 217.579,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888730070_06am",
-      "cueTime": 216.82,
-      "time": 218.339,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888730811_jcj7",
-      "cueTime": 217.572,
-      "time": 219.091,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888731540_ptna",
-      "cueTime": 218.292,
-      "time": 219.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888731886_qimu",
-      "cueTime": 218.641,
-      "time": 220.16,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888732089_baun",
-      "cueTime": 218.841,
-      "time": 220.36,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888733379_g1qf",
-      "cueTime": 220.132,
-      "time": 221.651,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888733572_zod5",
-      "cueTime": 220.332,
-      "time": 221.851,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888733805_1ljc",
-      "cueTime": 220.561,
-      "time": 222.08,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888734178_mpkz",
-      "cueTime": 220.932,
-      "time": 222.451,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888734539_8gqu",
-      "cueTime": 221.292,
-      "time": 222.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888734874_1y1y",
-      "cueTime": 221.63,
-      "time": 223.149,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888735122_1oox",
-      "cueTime": 221.881,
-      "time": 223.4,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888736039_vinc",
-      "cueTime": 222.79,
-      "time": 224.309,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888736435_g503",
-      "cueTime": 223.19,
-      "time": 224.709,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888736762_6ck4",
-      "cueTime": 223.521,
-      "time": 225.04,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888737186_pfia",
-      "cueTime": 223.94,
-      "time": 225.459,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888737522_kr2i",
-      "cueTime": 224.281,
-      "time": 225.8,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888738306_t2a7",
-      "cueTime": 225.06,
-      "time": 226.579,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888739038_uek7",
-      "cueTime": 225.79,
-      "time": 227.309,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888739767_pyp3",
-      "cueTime": 226.521,
-      "time": 228.04,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888740202_7hkf",
-      "cueTime": 226.961,
-      "time": 228.48,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888740569_f109",
-      "cueTime": 227.321,
-      "time": 228.84,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888740934_j8mh",
-      "cueTime": 227.692,
-      "time": 229.211,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888741170_ny4b",
-      "cueTime": 227.921,
-      "time": 229.44,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888742321_na26",
-      "cueTime": 229.081,
-      "time": 230.6,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888742709_qz5t",
-      "cueTime": 229.46,
-      "time": 230.979,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888743134_wks2",
-      "cueTime": 229.892,
-      "time": 231.411,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888743502_0qri",
-      "cueTime": 230.26,
-      "time": 231.779,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888743851_dzep",
-      "cueTime": 230.601,
-      "time": 232.12,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888744027_6v9v",
-      "cueTime": 230.78,
-      "time": 232.299,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888745353_l6sd",
-      "cueTime": 232.11,
-      "time": 233.629,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888745570_u3aq",
-      "cueTime": 232.321,
-      "time": 233.84,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888745783_pmc9",
-      "cueTime": 232.54,
-      "time": 234.059,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888746151_21gv",
-      "cueTime": 232.91,
-      "time": 234.429,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888746488_l689",
-      "cueTime": 233.241,
-      "time": 234.76,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888746843_frg3",
-      "cueTime": 233.601,
-      "time": 235.12,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888747034_iqxc",
-      "cueTime": 233.79,
-      "time": 235.309,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888747963_jlqx",
-      "cueTime": 234.721,
-      "time": 236.24,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888748534_03z5",
-      "cueTime": 235.292,
-      "time": 236.811,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888749163_m068",
-      "cueTime": 235.921,
-      "time": 237.44,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888749474_4vyh",
-      "cueTime": 236.23,
-      "time": 237.749,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888749833_03no",
-      "cueTime": 236.59,
-      "time": 238.109,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888750027_7kcw",
-      "cueTime": 236.78,
-      "time": 238.299,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888753446_09v4",
-      "cueTime": 240.201,
-      "time": 241.72,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
-    },
-    {
-      "id": "custom_1789888755360_i4ln",
-      "cueTime": 242.11,
-      "time": 243.629,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "right",
-      "promptText": "RIGHT"
-    },
-    {
-      "id": "custom_1789888755987_zt79",
-      "cueTime": 242.74,
-      "time": 244.259,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "down",
-      "promptText": "DOWN"
-    },
-    {
-      "id": "custom_1789888756600_nfsq",
-      "cueTime": 243.35,
-      "time": 244.869,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "up",
-      "promptText": "UP"
-    },
-    {
-      "id": "custom_1789888758183_r17h",
-      "cueTime": 244.94,
-      "time": 246.459,
-      "action": "tap",
-      "cue": "quack",
-      "direction": "left",
-      "promptText": "LEFT"
+      "promptText": "Quack Jump",
+      "bar": 37,
+      "beat": 8
     }
   ]
 }

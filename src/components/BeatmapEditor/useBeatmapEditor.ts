@@ -4,8 +4,9 @@ import { AudioEngine } from '../../audio/AudioEngine';
 import { TapTempo } from './TapTempo';
 
 export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: BeatmapData) => void) {
-  const [bpm, setBpm] = useState(79);
-  const [offset, setOffset] = useState(0.20);
+  const [levelMode, setLevelMode] = useState<'level1' | 'level2'>('level2');
+  const [bpm, setBpm] = useState(146);
+  const [offset, setOffset] = useState(0.08);
   const [events, setEvents] = useState<BeatmapEvent[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -22,16 +23,16 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
 
   useEffect(() => {
     if (!isOpen) return;
-    fetch(`/beatmaps/level1.json?t=${Date.now()}`)
+    const file = levelMode === 'level2' ? '/beatmaps/level2.json' : '/beatmaps/level1.json';
+    fetch(`${file}?t=${Date.now()}`)
       .then((r) => r.json())
       .then((d: BeatmapData) => {
-        setBpm(d.bpm || 79);
-        setOffset(d.offset || 0.20);
+        setBpm(d.bpm || (levelMode === 'level2' ? 146 : 79));
+        setOffset(d.offset ?? (levelMode === 'level2' ? 0.08 : 0.2));
         setEvents(d.events || []);
       })
       .catch(() => {});
-
-  }, [isOpen]);
+  }, [isOpen, levelMode]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -65,6 +66,27 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
     audio.playSfx('quack');
     setEvents((prev) => [...prev, newEv].sort((a, b) => a.time - b.time));
   }, [bpm]);
+
+  const stampTarget = useCallback((x: number, y: number) => {
+    const audio = AudioEngine.getInstance();
+    const t = Number(audio.getCurrentTime().toFixed(3));
+
+    const newEv: BeatmapEvent = {
+      id: `l2_custom_${Date.now()}_${Math.random().toString(36).substring(2, 5)}`,
+      time: t,
+      action: 'tap',
+      cue: 'pop',
+      x,
+      y,
+      size: 82,
+      seq: events.length + 1,
+      promptText: String(events.length + 1),
+      approachDuration: 0.85,
+    };
+
+    audio.playSfx('cowbell');
+    setEvents((prev) => [...prev, newEv].sort((a, b) => a.time - b.time));
+  }, [events.length]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -161,15 +183,18 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
   };
 
   const handleDownloadJson = () => {
+    const fileName = levelMode === 'level2' ? 'level2.json' : 'level1.json';
     const blob = new Blob([JSON.stringify(getPayload(), null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'level1.json';
+    a.download = fileName;
     a.click();
-    showToast('level1.json diunduh!');
+    showToast(`${fileName} diunduh!`);
   };
 
   return {
+    levelMode,
+    setLevelMode,
     bpm, setBpm,
     offset, setOffset,
     events, setEvents,
@@ -179,6 +204,7 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
     toast,
     tappedBpm,
     stampNote,
+    stampTarget,
     handleTogglePlay,
     handleSeek,
     handleNudge,

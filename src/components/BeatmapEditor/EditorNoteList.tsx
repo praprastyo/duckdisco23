@@ -62,9 +62,15 @@ export const EditorNoteList: React.FC<EditorNoteListProps> = ({
               >
                 {ev.time.toFixed(3)}s
               </button>
-              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${DIR_COLORS[dir]}`}>
-                {DIR_SYMBOLS[dir]}
-              </span>
+              {ev.x !== undefined && ev.y !== undefined ? (
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/30 text-cyan-300 border border-cyan-400/40">
+                  🎯 ({ev.x}%, {ev.y}%)
+                </span>
+              ) : (
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${DIR_COLORS[dir]}`}>
+                  {DIR_SYMBOLS[dir]}
+                </span>
+              )}
             </div>
 
             <div className="flex items-center gap-1">

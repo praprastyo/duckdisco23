@@ -40,6 +40,9 @@ export class RhythmEngine {
     this.beatmapRunner = new BeatmapRunner(windows);
     this.scoringEngine = new ScoringEngine(windows);
     this.inputManager.setLatencyOffset(timingOffsetMs);
+    if (levelId === 'level2') {
+      this.maxMisses = 999999; // Allow completing full track on Level 2 Quack Beat Pop
+    }
     this.setupListeners();
   }
 
@@ -174,6 +177,41 @@ export class RhythmEngine {
       score: this.scoringEngine.getScore(),
       event: target.event,
     });
+  }
+
+  /**
+   * Handle direct 2D target click for Level 2 (Quack Beat Pop / OSU-style)
+   */
+  public handleTargetClick(noteId: string, clickTime?: number): JudgementEvent | null {
+    if (this.status !== 'playing') return null;
+
+    const ev = this.beatmapRunner.getEvent(noteId);
+    if (!ev || this.beatmapRunner.isHit(noteId)) return null;
+
+    const time = (clickTime ?? this.audioEngine.getCurrentTime()) - this.inputManager.getLatencyOffsetSec();
+    const deltaSec = time - ev.time;
+
+    const result = this.scoringEngine.judge(deltaSec);
+    this.beatmapRunner.markHit(noteId);
+
+    if (result.judgement !== 'miss') {
+      this.audioEngine.playSfx('cowbell');
+    } else {
+      this.audioEngine.playSfx('miss');
+      this.checkMissLimit();
+    }
+
+    const jEv: JudgementEvent = {
+      judgement: result.judgement,
+      deltaMs: result.deltaMs,
+      points: result.points,
+      combo: this.scoringEngine.getCurrentCombo(),
+      score: this.scoringEngine.getScore(),
+      event: ev,
+    };
+
+    this.onJudgementCb?.(jEv);
+    return jEv;
   }
 
   private checkMissLimit() {

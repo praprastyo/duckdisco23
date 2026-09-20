@@ -45,10 +45,10 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
       desc: 'Arrow-based rhythm dance on the beach stage. Hit arrow keys right as notes reach the Dance Line to uncover your first clue!',
     },
     level2: {
-      icon: '🎧',
-      tag: 'QUEST 02 • DJ BOOTH',
-      controls: 'SPACEBAR / TAP SCREEN',
-      desc: 'Spin and hold vinyl records with Donald Duck to claim your second special clue!',
+      icon: '🎯',
+      tag: 'QUEST 02 • QUACK BEAT POP',
+      controls: 'MOUSE CLICK / TAP TARGET CIRCLES',
+      desc: 'Click or tap circular rhythm targets right as the outer approach ring meets the target to unlock the Turbo Vinyl!',
     },
     level3: {
       icon: '✨',

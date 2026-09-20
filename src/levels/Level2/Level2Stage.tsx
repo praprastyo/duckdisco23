@@ -1,118 +1,111 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
+import { RhythmEngine } from '../../game/RhythmEngine';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
-import { JudgementType } from '../../config/scoring';
+import { QuackTargetCircle } from './QuackTargetCircle';
+import { Level2Effects } from './Level2Effects';
+import { useLevel2Game } from './useLevel2Game';
 
 interface Level2StageProps {
+  engine?: RhythmEngine | null;
+  events?: BeatmapEvent[];
   currentBeat: number;
-  currentCue: BeatmapEvent | null;
-  lastJudgement?: JudgementType | null;
   combo: number;
+  score?: number;
+  accuracy?: number;
+  isPlaying?: boolean;
+  isComplete?: boolean;
+  onTargetClick?: (noteId: string) => void;
 }
 
 export const Level2Stage: React.FC<Level2StageProps> = ({
+  engine,
+  events = [],
   currentBeat,
-  lastJudgement,
   combo,
+  score = 0,
+  accuracy = 100,
+  isComplete = false,
+  onTargetClick,
 }) => {
-  const [isJumping, setIsJumping] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { songTime, particles, popups, sortedUpcoming, handlePointerDown } = useLevel2Game(
+    engine,
+    events,
+    onTargetClick
+  );
 
-  useEffect(() => {
-    if (lastJudgement && lastJudgement !== 'miss') {
-      setIsJumping(true);
-      const t = setTimeout(() => setIsJumping(false), 450);
-      return () => clearTimeout(t);
-    }
-  }, [lastJudgement]);
-
-  const isLegStep = currentBeat % 2 === 0;
-
-  // Freestyle levels based on combo:
-  // Level 0: Standard Jump
-  // Level 1 (Combo 4-7): 360 Backflip
-  // Level 2 (Combo 8-12): Air Breakdance Spin
-  // Level 3 (Combo 13+): Rainbow Helicopter Flight Pose
-  let freestyleClass = '';
-  let freestyleLabel = '';
-
-  if (isJumping) {
-    if (combo >= 13) {
-      freestyleClass = '-translate-y-20 rotate-[720deg] scale-125';
-      freestyleLabel = '🌪️ RAINBOW HELICOPTER!';
-    } else if (combo >= 8) {
-      freestyleClass = '-translate-y-16 rotate-[360deg] scale-110';
-      freestyleLabel = '🤸 BREAKDANCE SPIN!';
-    } else if (combo >= 4) {
-      freestyleClass = '-translate-y-14 -rotate-[360deg]';
-      freestyleLabel = '🔄 360 BACKFLIP!';
-    } else {
-      freestyleClass = '-translate-y-12';
-      freestyleLabel = '🦘 HOP!';
-    }
-  }
+  const isFever = combo >= 100;
+  const isNeon = combo >= 50;
 
   return (
-    <div className="relative w-full max-w-lg h-56 bg-black/60 border border-cyan-500/40 rounded-3xl p-4 overflow-hidden flex flex-col justify-between select-none pointer-events-none shadow-[0_0_30px_rgba(6,182,212,0.25)]">
-      {/* Top Runner HUD */}
-      <div className="flex justify-between items-center z-10">
-        <span className="text-[10px] font-mono-rhythm text-cyan-300 tracking-widest font-bold">
-          🦖 CHROME DINO DISCO RUNNER
-        </span>
-        {freestyleLabel && isJumping && (
-          <span className="text-xs font-disco text-yellow-300 animate-bounce tracking-wider">
-            {freestyleLabel}
+    <div
+      ref={containerRef}
+      className={`relative w-full max-w-5xl h-[480px] sm:h-[580px] bg-[#070312] border-2 rounded-3xl overflow-hidden select-none touch-none shadow-2xl transition-all duration-500 ${
+        isFever
+          ? 'border-yellow-400 shadow-[0_0_80px_rgba(250,204,21,0.6)]'
+          : isNeon
+          ? 'border-fuchsia-500 shadow-[0_0_50px_rgba(236,72,153,0.5)]'
+          : 'border-cyan-500/50 shadow-[0_0_35px_rgba(6,182,212,0.3)]'
+      }`}
+    >
+      {/* 2D Retro Disco Grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:28px_28px]" />
+
+      {/* Top Playfield HUD */}
+      <div className="absolute top-4 inset-x-6 z-10 flex items-center justify-between pointer-events-none">
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/60 font-disco text-xs text-cyan-300 tracking-wider">
+            🎯 QUACK BEAT POP • 146 BPM
           </span>
-        )}
-      </div>
-
-      {/* Runner Arena */}
-      <div className="relative w-full h-36 flex items-end">
-        {/* Ground Line */}
-        <div className="absolute bottom-4 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_#06b6d4]" />
-
-        {/* Dino Running Duck */}
-        <div
-          className={`absolute left-10 bottom-4 transition-all duration-200 ease-out ${
-            isJumping ? freestyleClass : ''
-          }`}
-        >
-          <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Blue Sailor Cap */}
-            <path d="M 28 8 C 28 2, 42 2, 42 8 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="1" />
-            <path d="M 39 8 L 45 12 L 42 14 Z" fill="#0f172a" />
-            {/* Sunglasses */}
-            <rect x="36" y="16" width="16" height="7" rx="2" fill="#00ffff" />
-            {/* Donald White Feather Head */}
-            <circle cx="34" cy="22" r="14" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
-            {/* Duck Beak */}
-            <ellipse cx="50" cy="24" rx="8" ry="4" fill="#f97316" />
-            {/* Sailor Blue Body */}
-            <ellipse cx="26" cy="40" rx="16" ry="12" fill="#1e40af" stroke="#3b82f6" strokeWidth="1.5" />
-            {/* Red Bow Tie 🎀 */}
-            <ellipse cx="34" cy="32" rx="3.5" ry="2.5" fill="#ef4444" />
-            {/* Running legs (animated like chrome dino) */}
-            <line x1="22" y1="52" x2={isLegStep ? 16 : 26} y2="64" stroke="#f97316" strokeWidth="3" strokeLinecap="round" />
-            <line x1="30" y1="52" x2={isLegStep ? 36 : 22} y2="64" stroke="#f97316" strokeWidth="3" strokeLinecap="round" />
-          </svg>
-
+          {isFever && (
+            <span className="px-3 py-1 rounded-full bg-yellow-500 text-black font-disco font-black text-xs tracking-widest animate-bounce">
+              ⚡ QUACK FEVER ⚡
+            </span>
+          )}
         </div>
-
-        {/* Incoming Obstacle (Cactus / Neon Disco Block) */}
-        <div
-          className="absolute bottom-4 right-10 flex flex-col items-center transition-all"
-          style={{
-            transform: `translateX(-${(currentBeat % 4) * 45}px)`,
-          }}
-        >
-          <div className="w-6 h-10 bg-gradient-to-t from-pink-600 to-fuchsia-400 border border-fuchsia-300 rounded-t-lg shadow-[0_0_12px_#ec4899] flex items-center justify-center">
-            <span className="text-[10px]">🌵</span>
-          </div>
+        <div className="flex items-center gap-4 text-xs font-mono-rhythm">
+          <span className="text-white/60">
+            SCORE: <strong className="text-yellow-300 font-bold">{score.toLocaleString()}</strong>
+          </span>
+          <span className="text-white/60">
+            ACCURACY: <strong className="text-cyan-300 font-bold">{accuracy.toFixed(1)}%</strong>
+          </span>
+          <span className="text-fuchsia-300 font-bold">
+            COMBO: <strong className="text-fuchsia-400 text-sm font-black">{combo}×</strong>
+          </span>
         </div>
       </div>
 
-      {/* Instructions footer */}
-      <div className="text-center text-[10px] font-mono-rhythm text-white/50 tracking-widest">
-        SPACEBAR / TAP TO JUMP • KEEP COMBO FOR INSANE FREESTYLE TRICKS
+      {/* Safe Play Area (X: 8-92%, Y: 12-88%) */}
+      <div className="absolute inset-x-[8%] inset-y-[12%] border border-white/5 rounded-2xl pointer-events-none" />
+
+      {/* Visual Effects, Particles, Mascot, Reward */}
+      <Level2Effects
+        particles={particles}
+        popups={popups}
+        isComplete={isComplete}
+        accuracy={accuracy}
+        isBeatOdd={currentBeat % 2 === 1}
+      />
+
+      {/* Interactive Targets */}
+      {sortedUpcoming.map((note, idx) => (
+        <QuackTargetCircle
+          key={note.id}
+          note={note}
+          songTime={songTime}
+          opacity={idx === 0 ? 1.0 : idx === 1 ? 0.75 : 0.55}
+          onPointerDown={handlePointerDown}
+        />
+      ))}
+
+      {/* Footer hint */}
+      <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none">
+        <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest uppercase bg-black/60 px-4 py-1.5 rounded-full border border-white/10">
+          CLICK OR TAP THE CIRCLES AS THE OUTER RING CLOSES IN
+        </span>
       </div>
     </div>
   );
 };
+

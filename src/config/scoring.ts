@@ -18,9 +18,16 @@ export const SCORING_WINDOWS_L1: ScoringWindows = {
   good: 0.340,    // <= 340ms
 };
 
+// Precise OSU-style windows for Level 2 (Quack Beat Pop)
+export const SCORING_WINDOWS_L2: ScoringWindows = {
+  perfect: 0.055, // <= 55ms
+  great: 0.110,   // <= 110ms
+  good: 0.180,    // <= 180ms
+};
+
 export const SCORING_WINDOWS_BY_LEVEL: Record<string, ScoringWindows> = {
   level1: SCORING_WINDOWS_L1,
-  level2: SCORING_WINDOWS,
+  level2: SCORING_WINDOWS_L2,
   level3: SCORING_WINDOWS,
   level4: SCORING_WINDOWS,
 };

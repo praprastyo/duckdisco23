@@ -36,10 +36,10 @@ export const songs: Record<string, SongConfig> = {
 
   level2: {
     id: 'level2',
-    title: 'DJ Quack Scratch Boogie',
+    title: 'Quack Beat Pop',
     src: '/audio/level-2.mp3',
-    bpm: 118,
-    beatOffset: 0.12,
+    bpm: 146,
+    beatOffset: 0,
     intensity: {
       bassMultiplier: 0.9,
       midMultiplier: 0.85,

@@ -2,6 +2,15 @@ import { SCORING_WINDOWS, ScoringWindows } from '../config/scoring';
 
 export type DanceDirection = 'left' | 'right' | 'up' | 'down';
 
+export interface ClickNote {
+  id: number | string;
+  time: number;
+  x: number; // 0-100% percentage
+  y: number; // 0-100% percentage
+  size?: number;
+  approachDuration?: number;
+}
+
 export interface BeatmapEvent {
   id: string;
   time: number;
@@ -15,6 +24,11 @@ export interface BeatmapEvent {
   direction?: DanceDirection;
   bar?: number;
   beat?: number;
+  x?: number; // 0-100% percentage for target clicking
+  y?: number; // 0-100% percentage for target clicking
+  seq?: number;
+  size?: number;
+  approachDuration?: number;
 }
 
 
@@ -22,7 +36,8 @@ export interface BeatmapData {
   bpm: number;
   offset: number;
   duration?: number;
-  events: BeatmapEvent[];
+  events?: BeatmapEvent[];
+  notes?: ClickNote[];
 }
 
 export class BeatmapRunner {
@@ -41,8 +56,23 @@ export class BeatmapRunner {
   }
 
   public load(data: BeatmapData): void {
+    const rawEvents: BeatmapEvent[] = data.events ? [...data.events] : [];
+    if (data.notes && data.notes.length > 0 && rawEvents.length === 0) {
+      data.notes.forEach((n, idx) => {
+        rawEvents.push({
+          id: String(n.id || `l2_note_${idx + 1}`),
+          time: n.time,
+          action: 'tap',
+          x: n.x,
+          y: n.y,
+          seq: idx + 1,
+          promptText: String(idx + 1),
+          approachDuration: n.approachDuration ?? 0.85,
+        });
+      });
+    }
     // Sort events strictly by target time
-    this.events = [...data.events].sort((a, b) => a.time - b.time);
+    this.events = rawEvents.sort((a, b) => a.time - b.time);
     this.reset();
   }
 
@@ -139,6 +169,14 @@ export class BeatmapRunner {
 
   public markHit(eventId: string): void {
     this.hitStates.set(eventId, true);
+  }
+
+  public isHit(eventId: string): boolean {
+    return Boolean(this.hitStates.get(eventId));
+  }
+
+  public getEvent(id: string): BeatmapEvent | undefined {
+    return this.events.find((e) => e.id === id);
   }
 
   public getEvents(): BeatmapEvent[] {

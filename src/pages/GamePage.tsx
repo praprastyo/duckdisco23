@@ -57,7 +57,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   const handleApplyBeatmap = (data: BeatmapData) => {
-    setBeatmapEvents(data.events);
+    setBeatmapEvents(data.events || []);
     if (engineRef.current) {
       engineRef.current.getBeatmapRunner().load(data);
       engineRef.current.getBeatClock().setConfig(data.bpm, data.offset);
@@ -95,7 +95,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
     fetch(`${level.song.beatmap}?t=${Date.now()}`)
       .then((r) => r.json())
       .then((d: BeatmapData) => {
-        setBeatmapEvents(d.events);
+        setBeatmapEvents(d.events || []);
         return engine.initializeLevel(level.song.src, d);
       })
       .catch(() => setStatus('error'));
@@ -162,8 +162,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
       {/* Main Dynamic Level Stage */}
       <div className="relative z-20 flex flex-col items-center justify-center my-auto w-full">
-        {/* Level 1 has its own dance-line cue system, so skip the generic cue */}
-        {level.id !== 'level1' && <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />}
+        {/* Levels 1 & 2 have their own custom visual guidance */}
+        {level.id !== 'level1' && level.id !== 'level2' && <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />}
 
         {/* Dynamic mini-game stage per level */}
         <div className="my-2 flex flex-col items-center w-full">
@@ -185,10 +185,15 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
           {level.id === 'level2' && (
             <Level2Stage
+              engine={engineRef.current}
+              events={beatmapEvents}
               currentBeat={currentBeat}
-              currentCue={currentCue}
-              lastJudgement={lastJudgement?.judgement}
               combo={combo}
+              score={score}
+              accuracy={accuracy}
+              isPlaying={status === 'playing'}
+              isComplete={status === 'completed'}
+              onTargetClick={(id) => engineRef.current?.handleTargetClick(id)}
             />
           )}
 
@@ -215,8 +220,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
         <RhythmFeedback judgement={lastJudgement?.judgement ?? null} deltaMs={lastJudgement?.deltaMs} triggerId={triggerId} />
 
-        {/* Combo counter (Level 1 shows combo in its own stage HUD) */}
-        {level.id !== 'level1' && (
+        {/* Combo counter (Levels 1 & 2 show combo in their own stage HUD) */}
+        {level.id !== 'level1' && level.id !== 'level2' && (
           <div className="mt-1">
             <ComboCounter combo={combo} maxCombo={maxCombo} />
           </div>
@@ -232,7 +237,9 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
           <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
             <span className="font-mono-rhythm text-[11px] text-white/70 tracking-widest uppercase">
-              SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE
+              {level.id === 'level2'
+                ? 'CLICK OR TAP THE TARGET CIRCLES IN RHYTHM'
+                : 'SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE'}
             </span>
           </div>
         </div>
