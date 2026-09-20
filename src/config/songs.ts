@@ -19,7 +19,7 @@ export const songs: Record<string, SongConfig> = {
   level1: {
     id: 'level1',
     title: 'Quack Beach Dash Tropical Groove',
-    src: '/audio/level-1.mp3',
+    src: '/audio/level-1.mp4',
     bpm: 81,
     beatOffset: 0.20,
     intensity: {
