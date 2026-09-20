@@ -55,6 +55,18 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [lastDirection, setLastDirection] = useState<LaneDir | null>(null);
   const [beatmapEvents, setBeatmapEvents] = useState<BeatmapEvent[]>([]);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [attemptKey, setAttemptKey] = useState(0);
+
+  const handleRestart = useCallback(() => {
+    setScore(0);
+    setCombo(0);
+    setMaxCombo(0);
+    setAccuracy(100);
+    setMissCount(0);
+    setLastJudgement(null);
+    setAttemptKey((k) => k + 1);
+    engineRef.current?.restart();
+  }, []);
 
   const handleApplyBeatmap = (data: BeatmapData) => {
     setBeatmapEvents(data.events || []);
@@ -185,6 +197,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
           {level.id === 'level2' && (
             <Level2Stage
+              key={`l2_${attemptKey}`}
               engine={engineRef.current}
               events={beatmapEvents}
               currentBeat={currentBeat}
@@ -279,10 +292,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
             <button
-              onClick={() => {
-                setMissCount(0);
-                engineRef.current?.restart();
-              }}
+              onClick={handleRestart}
               className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco text-sm font-bold tracking-wider uppercase shadow-[0_0_25px_rgba(234,179,8,0.5)] active:scale-95 transition-all cursor-pointer"
             >
               🔁 TRY AGAIN
@@ -300,7 +310,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
       <PauseMenu
         isOpen={status === 'paused'}
         onResume={() => engineRef.current?.resume()}
-        onRestart={() => engineRef.current?.restart()}
+        onRestart={handleRestart}
         onExit={onExit}
         onOpenEditor={() => setIsEditorOpen(true)}
       />

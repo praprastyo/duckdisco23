@@ -19,9 +19,20 @@ export function useLevel2Game(
 
   useEffect(() => {
     let animId: number;
+    let prevTime = 0;
     const loop = () => {
       animId = requestAnimationFrame(loop);
-      setSongTime(AudioEngine.getInstance().getCurrentTime());
+      const audio = AudioEngine.getInstance();
+      const currentT = audio.getCurrentTime();
+
+      // If playback restarted to near 0 or seeked backwards, reset hit tracking immediately
+      if (currentT < 0.15 || currentT < prevTime - 0.4) {
+        setHitNoteIds(new Set());
+        setParticles([]);
+        setPopups([]);
+      }
+      prevTime = currentT;
+      setSongTime(currentT);
 
       const now = performance.now();
       setPopups((prev) => (prev.length > 0 ? prev.filter((p) => now - p.createdAt < 600) : prev));
