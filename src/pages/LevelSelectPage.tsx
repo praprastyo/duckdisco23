@@ -80,10 +80,10 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
 
           <div className="flex items-center gap-2 pl-3 border-l border-white/10 text-2xl">
             <span
-              title="Neon Feather (Night 1)"
-              className={`transition-all ${saveData.collectibles.neonFeather ? 'opacity-100 scale-110 drop-shadow-[0_0_10px_#06b6d4]' : 'opacity-20 grayscale'}`}
+              title="Rainbow Feather (Night 1)"
+              className={`transition-all ${saveData.collectibles.rainbowFeather ? 'opacity-100 scale-110 drop-shadow-[0_0_10px_#06b6d4]' : 'opacity-20 grayscale'}`}
             >
-              🪶
+              🌈
             </span>
             <span
               title="Golden Vinyl (Night 2)"

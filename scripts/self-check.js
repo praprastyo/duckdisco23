@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 
 // 1. Test Scoring Logic
-import { SCORING_WINDOWS, JUDGEMENT_SCORES, getGradeTier } from '../src/config/scoring.ts';
+import { SCORING_WINDOWS, SCORING_WINDOWS_L1, getScoringWindows, JUDGEMENT_SCORES, getGradeTier } from '../src/config/scoring.ts';
 import { ScoringEngine } from '../src/game/ScoringEngine.ts';
 
 console.log('Running self-check tests...');
@@ -10,6 +10,13 @@ console.log('Running self-check tests...');
 assert.strictEqual(SCORING_WINDOWS.perfect, 0.060, 'Perfect window must be 60ms');
 assert.strictEqual(SCORING_WINDOWS.great, 0.110, 'Great window must be 110ms');
 assert.strictEqual(SCORING_WINDOWS.good, 0.170, 'Good window must be 170ms');
+
+// Level 1 dance tutorial uses more forgiving windows
+assert.strictEqual(SCORING_WINDOWS_L1.perfect, 0.080, 'L1 Perfect window must be 80ms');
+assert.strictEqual(SCORING_WINDOWS_L1.great, 0.160, 'L1 Great window must be 160ms');
+assert.strictEqual(SCORING_WINDOWS_L1.good, 0.250, 'L1 Good window must be 250ms');
+assert.deepStrictEqual(getScoringWindows('level1'), SCORING_WINDOWS_L1, 'level1 must resolve to L1 windows');
+assert.deepStrictEqual(getScoringWindows('level3'), SCORING_WINDOWS, 'level3 must resolve to default windows');
 
 const engine = new ScoringEngine();
 engine.reset();

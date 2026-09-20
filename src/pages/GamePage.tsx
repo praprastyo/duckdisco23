@@ -24,6 +24,7 @@ import { DebugOverlay } from '../components/DebugOverlay/DebugOverlay';
 import { SaveService } from '../services/SaveService';
 import { EnergyData } from '../audio/AudioAnalyser';
 import { InputAction } from '../game/InputManager';
+import { LaneDir } from '../levels/Level1/DanceNoteTrack';
 
 
 interface GamePageProps {
@@ -47,12 +48,13 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [triggerId, setTriggerId] = useState(0);
   const [energy, setEnergy] = useState<EnergyData>({ bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 });
   const [actionEvent, setActionEvent] = useState<{ id: number; action: InputAction }>({ id: 0, action: 'tap' });
+  const [lastDirection, setLastDirection] = useState<LaneDir | null>(null);
 
   const [beatmapEvents, setBeatmapEvents] = useState<BeatmapEvent[]>([]);
 
   useEffect(() => {
     const offset = SaveService.load().settings.timingOffset;
-    const engine = new RhythmEngine(offset);
+    const engine = new RhythmEngine(offset, level.id);
     engineRef.current = engine;
 
     engine.onStatusChange(setStatus);
@@ -70,6 +72,9 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
       setScore(j.score);
       setAccuracy(engine.getScoringEngine().getAccuracy());
       setTriggerId((t) => t + 1);
+      if (j.event?.direction) {
+        setLastDirection(j.event.direction as LaneDir);
+      }
     });
 
     engine.onComplete(onFinish);
@@ -143,7 +148,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
       {/* Main Dynamic Level Stage */}
       <div className="relative z-20 flex flex-col items-center justify-center my-auto w-full">
-        <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />
+        {/* Level 1 has its own dance-line cue system, so skip the generic cue */}
+        {level.id !== 'level1' && <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />}
 
         {/* Dynamic mini-game stage per level */}
         <div className="my-2 flex flex-col items-center w-full">
@@ -152,10 +158,12 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               currentBeat={currentBeat}
               currentCue={currentCue}
               lastJudgement={lastJudgement?.judgement}
+              lastDirection={lastDirection}
               combo={combo}
               events={beatmapEvents}
-              actionEvent={actionEvent}
-              onLaneSwitch={() => engineRef.current?.handlePlayerAction('tap')}
+              isPlaying={status === 'playing'}
+              isComplete={status === 'completed'}
+              onDanceInput={(dir) => engineRef.current?.handlePlayerAction(dir)}
             />
           )}
 
@@ -191,9 +199,12 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
         <RhythmFeedback judgement={lastJudgement?.judgement ?? null} deltaMs={lastJudgement?.deltaMs} triggerId={triggerId} />
 
-        <div className="mt-1">
-          <ComboCounter combo={combo} maxCombo={maxCombo} />
-        </div>
+        {/* Combo counter (Level 1 shows combo in its own stage HUD) */}
+        {level.id !== 'level1' && (
+          <div className="mt-1">
+            <ComboCounter combo={combo} maxCombo={maxCombo} />
+          </div>
+        )}
       </div>
 
       {/* Crowd Duck Silhouettes along the floor (Only for disco nightclub levels 2, 3, 4) */}

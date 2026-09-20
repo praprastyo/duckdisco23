@@ -4,11 +4,30 @@ export interface ScoringWindows {
   good: number;
 }
 
+// Default tactile windows for Levels 2-4
 export const SCORING_WINDOWS: ScoringWindows = {
   perfect: 0.060, // <= 60ms
   great: 0.110,   // <= 110ms
   good: 0.170,    // <= 170ms
 };
+
+// Forgiving windows for the Level 1 dance tutorial
+export const SCORING_WINDOWS_L1: ScoringWindows = {
+  perfect: 0.080, // <= 80ms
+  great: 0.160,   // <= 160ms
+  good: 0.250,    // <= 250ms
+};
+
+export const SCORING_WINDOWS_BY_LEVEL: Record<string, ScoringWindows> = {
+  level1: SCORING_WINDOWS_L1,
+  level2: SCORING_WINDOWS,
+  level3: SCORING_WINDOWS,
+  level4: SCORING_WINDOWS,
+};
+
+export function getScoringWindows(levelId: string): ScoringWindows {
+  return SCORING_WINDOWS_BY_LEVEL[levelId] ?? SCORING_WINDOWS;
+}
 
 export const JUDGEMENT_SCORES = {
   perfect: 1000,

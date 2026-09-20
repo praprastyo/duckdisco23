@@ -50,6 +50,7 @@ const DEFAULT_SAVE_DATA: SaveData = {
   },
   collectibles: {
     neonFeather: false,
+    rainbowFeather: false,
     goldenVinyl: false,
     mirrorFeather: false,
   },
@@ -150,7 +151,7 @@ export class SaveService {
 
     // Auto-unlock collectibles based on clearance
     if (result.cleared) {
-      if (levelId === 'level1') next.collectibles.neonFeather = true;
+      if (levelId === 'level1') next.collectibles.rainbowFeather = true;
       if (levelId === 'level2') next.collectibles.goldenVinyl = true;
       if (levelId === 'level3') next.collectibles.mirrorFeather = true;
       if (levelId === 'level4') next.finalUnlocked = true;

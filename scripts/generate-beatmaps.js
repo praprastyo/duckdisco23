@@ -2,54 +2,66 @@ import fs from 'fs';
 import path from 'path';
 
 function buildLevel1Beatmap() {
-  const bpm = 81, offset = 0.20, beatSec = 60 / bpm;
+  const bpm = 79, offset = 0.20, beatSec = 60 / bpm;
   const events = [];
   let id = 1;
 
-  // 3-Lane Rhythm Dodge Sequence at 81 BPM (Left, Mid, Right)
-  const pattern = [
-    // Intro Tutorial (Beach Ball 🏐)
-    { bar: 1, beat: 4, lane: 'mid', type: 'ball', prompt: '🏐 BOLA DI TENGAH!' },
-    { bar: 2, beat: 4, lane: 'right', type: 'ball', prompt: '🏐 BOLA DI KANAN!' },
-    { bar: 3, beat: 4, lane: 'left', type: 'ball', prompt: '🏐 BOLA DI KIRI!' },
-    { bar: 4, beat: 4, lane: 'mid', type: 'crab', prompt: '🦀 KEPITING TENGAH!' },
+  // Ayodance-style 4-arrow choreography on the Sunset Duck Beach stage.
+  // Phases: Intro tutorial -> Groove combos -> Dance Break -> Final Chorus.
+  const patterns = [
+    // ---- INTRO (single arrow, lots of reading time) ----
+    { bar: 2, dirs: ['left'] },
+    { bar: 4, dirs: ['right'] },
+    { bar: 6, dirs: ['up'] },
+    { bar: 8, dirs: ['down'] },
+    { bar: 10, dirs: ['left'] },
+    { bar: 11, dirs: ['right'] },
 
-    // Alternating Dodge (Crab 🦀 & Bucket 🪣)
-    { bar: 5, beat: 3, lane: 'right', type: 'crab', prompt: '🦀 KEPITING KANAN!' },
-    { bar: 6, beat: 3, lane: 'left', type: 'bucket', prompt: '🪣 EMBER KIRI!' },
-    { bar: 7, beat: 3, lane: 'mid', type: 'crab', prompt: '🦀 KEPITING TENGAH!' },
-    { bar: 8, beat: 3, lane: 'right', type: 'bucket', prompt: '🪣 EMBER KANAN!' },
+    // ---- GROOVE (3-arrow combinations) ----
+    { bar: 13, dirs: ['left', 'up', 'right'] },
+    { bar: 15, dirs: ['down', 'right', 'left'] },
+    { bar: 17, dirs: ['up', 'down', 'up'] },
+    { bar: 19, dirs: ['left', 'right', 'up'] },
+    { bar: 21, dirs: ['down', 'down', 'left'] },
+    { bar: 23, dirs: ['up', 'left', 'down'] },
 
-    // Wave 🌊 (Covers 2 lanes! Player must choose the 1 safe lane!)
-    { bar: 9, beat: 4, lane: 'left', type: 'wave', prompt: '🌊 OMBAK! AMAN DI KIRI!' },
-    { bar: 10, beat: 4, lane: 'right', type: 'wave', prompt: '🌊 OMBAK! AMAN DI KANAN!' },
+    // ---- DANCE BREAK (4-arrow memorised runs) ----
+    { bar: 25, dirs: ['left', 'up', 'right', 'down'] },
+    { bar: 27, dirs: ['up', 'right', 'down', 'left'] },
+    { bar: 29, dirs: ['left', 'right', 'up', 'down'] },
+    { bar: 31, dirs: ['down', 'left', 'up', 'right'] },
 
-    // Surfboard & Party Rush 🏄
-    { bar: 11, beat: 3, lane: 'mid', type: 'surfboard', prompt: '🏄 SURFBOARD TENGAH!' },
-    { bar: 12, beat: 2, lane: 'left', type: 'ball', prompt: '🏐 DODGE KIRI!' },
-    { bar: 12, beat: 4, lane: 'right', type: 'crab', prompt: '🦀 DODGE KANAN!' },
-    { bar: 13, beat: 2, lane: 'mid', type: 'wave', prompt: '🌊 FINALE WAVE!' },
-    { bar: 13, beat: 4, lane: 'right', type: 'ball', prompt: '🎉 BEACH DISCO CLEAR!' },
+    // ---- FINAL CHORUS (full dance flurry) ----
+    { bar: 34, dirs: ['left', 'up', 'right', 'down', 'up', 'down', 'left', 'right'] },
+    { bar: 37, dirs: ['right', 'down', 'left', 'up', 'down', 'left', 'right', 'up'] },
   ];
 
-  for (const p of pattern) {
-    const targetTime = offset + (p.bar * 4 + (p.beat - 1)) * beatSec;
-    const cueTime = targetTime - beatSec * 1.5;
-    events.push({
-      id: `l1_dash_${id++}`,
-      cueTime: Number(cueTime.toFixed(3)),
-      time: Number(targetTime.toFixed(3)),
-      action: 'tap',
-      cue: 'quack',
-      lane: p.lane,
-      obstacleType: p.type,
-      promptText: p.prompt,
-      bar: p.bar,
-      beat: p.beat,
+  const labels = {
+    left: 'Duck Slide',
+    right: 'Wing Spin',
+    up: 'Quack Jump',
+    down: 'Low Groove',
+  };
+
+  for (const p of patterns) {
+    p.dirs.forEach((dir, i) => {
+      const targetTime = offset + (p.bar * 4 + i) * beatSec;
+      const cueTime = targetTime - beatSec * 2;
+      events.push({
+        id: `l1_dance_${id++}`,
+        cueTime: Number(cueTime.toFixed(3)),
+        time: Number(targetTime.toFixed(3)),
+        action: 'tap',
+        cue: 'quack',
+        direction: dir,
+        promptText: labels[dir],
+        bar: p.bar,
+        beat: i + 1,
+      });
     });
   }
 
-  return { bpm, offset, duration: 45, events };
+  return { bpm, offset, duration: 120, events };
 }
 
 

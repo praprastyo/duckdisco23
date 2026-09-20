@@ -92,7 +92,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
         {isGoalMet && !isL4 && (
           <div className="p-4 rounded-2xl bg-gradient-to-r from-yellow-500/20 via-fuchsia-500/20 to-cyan-500/20 border border-yellow-400/40 mb-8 flex items-center justify-center gap-4 animate-pulse">
-            <span className="text-4xl">{level.id === 'level1' ? '🪶' : level.id === 'level2' ? '💿' : '🪞'}</span>
+            <span className="text-4xl">{level.id === 'level1' ? '🌈' : level.id === 'level2' ? '💿' : '🪞'}</span>
             <div className="text-left">
               <span className="text-[9px] uppercase font-mono-rhythm tracking-widest text-yellow-400 block font-bold">ARTIFACT UNLOCKED!</span>
               <span className="font-disco text-lg text-white tracking-wide">{level.collectibleName}</span>

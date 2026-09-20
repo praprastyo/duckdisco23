@@ -106,7 +106,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
       <div className="pt-4 border-t border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg">
-            {level.id === 'level1' ? '🪶' : level.id === 'level2' ? '💿' : level.id === 'level3' ? '🪞' : '🦆'}
+            {level.id === 'level1' ? '🌈' : level.id === 'level2' ? '💿' : level.id === 'level3' ? '🪞' : '🦆'}
           </span>
           <div className="flex flex-col">
             <span className="text-[9px] font-mono-rhythm text-white/40">REWARD</span>

@@ -18,9 +18,10 @@ export interface SongConfig {
 export const songs: Record<string, SongConfig> = {
   level1: {
     id: 'level1',
-    title: 'Quack Beach Dash Tropical Groove',
-    src: '/audio/level-1.mp4',
-    bpm: 81,
+    title: 'Beach Disco Groove',
+    // Swap to '/audio/level-1.mp4' to use your own MP4 soundtrack instead.
+    src: '/audio/level-1.mp3',
+    bpm: 79,
     beatOffset: 0.20,
     intensity: {
       bassMultiplier: 0.8,

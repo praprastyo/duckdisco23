@@ -3,7 +3,7 @@ import { BeatClock } from '../audio/BeatClock';
 import { BeatmapRunner, BeatmapEvent, BeatmapData } from './BeatmapRunner';
 import { InputManager, InputAction } from './InputManager';
 import { ScoringEngine, ScoreSummary } from './ScoringEngine';
-import { JudgementType } from '../config/scoring';
+import { JudgementType, getScoringWindows } from '../config/scoring';
 
 
 export type GameStatus = 'loading' | 'readyToStart' | 'playing' | 'paused' | 'completed' | 'error';
@@ -20,9 +20,9 @@ export interface JudgementEvent {
 export class RhythmEngine {
   private audioEngine = AudioEngine.getInstance();
   private beatClock = new BeatClock();
-  private beatmapRunner = new BeatmapRunner();
+  private beatmapRunner: BeatmapRunner;
   private inputManager = new InputManager();
-  private scoringEngine = new ScoringEngine();
+  private scoringEngine: ScoringEngine;
 
   private status: GameStatus = 'loading';
   private frameId: number | null = null;
@@ -34,7 +34,10 @@ export class RhythmEngine {
   private onCompleteCb: ((summary: ScoreSummary) => void) | null = null;
   private onInputCb: ((action: InputAction) => void) | null = null;
 
-  constructor(timingOffsetMs = 0) {
+  constructor(timingOffsetMs = 0, levelId = 'level1') {
+    const windows = getScoringWindows(levelId);
+    this.beatmapRunner = new BeatmapRunner(windows);
+    this.scoringEngine = new ScoringEngine(windows);
     this.inputManager.setLatencyOffset(timingOffsetMs);
     this.setupListeners();
   }
@@ -136,7 +139,7 @@ export class RhythmEngine {
     this.frameId = requestAnimationFrame(loop);
   }
 
-  public handlePlayerAction(_action: InputAction = 'tap') {
+  public handlePlayerAction(action: InputAction = 'tap') {
     const time = this.audioEngine.getCurrentTime() - this.inputManager.getLatencyOffsetSec();
     const target = this.beatmapRunner.getActiveTarget(time);
     if (!target) {
@@ -144,11 +147,29 @@ export class RhythmEngine {
       return;
     }
 
-    this.beatmapRunner.markHit(target.event.id);
+    // Directional Dance Validation (Level 1 arrow choreography)
+    const ev = target.event;
+    const required = ev.direction;
+    if (required && action !== required) {
+      // Wrong dance move breaks combo but leaves the note hittable
+      this.scoringEngine.registerMiss();
+      this.audioEngine.playSfx('miss');
+      this.onJudgementCb?.({
+        judgement: 'miss',
+        deltaMs: 0,
+        points: 0,
+        combo: this.scoringEngine.getCurrentCombo(),
+        score: this.scoringEngine.getScore(),
+        event: ev,
+      });
+      return;
+    }
+
+    this.beatmapRunner.markHit(ev.id);
     const result = this.scoringEngine.judge(target.deltaSec);
 
     if (result.judgement !== 'miss') {
-      const cue = target.event.cue;
+      const cue = ev.cue;
       if (cue === 'quack') this.audioEngine.playSfx('quack');
       else if (cue === 'scratch') this.audioEngine.playSfx('scratch');
       else if (cue === 'clap') this.audioEngine.playSfx('clap');

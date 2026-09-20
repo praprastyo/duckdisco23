@@ -1,4 +1,6 @@
-import { SCORING_WINDOWS } from '../config/scoring';
+import { SCORING_WINDOWS, ScoringWindows } from '../config/scoring';
+
+export type DanceDirection = 'left' | 'right' | 'up' | 'down';
 
 export interface BeatmapEvent {
   id: string;
@@ -10,7 +12,7 @@ export interface BeatmapEvent {
   promptText?: string;
   lane?: 'left' | 'mid' | 'right';
   obstacleType?: string;
-
+  direction?: DanceDirection;
   bar?: number;
   beat?: number;
 }
@@ -29,9 +31,14 @@ export class BeatmapRunner {
   private nextCueIndex: number = 0;
   private nextHitIndex: number = 0;
   private hitStates: Map<string, boolean> = new Map();
+  private windows: ScoringWindows = SCORING_WINDOWS;
 
   private onCueCallback: ((event: BeatmapEvent) => void) | null = null;
   private onMissCallback: ((event: BeatmapEvent) => void) | null = null;
+
+  constructor(windows?: ScoringWindows) {
+    if (windows) this.windows = windows;
+  }
 
   public load(data: BeatmapData): void {
     // Sort events strictly by target time
@@ -77,7 +84,7 @@ export class BeatmapRunner {
     }
 
     // 2. Check for auto-misses on unhit past events
-    const missThreshold = SCORING_WINDOWS.good;
+    const missThreshold = this.windows.good;
     while (this.nextHitIndex < this.events.length) {
       const ev = this.events[this.nextHitIndex];
       if (this.hitStates.get(ev.id)) {
@@ -102,7 +109,7 @@ export class BeatmapRunner {
    * Find closest unhit event within interactive window
    */
   public getActiveTarget(currentTime: number): { event: BeatmapEvent; deltaSec: number } | null {
-    const missThreshold = SCORING_WINDOWS.good;
+    const missThreshold = this.windows.good;
 
     for (let i = this.nextHitIndex; i < this.events.length; i++) {
       const ev = this.events[i];

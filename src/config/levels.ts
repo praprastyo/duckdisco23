@@ -9,7 +9,7 @@ export interface LevelConfig {
   environmentName: string;
   song: SongConfig;
   collectibleName: string;
-  collectibleKey?: 'neonFeather' | 'goldenVinyl' | 'mirrorFeather';
+  collectibleKey?: 'neonFeather' | 'rainbowFeather' | 'goldenVinyl' | 'mirrorFeather';
   visualIntensity: number;
   difficulty: string;
   instructions: string[];
@@ -19,19 +19,19 @@ export const LEVELS: LevelConfig[] = [
   {
     id: 'level1',
     levelNumber: 1,
-    title: 'QUACK BEACH DASH',
+    title: 'QUACK DANCE PARTY',
     dateDisplay: '20 SEP 2026',
-    subtitle: 'Tropical Disco Beach • 3-Lane Rhythm Dodge',
-    environmentName: 'Tropical Disco Coast',
+    subtitle: 'Sunset Duck Beach Party • Ayodance Rhythm Dance',
+    environmentName: 'Sunset Duck Beach Stage',
     song: songs.level1,
     collectibleName: 'RAINBOW FEATHER',
-    collectibleKey: 'neonFeather',
+    collectibleKey: 'rainbowFeather',
     visualIntensity: 0.35,
-    difficulty: 'TROPICAL GROOVE • 81 BPM',
+    difficulty: 'BEACH DISCO GROOVE • 79 BPM',
     instructions: [
-      'DJ Quack berjalan di pantai menyusuri 3 jalur (Kiri, Tengah, Kanan).',
-      'Perhatikan rintangan (bola pantai 🏐, kepiting 🦀, ember pasir 🪣, ombak 🌊).',
-      'Tekan ← atau → untuk berpindah jalur sebelum rintangan tiba!',
+      'Ikuti koreografi panah: ← Duck Slide, ↑ Quack Jump, → Wing Spin, ↓ Low Groove.',
+      'Tekan tombol arah yang cocok tepat saat panah menyentuh Dance Line.',
+      'Jaga combo untuk menyalakan lampu pantai dan membuka Beach Disco Mode!',
     ],
   },
   {

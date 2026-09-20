@@ -1,4 +1,4 @@
-import { SCORING_WINDOWS, JUDGEMENT_SCORES, JUDGEMENT_ACCURACY_WEIGHTS, JudgementType, getGradeTier, FinalGradeConfig } from '../config/scoring';
+import { SCORING_WINDOWS, ScoringWindows, JUDGEMENT_SCORES, JUDGEMENT_ACCURACY_WEIGHTS, JudgementType, getGradeTier, FinalGradeConfig } from '../config/scoring';
 
 export interface ScoreSummary {
   score: number;
@@ -22,7 +22,11 @@ export class ScoringEngine {
   private goodCount: number = 0;
   private missCount: number = 0;
 
-  private windows = SCORING_WINDOWS;
+  private windows: ScoringWindows = SCORING_WINDOWS;
+
+  constructor(windows?: ScoringWindows) {
+    if (windows) this.windows = windows;
+  }
 
   public reset(): void {
     this.score = 0;

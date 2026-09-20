@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-const SAMPLE_RATE = 44100;
+// Mutable so long tracks can render at a lighter sample rate.
+let SAMPLE_RATE = 44100;
 
 function createWavHeader(numChannels, sampleRate, bitsPerSample, numSamples) {
   const byteRate = (sampleRate * numChannels * bitsPerSample) / 8;
@@ -138,17 +139,18 @@ const outDir = path.resolve('public/audio');
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 const tracks = [
-  { file: 'level-1.mp3', bpm: 81, dur: 45, style: 'level1' },
-  { file: 'level-2.mp3', bpm: 118, dur: 36, style: 'level2' },
-  { file: 'level-3.mp3', bpm: 126, dur: 36, style: 'level3' },
-  { file: 'level-4.mp3', bpm: 124, dur: 45, style: 'level4' },
+  { file: 'level-1.mp3', bpm: 79, dur: 120, style: 'level1', rate: 22050 },
+  { file: 'level-2.mp3', bpm: 118, dur: 36, style: 'level2', rate: 44100 },
+  { file: 'level-3.mp3', bpm: 126, dur: 36, style: 'level3', rate: 44100 },
+  { file: 'level-4.mp3', bpm: 124, dur: 45, style: 'level4', rate: 44100 },
 ];
 
 
 console.log('Synthesizing disco soundtracks...');
 for (const t of tracks) {
+  SAMPLE_RATE = t.rate ?? 44100;
   const wavBuf = synthTrack(t.bpm, t.dur, t.style);
   fs.writeFileSync(path.join(outDir, t.file), wavBuf);
-  console.log(`Saved ${t.file} (${(wavBuf.length / 1024 / 1024).toFixed(2)} MB, ${t.bpm} BPM)`);
+  console.log(`Saved ${t.file} (${(wavBuf.length / 1024 / 1024).toFixed(2)} MB, ${t.bpm} BPM, ${SAMPLE_RATE} Hz)`);
 }
 console.log('All soundtracks ready.');

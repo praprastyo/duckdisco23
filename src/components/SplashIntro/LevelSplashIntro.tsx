@@ -40,9 +40,9 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
   const levelBadges: Record<string, { icon: string; tag: string; controls: string; desc: string }> = {
     level1: {
       icon: '🏖️',
-      tag: 'QUACK BEACH DASH',
-      controls: '← MOVE LEFT / MOVE RIGHT →',
-      desc: '3-Lane Beach Runner (Kiri, Tengah, Kanan). Pindah jalur menghindari rintangan mengikuti ketukan lagu 81 BPM!',
+      tag: 'QUACK DANCE PARTY',
+      controls: '← SLIDE / ↑ JUMP / → SPIN / ↓ GROOVE',
+      desc: 'Ayodance-style rhythm dance di panggung pantai. Tekan tombol panah tepat saat panah menyentuh Dance Line!',
     },
     level2: {
       icon: '🦖',
