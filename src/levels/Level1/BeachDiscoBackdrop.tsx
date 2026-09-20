@@ -36,7 +36,25 @@ export const BeachDiscoBackdrop: React.FC<BeachDiscoBackdropProps> = ({ beat, co
         <div className="w-28 h-28 rounded-full bg-gradient-to-t from-yellow-300 via-orange-400 to-amber-200 opacity-90" />
       </div>
 
+      {/* Beach Fireworks when combo >= 15 */}
+      {combo >= 15 && (
+        <div className="absolute inset-x-0 top-12 flex justify-around pointer-events-none">
+          <span className={`text-4xl transition-all duration-200 ${isEven ? 'scale-125 opacity-100' : 'scale-75 opacity-30'}`}>
+            🎆
+          </span>
+          {combo >= 30 && (
+            <span className={`text-5xl transition-all duration-200 ${!isEven ? 'scale-125 opacity-100' : 'scale-75 opacity-30'}`}>
+              🎇
+            </span>
+          )}
+          <span className={`text-4xl transition-all duration-200 ${isEven ? 'scale-125 opacity-100' : 'scale-75 opacity-30'}`}>
+            🎆
+          </span>
+        </div>
+      )}
+
       {/* Ocean band */}
+
       <div className="absolute inset-x-0 top-[62%] h-[14%] bg-gradient-to-b from-[#0e7490] to-[#0ea5e9] opacity-80">
         {[0, 1, 2, 3, 4].map((i) => (
           <div

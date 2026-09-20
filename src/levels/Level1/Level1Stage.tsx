@@ -14,6 +14,8 @@ interface Level1StageProps {
   events?: BeatmapEvent[];
   isPlaying?: boolean;
   isComplete?: boolean;
+  missCount?: number;
+  maxMisses?: number;
   onDanceInput: (dir: InputAction) => void;
 }
 
@@ -29,6 +31,8 @@ export const Level1Stage: React.FC<Level1StageProps> = ({
   events = [],
   isPlaying = false,
   isComplete = false,
+  missCount = 0,
+  maxMisses = 10,
   onDanceInput,
 }) => {
   return (
@@ -40,10 +44,13 @@ export const Level1Stage: React.FC<Level1StageProps> = ({
       combo={combo}
       isPlaying={isPlaying}
       isComplete={isComplete}
+      missCount={missCount}
+      maxMisses={maxMisses}
       onDanceInput={onDanceInput}
     />
   );
 };
+
 
 
 

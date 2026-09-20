@@ -1,8 +1,10 @@
 import React from 'react';
 import { DancePose, QuackSprite } from './QuackSprite';
+import { BackupDancers } from './BackupDancers';
 
 export { ARROW_ICONS, MOVE_NAMES } from './QuackSprite';
 export type { DancePose } from './QuackSprite';
+
 
 /** Extra particle / aura layer that fires for the current dance move. */
 const PoseEffects: React.FC<{ pose: DancePose }> = ({ pose }) => {
@@ -71,16 +73,18 @@ interface QuackDancerProps {
   pose: DancePose;
   beat: number;
   combo: number;
+  missStreak?: number;
 }
 
 /**
  * Driving wrapper for the DJ Quack sprite.
- * Combo tiers unlock extra stage lighting on the dancer itself.
+ * Combo tiers unlock backup dancers and extra stage lighting.
  */
-export const QuackDancer: React.FC<QuackDancerProps> = ({ pose, beat, combo }) => {
+export const QuackDancer: React.FC<QuackDancerProps> = ({ pose, beat, combo, missStreak = 0 }) => {
   const isEven = beat % 2 === 0;
   const isFever = combo >= 25;
   const isDisco = combo >= 50;
+  const isFrustrated = missStreak >= 2;
 
   const glow = isDisco
     ? 'drop-shadow-[0_0_30px_rgba(236,72,153,0.9)]'
@@ -91,11 +95,15 @@ export const QuackDancer: React.FC<QuackDancerProps> = ({ pose, beat, combo }) =
   return (
     <div className="relative flex flex-col items-center select-none pointer-events-none">
       <PoseEffects pose={pose} />
+
+      {/* Backup Dancers appear when combo >= 5! */}
+      <BackupDancers pose={pose} beat={beat} combo={combo} />
+
       <div
-        className={`transition-all duration-150 ease-out ${glow}`}
+        className={`transition-all duration-150 ease-out z-10 ${glow}`}
         style={{ transform: BODY_TRANSFORM[pose](isEven ? -4 : 0) }}
       >
-        <QuackSprite pose={pose} isEven={isEven} isFever={isFever} />
+        <QuackSprite pose={pose} isEven={isEven} isFever={isFever} isFrustrated={isFrustrated} />
       </div>
     </div>
   );

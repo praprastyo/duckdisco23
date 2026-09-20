@@ -11,11 +11,11 @@ export const SCORING_WINDOWS: ScoringWindows = {
   good: 0.170,    // <= 170ms
 };
 
-// Forgiving windows for the Level 1 dance tutorial
+// Forgiving windows for the Level 1 dance tutorial (widened for easy hits)
 export const SCORING_WINDOWS_L1: ScoringWindows = {
-  perfect: 0.080, // <= 80ms
-  great: 0.160,   // <= 160ms
-  good: 0.250,    // <= 250ms
+  perfect: 0.130, // <= 130ms
+  great: 0.220,   // <= 220ms
+  good: 0.340,    // <= 340ms
 };
 
 export const SCORING_WINDOWS_BY_LEVEL: Record<string, ScoringWindows> = {

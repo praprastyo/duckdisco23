@@ -12,9 +12,9 @@ assert.strictEqual(SCORING_WINDOWS.great, 0.110, 'Great window must be 110ms');
 assert.strictEqual(SCORING_WINDOWS.good, 0.170, 'Good window must be 170ms');
 
 // Level 1 dance tutorial uses more forgiving windows
-assert.strictEqual(SCORING_WINDOWS_L1.perfect, 0.080, 'L1 Perfect window must be 80ms');
-assert.strictEqual(SCORING_WINDOWS_L1.great, 0.160, 'L1 Great window must be 160ms');
-assert.strictEqual(SCORING_WINDOWS_L1.good, 0.250, 'L1 Good window must be 250ms');
+assert.strictEqual(SCORING_WINDOWS_L1.perfect, 0.130, 'L1 Perfect window must be 130ms');
+assert.strictEqual(SCORING_WINDOWS_L1.great, 0.220, 'L1 Great window must be 220ms');
+assert.strictEqual(SCORING_WINDOWS_L1.good, 0.340, 'L1 Good window must be 340ms');
 assert.deepStrictEqual(getScoringWindows('level1'), SCORING_WINDOWS_L1, 'level1 must resolve to L1 windows');
 assert.deepStrictEqual(getScoringWindows('level3'), SCORING_WINDOWS, 'level3 must resolve to default windows');
 

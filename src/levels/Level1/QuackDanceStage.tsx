@@ -15,6 +15,8 @@ interface QuackDanceStageProps {
   combo: number;
   isPlaying: boolean;
   isComplete: boolean;
+  missCount?: number;
+  maxMisses?: number;
   onDanceInput: (dir: InputAction) => void;
 }
 
@@ -26,11 +28,14 @@ export const QuackDanceStage: React.FC<QuackDanceStageProps> = ({
   combo,
   isPlaying,
   isComplete,
+  missCount = 0,
+  maxMisses = 10,
   onDanceInput,
 }) => {
   const [pose, setPose] = useState<DancePose>('idle');
   const [activeLane, setActiveLane] = useState<LaneDir | null>(null);
   const [moveLabel, setMoveLabel] = useState('');
+  const [missStreak, setMissStreak] = useState(0);
   const poseTimer = useRef<number | null>(null);
 
   const triggerPose = useCallback((next: DancePose, label: string) => {
@@ -45,13 +50,18 @@ export const QuackDanceStage: React.FC<QuackDanceStageProps> = ({
 
   // Dance pose driven by the direction of the note that was just judged
   useEffect(() => {
-    if (!lastJudgement || !lastDirection) return;
+    if (!lastJudgement) return;
     if (lastJudgement === 'miss') {
+      setMissStreak((prev) => prev + 1);
       triggerPose('miss', 'MISSED STEP');
     } else {
-      triggerPose(POSE_BY_DIR[lastDirection], lastDirection.toUpperCase());
+      setMissStreak(0);
+      if (lastDirection) {
+        triggerPose(POSE_BY_DIR[lastDirection], lastDirection.toUpperCase());
+      }
     }
   }, [lastJudgement, lastDirection, triggerPose]);
+
 
   // Celebration pose on song clear
   useEffect(() => {
@@ -112,9 +122,9 @@ export const QuackDanceStage: React.FC<QuackDanceStageProps> = ({
             )}
           </div>
 
-          <QuackDancer pose={pose} beat={currentBeat} combo={combo} />
+          <QuackDancer pose={pose} beat={currentBeat} combo={combo} missStreak={missStreak} />
 
-          <div className="mt-1 flex items-center gap-2">
+          <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
             <div className="px-3 py-0.5 rounded-full bg-black/55 border border-yellow-500/40 text-[10px] font-mono-rhythm tracking-widest text-yellow-300 uppercase">
               DJ QUACK {isFever ? '• NEON MODE' : ''}
             </div>
@@ -123,8 +133,15 @@ export const QuackDanceStage: React.FC<QuackDanceStageProps> = ({
                 {combo}× COMBO
               </div>
             )}
+            <div className="px-3 py-0.5 rounded-full bg-black/55 border border-white/20 text-[10px] font-mono-rhythm flex items-center gap-1.5">
+              <span className="text-white/50">MISS:</span>
+              <span className={`font-black ${missCount >= 8 ? 'text-rose-400 animate-pulse' : missCount >= 5 ? 'text-amber-300' : 'text-emerald-400'}`}>
+                {missCount}/{maxMisses}
+              </span>
+            </div>
           </div>
         </div>
+
 
         {/* Touch pad */}
         <div className="shrink-0 mt-1 lg:mt-0">

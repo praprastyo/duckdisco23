@@ -6,7 +6,7 @@ import { ScoringEngine, ScoreSummary } from './ScoringEngine';
 import { JudgementType, getScoringWindows } from '../config/scoring';
 
 
-export type GameStatus = 'loading' | 'readyToStart' | 'playing' | 'paused' | 'completed' | 'error';
+export type GameStatus = 'loading' | 'readyToStart' | 'playing' | 'paused' | 'completed' | 'failed' | 'error';
 
 export interface JudgementEvent {
   judgement: JudgementType;
@@ -27,6 +27,7 @@ export class RhythmEngine {
   private status: GameStatus = 'loading';
   private frameId: number | null = null;
   private isAutoplay = false;
+  private maxMisses = 10;
 
   private onJudgementCb: ((e: JudgementEvent) => void) | null = null;
   private onCueCb: ((e: BeatmapEvent) => void) | null = null;
@@ -55,6 +56,7 @@ export class RhythmEngine {
         score: this.scoringEngine.getScore(),
         event: ev,
       });
+      this.checkMissLimit();
     });
     this.inputManager.subscribe((action) => {
       if (this.status !== 'playing' || this.isAutoplay) return;
@@ -62,6 +64,7 @@ export class RhythmEngine {
       this.handlePlayerAction(action);
     });
   }
+
 
 
   public async initializeLevel(trackUrl: string, beatmapData: BeatmapData): Promise<void> {
@@ -160,8 +163,8 @@ export class RhythmEngine {
       else this.audioEngine.playSfx('cowbell');
     } else {
       this.audioEngine.playSfx('miss');
+      this.checkMissLimit();
     }
-
 
     this.onJudgementCb?.({
       judgement: result.judgement,
@@ -171,6 +174,18 @@ export class RhythmEngine {
       score: this.scoringEngine.getScore(),
       event: target.event,
     });
+  }
+
+  private checkMissLimit() {
+    if (this.scoringEngine.getMissCount() >= this.maxMisses && this.status === 'playing') {
+      this.handleStageFailed();
+    }
+  }
+
+  private handleStageFailed() {
+    this.stop();
+    this.audioEngine.playSfx('scratch');
+    this.setStatus('failed');
   }
 
   private handleTrackComplete() {
@@ -183,8 +198,11 @@ export class RhythmEngine {
   public getBeatmapRunner() { return this.beatmapRunner; }
   public getScoringEngine() { return this.scoringEngine; }
   public getStatus() { return this.status; }
+  public getMaxMisses() { return this.maxMisses; }
+  public setMaxMisses(val: number) { this.maxMisses = val; }
   public setAutoplay(v: boolean) { this.isAutoplay = v; }
   public getAutoplay() { return this.isAutoplay; }
+
 
   public onJudgement(cb: (e: JudgementEvent) => void) { this.onJudgementCb = cb; }
   public onCue(cb: (e: BeatmapEvent) => void) { this.onCueCb = cb; }

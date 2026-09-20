@@ -121,4 +121,7 @@ export class ScoringEngine {
   public getCurrentCombo(): number { return this.currentCombo; }
   public getMaxCombo(): number { return this.maxCombo; }
   public getScore(): number { return this.score; }
+  public getMissCount(): number { return this.missCount; }
+  public getPerfectCount(): number { return this.perfectCount; }
 }
+

@@ -21,25 +21,43 @@ interface QuackSpriteProps {
   pose: DancePose;
   isEven: boolean;
   isFever: boolean;
+  isFrustrated?: boolean;
 }
 
-/**
- * DJ Quack's 2D skeletal sprite. Body parts swap scale/rotation per pose
- * so each arrow key produces a visibly different dance move.
- */
-export const QuackSprite: React.FC<QuackSpriteProps> = ({ pose, isEven, isFever }) => (
+export const QuackSprite: React.FC<QuackSpriteProps> = ({ pose, isEven, isFever, isFrustrated = false }) => (
   <svg width="150" height="170" viewBox="0 0 150 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Sweat droplets if frustrated / missing repeatedly */}
+    {isFrustrated && (
+      <g className="animate-bounce">
+        <text x="32" y="50" fontSize="18">💦</text>
+        <text x="104" y="44" fontSize="14">💧</text>
+      </g>
+    )}
+
+    {/* Fever aura rings if high combo */}
+    {isFever && (
+      <circle cx="75" cy="85" r="60" stroke="#facc15" strokeWidth="2" strokeDasharray="6 6" className="animate-spin-slow opacity-60" />
+    )}
+
     <path d="M 40 62 C 40 30, 110 30, 110 62" stroke="#f43f5e" strokeWidth="9" strokeLinecap="round" />
     <rect x="28" y="54" width="15" height="26" rx="7" fill="#1e1b4b" stroke="#e11d48" strokeWidth="3" />
     <rect x="107" y="54" width="15" height="26" rx="7" fill="#1e1b4b" stroke="#e11d48" strokeWidth="3" />
 
-    <g style={{ transform: `translateY(${isEven ? -4 : 0}px)` }}>
+    {/* Head: slumps if frustrated, bobs if normal */}
+    <g style={{
+      transform: isFrustrated
+        ? 'translateY(10px) rotate(14deg)'
+        : `translateY(${isEven ? -4 : 0}px)`
+    }}>
       <circle cx="75" cy="72" r="34" fill="url(#qkHead)" stroke="#ca8a04" strokeWidth="2" />
-      <path d="M 48 64 L 72 64 C 74 64, 75 66, 75 68 L 72 80 C 71 82, 69 83, 67 83 L 53 83 C 50 83, 48 81, 48 78 Z" fill="#09090b" stroke="#06b6d4" strokeWidth="2.5" />
-      <path d="M 78 64 L 102 64 C 104 64, 105 66, 105 68 L 102 80 C 101 82, 99 83, 97 83 L 83 83 C 80 83, 78 81, 78 78 Z" fill="#09090b" stroke="#06b6d4" strokeWidth="2.5" />
-      <line x1="72" y1="68" x2="78" y2="68" stroke="#06b6d4" strokeWidth="2.5" />
-      <line x1="52" y1="69" x2="62" y2="79" stroke={isFever ? '#facc15' : '#ec4899'} strokeWidth="2" strokeLinecap="round" />
-      <line x1="82" y1="69" x2="92" y2="79" stroke={isFever ? '#facc15' : '#ec4899'} strokeWidth="2" strokeLinecap="round" />
+      {/* Sunglasses: crooked if frustrated, laser shine if fever */}
+      <g transform={isFrustrated ? 'rotate(18 75 72)' : undefined}>
+        <path d="M 48 64 L 72 64 C 74 64, 75 66, 75 68 L 72 80 C 71 82, 69 83, 67 83 L 53 83 C 50 83, 48 81, 48 78 Z" fill="#09090b" stroke="#06b6d4" strokeWidth="2.5" />
+        <path d="M 78 64 L 102 64 C 104 64, 105 66, 105 68 L 102 80 C 101 82, 99 83, 97 83 L 83 83 C 80 83, 78 81, 78 78 Z" fill="#09090b" stroke="#06b6d4" strokeWidth="2.5" />
+        <line x1="72" y1="68" x2="78" y2="68" stroke="#06b6d4" strokeWidth="2.5" />
+        <line x1="52" y1="69" x2="62" y2="79" stroke={isFever ? '#facc15' : '#ec4899'} strokeWidth="2" strokeLinecap="round" />
+        <line x1="82" y1="69" x2="92" y2="79" stroke={isFever ? '#facc15' : '#ec4899'} strokeWidth="2" strokeLinecap="round" />
+      </g>
       <ellipse cx="75" cy="92" rx="17" ry="9" fill="#f97316" stroke="#c2410c" strokeWidth="2" />
       <ellipse cx="75" cy="89" rx="14" ry="4.5" fill="#fb923c" />
     </g>

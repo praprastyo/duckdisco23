@@ -47,6 +47,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [maxCombo, setMaxCombo] = useState(0);
   const [score, setScore] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
+  const [missCount, setMissCount] = useState(0);
   const [triggerId, setTriggerId] = useState(0);
   const [energy, setEnergy] = useState<EnergyData>({ bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 });
   const [actionEvent, setActionEvent] = useState<{ id: number; action: InputAction }>({ id: 0, action: 'tap' });
@@ -63,7 +64,6 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   };
 
   useEffect(() => {
-
     const offset = SaveService.load().settings.timingOffset;
     const engine = new RhythmEngine(offset, level.id);
     engineRef.current = engine;
@@ -75,18 +75,19 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
       setActionEvent({ id: performance.now(), action });
     });
 
-
     engine.onJudgement((j) => {
       setLastJudgement(j);
       setCombo(j.combo);
       setMaxCombo((m) => Math.max(m, j.combo));
       setScore(j.score);
       setAccuracy(engine.getScoringEngine().getAccuracy());
+      setMissCount(engine.getScoringEngine().getMissCount());
       setTriggerId((t) => t + 1);
       if (j.event?.direction) {
         setLastDirection(j.event.direction as LaneDir);
       }
     });
+
 
     engine.onComplete(onFinish);
 
@@ -174,6 +175,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               events={beatmapEvents}
               isPlaying={status === 'playing'}
               isComplete={status === 'completed'}
+              missCount={missCount}
+              maxMisses={engineRef.current?.getMaxMisses() || 10}
               onDanceInput={(dir) => engineRef.current?.handlePlayerAction(dir)}
             />
           )}
@@ -247,7 +250,44 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         </div>
       )}
 
+      {/* Stage Failed (10 Miss Reached) Overlay */}
+      {status === 'failed' && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg flex flex-col items-center justify-center p-6 text-center select-none animate-fadeIn">
+          <div className="w-20 h-20 rounded-full bg-rose-600/30 border-2 border-rose-500 flex items-center justify-center text-4xl mb-4 animate-bounce">
+            😵
+          </div>
+          <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
+            OUT OF GROOVE • 10 MISS REACHED
+          </span>
+          <h2 className="font-disco text-4xl sm:text-5xl text-white neon-glow-magenta mb-3">
+            STAGE FAILED!
+          </h2>
+          <p className="max-w-md text-white/70 text-xs sm:text-sm font-mono-rhythm mb-8 leading-relaxed">
+            DJ Quack kelelahan karena terlalu banyak langkah yang meleset (Batas maksimal 10 Miss). Jangan menyerah, coba lagi dan ikuti irama panah!
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
+            <button
+              onClick={() => {
+                setMissCount(0);
+                engineRef.current?.restart();
+              }}
+              className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco text-sm font-bold tracking-wider uppercase shadow-[0_0_25px_rgba(234,179,8,0.5)] active:scale-95 transition-all cursor-pointer"
+            >
+              🔁 TRY AGAIN
+            </button>
+            <button
+              onClick={onExit}
+              className="flex-1 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco text-sm tracking-wider uppercase border border-white/20 active:scale-95 transition-all cursor-pointer"
+            >
+              🚪 EXIT
+            </button>
+          </div>
+        </div>
+      )}
+
       <PauseMenu
+
         isOpen={status === 'paused'}
         onResume={() => engineRef.current?.resume()}
         onRestart={() => engineRef.current?.restart()}
