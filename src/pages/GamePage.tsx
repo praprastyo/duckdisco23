@@ -191,6 +191,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               combo={combo}
               score={score}
               accuracy={accuracy}
+              missCount={missCount}
+              maxMisses={engineRef.current?.getMaxMisses() || 15}
               isPlaying={status === 'playing'}
               isComplete={status === 'completed'}
               onTargetClick={(id) => engineRef.current?.handleTargetClick(id)}
@@ -266,13 +268,13 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
             😵
           </div>
           <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
-            OUT OF GROOVE • 10 MISS LIMIT
+            OUT OF GROOVE • {engineRef.current?.getMaxMisses() || 15} MISS LIMIT
           </span>
           <h2 className="font-disco text-4xl sm:text-5xl text-white neon-glow-magenta mb-3">
             KEEP GOING!
           </h2>
           <p className="max-w-md text-white/70 text-xs sm:text-sm font-mono-rhythm mb-8 leading-relaxed">
-            A few steps fell off-beat (10 miss limit). Don't give up, keep to the rhythm and try again to unlock the secret gift!
+            A few steps fell off-beat ({engineRef.current?.getMaxMisses() || 15} miss limit). Don't give up, keep to the rhythm and try again to unlock the secret gift!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">

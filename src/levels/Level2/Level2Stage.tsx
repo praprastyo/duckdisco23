@@ -12,6 +12,8 @@ interface Level2StageProps {
   combo: number;
   score?: number;
   accuracy?: number;
+  missCount?: number;
+  maxMisses?: number;
   isPlaying?: boolean;
   isComplete?: boolean;
   onTargetClick?: (noteId: string) => void;
@@ -24,6 +26,8 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
   combo,
   score = 0,
   accuracy = 100,
+  missCount = 0,
+  maxMisses = 15,
   isComplete = false,
   onTargetClick,
 }) => {
@@ -63,7 +67,7 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
             </span>
           )}
         </div>
-        <div className="flex items-center gap-4 text-xs font-mono-rhythm">
+        <div className="flex items-center gap-3 text-xs font-mono-rhythm">
           <span className="text-white/60">
             SCORE: <strong className="text-yellow-300 font-bold">{score.toLocaleString()}</strong>
           </span>
@@ -73,6 +77,20 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
           <span className="text-fuchsia-300 font-bold">
             COMBO: <strong className="text-fuchsia-400 text-sm font-black">{combo}×</strong>
           </span>
+          <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-black/60 border border-white/15">
+            <span className="text-white/50 text-[10px]">MISS:</span>
+            <span
+              className={`font-black text-xs ${
+                missCount >= maxMisses - 3
+                  ? 'text-rose-400 animate-pulse'
+                  : missCount >= 8
+                  ? 'text-amber-300'
+                  : 'text-emerald-400'
+              }`}
+            >
+              {missCount}/{maxMisses}
+            </span>
+          </div>
         </div>
       </div>
 

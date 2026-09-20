@@ -30,7 +30,7 @@ export class RhythmEngine {
   private maxMisses = 10;
   private levelId: string = 'level1';
 
-  private onJudgementCb: ((e: JudgementEvent) => void) | null = null;
+  private judgementListeners: Set<(e: JudgementEvent) => void> = new Set();
   private onCueCb: ((e: BeatmapEvent) => void) | null = null;
   private onStatusCb: ((s: GameStatus) => void) | null = null;
   private onCompleteCb: ((summary: ScoreSummary) => void) | null = null;
@@ -43,9 +43,13 @@ export class RhythmEngine {
     this.scoringEngine = new ScoringEngine(windows);
     this.inputManager.setLatencyOffset(timingOffsetMs);
     if (levelId === 'level2') {
-      this.maxMisses = 999999; // Allow completing full track on Level 2 Quack Beat Pop
+      this.maxMisses = 15; // User requirement: Max 15 misses for Level 2 Quack Beat Pop
     }
     this.setupListeners();
+  }
+
+  private emitJudgement(e: JudgementEvent) {
+    this.judgementListeners.forEach((cb) => cb(e));
   }
 
   private setupListeners() {
@@ -53,7 +57,7 @@ export class RhythmEngine {
     this.beatmapRunner.onMiss((ev) => {
       const res = this.scoringEngine.registerMiss();
       this.audioEngine.playSfx('miss');
-      this.onJudgementCb?.({
+      this.emitJudgement({
         judgement: res.judgement,
         deltaMs: 0,
         points: 0,
@@ -182,7 +186,7 @@ export class RhythmEngine {
       this.checkMissLimit();
     }
 
-    this.onJudgementCb?.({
+    this.emitJudgement({
       judgement: result.judgement,
       deltaMs: result.deltaMs,
       points: result.points,
@@ -230,7 +234,7 @@ export class RhythmEngine {
       event: ev,
     };
 
-    this.onJudgementCb?.(jEv);
+    this.emitJudgement(jEv);
     return jEv;
   }
 
@@ -261,8 +265,10 @@ export class RhythmEngine {
   public setAutoplay(v: boolean) { this.isAutoplay = v; }
   public getAutoplay() { return this.isAutoplay; }
 
-
-  public onJudgement(cb: (e: JudgementEvent) => void) { this.onJudgementCb = cb; }
+  public onJudgement(cb: (e: JudgementEvent) => void): () => void {
+    this.judgementListeners.add(cb);
+    return () => this.judgementListeners.delete(cb);
+  }
   public onCue(cb: (e: BeatmapEvent) => void) { this.onCueCb = cb; }
   public onStatusChange(cb: (s: GameStatus) => void) { this.onStatusCb = cb; }
   public onInput(cb: (a: InputAction) => void) { this.onInputCb = cb; }

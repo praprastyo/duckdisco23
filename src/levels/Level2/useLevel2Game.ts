@@ -80,7 +80,8 @@ export function useLevel2Game(
       }
     };
 
-    engine.onJudgement(handleJudgement);
+    const unsub = engine.onJudgement(handleJudgement);
+    return () => unsub();
   }, [engine]);
 
   const handlePointerDown = useCallback(
