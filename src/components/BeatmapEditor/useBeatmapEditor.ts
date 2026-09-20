@@ -22,7 +22,7 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
 
   useEffect(() => {
     if (!isOpen) return;
-    fetch('/beatmaps/level1.json')
+    fetch(`/beatmaps/level1.json?t=${Date.now()}`)
       .then((r) => r.json())
       .then((d: BeatmapData) => {
         setBpm(d.bpm || 79);
@@ -30,6 +30,7 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
         setEvents(d.events || []);
       })
       .catch(() => {});
+
   }, [isOpen]);
 
   useEffect(() => {

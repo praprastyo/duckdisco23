@@ -91,13 +91,14 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
     engine.onComplete(onFinish);
 
-    fetch(level.song.beatmap)
+    fetch(`${level.song.beatmap}?t=${Date.now()}`)
       .then((r) => r.json())
       .then((d: BeatmapData) => {
         setBeatmapEvents(d.events);
         return engine.initializeLevel(level.song.src, d);
       })
       .catch(() => setStatus('error'));
+
 
 
     const energyTimer = setInterval(() => {
