@@ -51,13 +51,17 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#07040e] text-white overflow-x-hidden select-none">
-      {/* Background music-reactive canvas */}
-      <DiscoEnvironment
-        analyser={AudioEngine.getInstance().getAnalyser()}
-        intensity={intensity}
-        reducedMotion={saveData.settings.reducedMotion}
-      />
+    <div className={`relative min-h-screen w-full overflow-x-hidden select-none transition-colors duration-500 ${
+      view === 'game' && selectedLevelId === 'level1' ? 'bg-[#5ec5f8]' : 'bg-[#07040e] text-white'
+    }`}>
+      {/* Background music-reactive canvas (Disabled for sunny beach Level 1) */}
+      {!(view === 'game' && selectedLevelId === 'level1') && (
+        <DiscoEnvironment
+          analyser={AudioEngine.getInstance().getAnalyser()}
+          intensity={intensity}
+          reducedMotion={saveData.settings.reducedMotion}
+        />
+      )}
 
       {/* Main Page Routing */}
       {view === 'home' && <HomePage onEnterClub={handleEnterClub} />}
