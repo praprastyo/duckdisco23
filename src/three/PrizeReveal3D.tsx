@@ -155,27 +155,27 @@ export const PrizeReveal3D: React.FC<PrizeReveal3DProps> = () => {
         <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
         <div className="absolute top-4 left-4 pointer-events-none">
           <span className="px-3 py-1 rounded-full bg-black/60 border border-yellow-400/60 text-xs font-mono-rhythm text-yellow-300 font-bold uppercase">
-            ✨ HADIAH 3D BEBEK EMAS DISKO
+            ✨ 3D GOLDEN DONALD DUCK PRIZE
           </span>
         </div>
         <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none">
           <span className="text-[10px] font-mono-rhythm text-white/70 uppercase tracking-widest bg-black/60 px-4 py-1.5 rounded-full border border-white/10">
-            GESER UNTUK MELIHAT HADIAH DARI SEGALA SISI
+            DRAG MOUSE OR TOUCH TO INSPECT 3D GIFT
           </span>
         </div>
       </div>
 
-      {/* Kartu Ucapan Ulang Tahun & Reveal Hadiah (Mudah diedit di file ini) */}
+      {/* Birthday Greeting Card & Gift Reveal (Easily editable here) */}
       <div className="mt-4 p-5 rounded-2xl bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-yellow-500/20 border border-yellow-400/50 text-center shadow-lg animate-fadeIn">
         <div className="text-2xl mb-1">🎂🎉✨</div>
         <h3 className="font-disco text-2xl sm:text-3xl text-yellow-300 neon-glow-gold mb-2">
           HAPPY BIRTHDAY!
         </h3>
         <p className="font-body text-white/90 text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-2">
-          Selamat ulang tahun! Kamu berhasil menyelesaikan semua tantangan irama ini. Kado dan harapan terbaik dipersembahkan spesial khusus untukmu!
+          Happy birthday! You completed all the rhythm quests. Best wishes and a special surprise crafted just for you!
         </p>
         <p className="text-[11px] font-mono-rhythm text-pink-300">
-          🎁 Semoga harimu selalu dipenuhi kebahagiaan, tawa, dan kesuksesan!
+          🎁 May your days always be filled with happiness, laughter, and radiant rhythm!
         </p>
       </div>
     </div>

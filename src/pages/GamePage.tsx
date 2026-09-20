@@ -259,13 +259,13 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
             😵
           </div>
           <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
-            IRAMANYA TERLEPAS • BATAS 10 MISS
+            OUT OF GROOVE • 10 MISS LIMIT
           </span>
           <h2 className="font-disco text-4xl sm:text-5xl text-white neon-glow-magenta mb-3">
-            AYO COBA LAGI!
+            KEEP GOING!
           </h2>
           <p className="max-w-md text-white/70 text-xs sm:text-sm font-mono-rhythm mb-8 leading-relaxed">
-            Langkah tarian masih sedikit meleset. Jangan menyerah, ayo coba lagi demi membuka kado rahasia!
+            A few steps fell off-beat (10 miss limit). Don't give up, keep to the rhythm and try again to unlock the secret gift!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
@@ -276,13 +276,13 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               }}
               className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco text-sm font-bold tracking-wider uppercase shadow-[0_0_25px_rgba(234,179,8,0.5)] active:scale-95 transition-all cursor-pointer"
             >
-              🔁 COBA LAGI
+              🔁 TRY AGAIN
             </button>
             <button
               onClick={onExit}
               className="flex-1 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco text-sm tracking-wider uppercase border border-white/20 active:scale-95 transition-all cursor-pointer"
             >
-              🚪 KELUAR
+              🚪 EXIT
             </button>
           </div>
         </div>

@@ -40,27 +40,27 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
   const levelBadges: Record<string, { icon: string; tag: string; controls: string; desc: string }> = {
     level1: {
       icon: '🏖️',
-      tag: 'MISI 1 • PANTAI DISKO',
-      controls: '← GESER / ↑ LOMPAT / → PUTAR SAYAP / ↓ SANTUI',
-      desc: 'Tarian ritme pantai ala Ayodance. Tekan tombol panah tepat saat nada menyentuh garis dansa untuk membuka petunjuk pertama!',
+      tag: 'QUEST 01 • BEACH GROOVE',
+      controls: '← SLIDE / ↑ JUMP / → WING SPIN / ↓ LOW GROOVE',
+      desc: 'Ayodance-style rhythm dance on the beach stage. Hit arrow keys right as notes reach the Dance Line to uncover your first clue!',
     },
     level2: {
       icon: '🎧',
-      tag: 'MISI 2 • DJ BOOTH',
-      controls: 'SPACEBAR / SENTUH LAYAR',
-      desc: 'Putar dan tahan irama piringan hitam bersama sang DJ bebek untuk merebut petunjuk kedua!',
+      tag: 'QUEST 02 • DJ BOOTH',
+      controls: 'SPACEBAR / TAP SCREEN',
+      desc: 'Spin and hold vinyl records with Donald Duck to claim your second special clue!',
     },
     level3: {
       icon: '✨',
-      tag: 'MISI 3 • LANTAI DANSA',
-      controls: 'SPACEBAR / SENTUH LAYAR',
-      desc: 'Tantangan fokus lantai dansa. Ikuti irama dengan tepat bahkan saat gemerlap lampu meredup!',
+      tag: 'QUEST 03 • DANCE FLOOR',
+      controls: 'SPACEBAR / TAP SCREEN',
+      desc: 'Challenge your rhythm memory across the illuminated floor. Keep in sync even when lights blackout!',
     },
     level4: {
       icon: '🎁',
-      tag: 'BABAK FINAL • REVEAL HADIAH',
-      controls: 'SEMUA KONTROL • SKOR ≥ 70.000 & AKURASI ≥ 75%',
-      desc: 'Puncak perayaan pesta! Capai target poin untuk memecahkan telur emas dan membuka kado spesial ulang tahunmu!',
+      tag: 'FINAL QUEST • 3D GIFT REVEAL',
+      controls: 'ALL CONTROLS • SCORE ≥ 70,000 & ACCURACY ≥ 75%',
+      desc: 'Grand formation dance finale! Hit the score target to crack the golden egg and unlock your 3D birthday gift!',
     },
   };
 
@@ -75,10 +75,10 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
       {countdown !== null ? (
         <div className="flex flex-col items-center justify-center animate-scaleIn">
           <div className="font-disco text-8xl sm:text-9xl font-black tracking-widest text-yellow-300 neon-glow-gold">
-            {isGroove ? 'MULAI!' : countdown}
+            {isGroove ? 'GROOVE!' : countdown}
           </div>
           <span className="text-xs font-mono-rhythm text-cyan-300 tracking-widest uppercase mt-4">
-            BERSIAP IKUTI IRAMA MUSIK
+            GET READY FOR THE BEAT
           </span>
         </div>
       ) : (
@@ -102,7 +102,7 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
           {/* Control instruction card */}
           <div className="w-full bg-black/60 border border-white/15 rounded-2xl p-4 mb-8 text-left space-y-2">
             <div className="text-[10px] uppercase font-mono-rhythm text-cyan-400 font-bold tracking-wider">
-              🎮 KONTROL PERMAINAN:
+              🎮 GAMEPLAY CONTROLS:
             </div>
             <div className="text-xs font-mono-rhythm text-white font-bold tracking-wide">
               {badge.controls}
@@ -119,7 +119,7 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
             onClick={startCountdown}
             className="group relative px-10 py-4 rounded-2xl bg-gradient-to-r from-yellow-400 via-pink-500 to-fuchsia-600 text-black font-disco text-lg font-black tracking-widest uppercase hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(236,72,153,0.6)] transition-all cursor-pointer"
           >
-            MULAI TANTANGAN
+            START QUEST
           </button>
         </div>
       )}

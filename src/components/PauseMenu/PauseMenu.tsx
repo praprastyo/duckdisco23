@@ -22,14 +22,14 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
   return (
     <div className="absolute inset-0 z-40 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
       <h2 className="font-disco text-5xl text-white neon-glow-magenta mb-8">
-        JEDA PERMAINAN
+        PAUSED
       </h2>
       <div className="flex flex-col gap-3 w-64 select-none">
         <button
           onClick={onResume}
           className="py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-disco text-sm font-bold tracking-widest uppercase transition-colors cursor-pointer"
         >
-          LANJUTKAN
+          RESUME
         </button>
         {isDev && onOpenEditor && (
           <button
@@ -43,13 +43,13 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
           onClick={onRestart}
           className="py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco text-sm font-bold tracking-widest uppercase transition-colors cursor-pointer"
         >
-          ULANGI
+          RESTART
         </button>
         <button
           onClick={onExit}
           className="py-3 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white font-disco text-sm font-bold tracking-widest uppercase transition-colors cursor-pointer"
         >
-          KEMBALI KE PILIH MISI
+          EXIT TO QUEST SELECT
         </button>
       </div>
     </div>

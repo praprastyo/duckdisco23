@@ -59,12 +59,12 @@ export const LevelCard: React.FC<LevelCardProps> = ({
                 : 'bg-rose-500/10 border border-rose-500/30 text-rose-400'
             }`}
           >
-            {isPlayable ? 'TERBUKA' : 'TERKUNCI'}
+            {isPlayable ? 'UNLOCKED' : 'LOCKED'}
           </span>
         </div>
 
         <div className="text-[11px] font-mono-rhythm tracking-widest text-fuchsia-400 font-bold mb-1">
-          MISI 0{level.levelNumber}
+          QUEST 0{level.levelNumber}
         </div>
 
         <h3 className="font-disco text-2xl sm:text-3xl text-white group-hover:text-yellow-300 transition-colors tracking-wide">
@@ -82,16 +82,16 @@ export const LevelCard: React.FC<LevelCardProps> = ({
           lockReason?.type === 'PREV_REQUIRED' ? (
             <div className="rounded-xl bg-black/60 border border-rose-500/30 p-3 text-center">
               <span className="block text-[9px] uppercase font-mono-rhythm text-rose-400 font-bold tracking-widest mb-1">
-                SYARAT BELUM TERPENUHI
+                REQUIREMENT NOT MET
               </span>
               <div className="font-mono-rhythm text-xs font-bold text-rose-300 tracking-wider">
-                🔒 SELESAIKAN {lockReason.prevLevelName} DULU
+                🔒 COMPLETE {lockReason.prevLevelName} FIRST
               </div>
             </div>
           ) : (
             <div className="rounded-xl bg-black/50 border border-white/10 p-3 text-center">
               <span className="block text-[9px] uppercase font-mono-rhythm text-white/40 tracking-widest mb-1">
-                TERBUKA DALAM
+                OPENS IN
               </span>
               <div className="font-mono-rhythm text-xl font-bold text-rose-400 tracking-widest">
                 {countdown.hours} : {countdown.minutes} : {countdown.seconds}
@@ -101,18 +101,18 @@ export const LevelCard: React.FC<LevelCardProps> = ({
         ) : record?.cleared ? (
           <div className="rounded-xl bg-emerald-950/40 border border-emerald-500/30 p-3 flex justify-between items-center text-xs font-mono-rhythm">
             <div>
-              <span className="text-[9px] text-white/40 block">SKOR TERBAIK</span>
+              <span className="text-[9px] text-white/40 block">BEST SCORE</span>
               <span className="font-bold text-yellow-300 text-sm">{record.bestScore.toLocaleString()}</span>
             </div>
             <div className="text-right">
-              <span className="text-[9px] text-white/40 block">AKURASI</span>
+              <span className="text-[9px] text-white/40 block">ACCURACY</span>
               <span className="font-bold text-cyan-300 text-sm">{record.bestAccuracy.toFixed(1)}%</span>
             </div>
           </div>
         ) : (
           <div className="rounded-xl bg-fuchsia-950/20 border border-fuchsia-500/20 p-3 text-center">
             <span className="text-xs font-mono-rhythm text-fuchsia-300 tracking-wider">
-              SIAP DIMAINKAN
+              READY TO GROOVE
             </span>
           </div>
         )}
@@ -125,7 +125,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
             {level.id === 'level1' ? '🌈' : level.id === 'level2' ? '💿' : level.id === 'level3' ? '🪞' : '🎁'}
           </span>
           <div className="flex flex-col">
-            <span className="text-[9px] font-mono-rhythm text-white/40">PETUNJUK</span>
+            <span className="text-[9px] font-mono-rhythm text-white/40">CLUE</span>
             <span className={`text-xs font-mono-rhythm font-bold ${hasCollectible ? 'text-yellow-400' : 'text-white/40'}`}>
               {level.collectibleName}
             </span>
@@ -134,7 +134,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
 
         {hasCollectible && (
           <span className="px-2 py-0.5 rounded bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 text-[10px] font-mono-rhythm font-bold">
-            DIDAPATKAN
+            COLLECTED
           </span>
         )}
       </div>

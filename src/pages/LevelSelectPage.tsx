@@ -38,7 +38,7 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
           onClick={onBackHome}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono-rhythm text-white/80 transition-colors cursor-pointer"
         >
-          ← KEMBALI
+          ← BACK
         </button>
 
         <div className="text-center">
@@ -46,7 +46,7 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
             🎂 BIRTHDAY QUEST
           </span>
           <span className="font-mono-rhythm text-xs text-white/70 tracking-wider">
-            Kumpulkan Semua Petunjuk Hadiah
+            Collect All Birthday Clues
           </span>
         </div>
 
@@ -63,7 +63,7 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
             onClick={() => setIsSettingsOpen(true)}
             className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono-rhythm text-white/80 transition-colors cursor-pointer"
           >
-            ⚙️ PENGATURAN
+            ⚙️ SETTINGS
           </button>
         </div>
       </div>
@@ -72,37 +72,37 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
       <div className="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
         <div>
           <h2 className="font-disco text-4xl sm:text-5xl text-white neon-glow-magenta mb-2">
-            4 TANTANGAN KEJUTAN
+            4 QUESTS TO THE SURPRISE
           </h2>
           <p className="text-white/70 text-sm font-body max-w-lg">
-            Selesaikan setiap tantangan untuk mengumpulkan petunjuk dan membuka hadiah rahasia di babak final!
+            Complete each rhythm challenge to collect all secret clues and unlock your birthday surprise!
           </p>
         </div>
 
         {/* Artifact inventory strip */}
         <div className="flex items-center gap-3 bg-black/40 border border-white/10 px-5 py-3 rounded-2xl backdrop-blur-md">
           <div className="text-right">
-            <span className="text-[9px] uppercase font-mono-rhythm text-white/40 block">PETUNJUK TERKUMPUL</span>
+            <span className="text-[9px] uppercase font-mono-rhythm text-white/40 block">CLUES COLLECTED</span>
             <span className="text-xs font-mono-rhythm font-bold text-yellow-400">
-              {Object.values(saveData.collectibles).filter(Boolean).length} / 3 PETUNJUK
+              {Object.values(saveData.collectibles).filter(Boolean).length} / 3 CLUES
             </span>
           </div>
 
           <div className="flex items-center gap-2 pl-3 border-l border-white/10 text-2xl">
             <span
-              title="Bulu Pelangi (Misi 1)"
+              title="Rainbow Feather (Quest 1)"
               className={`transition-all ${saveData.collectibles.rainbowFeather ? 'opacity-100 scale-110 drop-shadow-[0_0_10px_#06b6d4]' : 'opacity-20 grayscale'}`}
             >
               🌈
             </span>
             <span
-              title="Vinil Emas (Misi 2)"
+              title="Golden Vinyl (Quest 2)"
               className={`transition-all ${saveData.collectibles.goldenVinyl ? 'opacity-100 scale-110 drop-shadow-[0_0_10px_#eab308]' : 'opacity-20 grayscale'}`}
             >
               💿
             </span>
             <span
-              title="Bulu Cermin (Misi 3)"
+              title="Mirror Feather (Quest 3)"
               className={`transition-all ${saveData.collectibles.mirrorFeather ? 'opacity-100 scale-110 drop-shadow-[0_0_10px_#ec4899]' : 'opacity-20 grayscale'}`}
             >
               🪞
