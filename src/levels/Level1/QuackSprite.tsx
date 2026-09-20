@@ -49,7 +49,13 @@ export const QuackSprite: React.FC<QuackSpriteProps> = ({ pose, isEven, isFever,
         ? 'translateY(10px) rotate(14deg)'
         : `translateY(${isEven ? -4 : 0}px)`
     }}>
-      <circle cx="75" cy="72" r="34" fill="url(#qkHead)" stroke="#ca8a04" strokeWidth="2" />
+      {/* Sailor Cap with dangling black ribbon */}
+      <path d="M 60 42 C 60 28, 92 28, 92 42 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="2" />
+      <path d="M 86 42 L 100 50 L 94 53 Z" fill="#0f172a" />
+
+      {/* Classic White Donald Feather Head */}
+      <circle cx="75" cy="72" r="34" fill="url(#qkHead)" stroke="#cbd5e1" strokeWidth="2" />
+
       {/* Sunglasses: crooked if frustrated, laser shine if fever */}
       <g transform={isFrustrated ? 'rotate(18 75 72)' : undefined}>
         <path d="M 48 64 L 72 64 C 74 64, 75 66, 75 68 L 72 80 C 71 82, 69 83, 67 83 L 53 83 C 50 83, 48 81, 48 78 Z" fill="#09090b" stroke="#06b6d4" strokeWidth="2.5" />
@@ -62,14 +68,21 @@ export const QuackSprite: React.FC<QuackSpriteProps> = ({ pose, isEven, isFever,
       <ellipse cx="75" cy="89" rx="14" ry="4.5" fill="#fb923c" />
     </g>
 
-    <path d="M 46 112 C 46 96, 104 96, 104 112 L 112 156 C 112 164, 38 164, 38 156 Z" fill="#4c0519" stroke="#fb7185" strokeWidth="2.5" />
-    <polygon points="75,120 52,100 64,142" fill="#be123c" />
-    <polygon points="75,120 98,100 86,142" fill="#be123c" />
-    <circle cx="75" cy="132" r="9" fill="#facc15" stroke="#ca8a04" strokeWidth="1.5" />
+    {/* Body: Sailor Royal Blue Suit with Yellow Trim */}
+    <path d="M 46 112 C 46 96, 104 96, 104 112 L 112 156 C 112 164, 38 164, 38 156 Z" fill="#1e40af" stroke="#3b82f6" strokeWidth="2.5" />
+    {/* Sailor Flap Collar */}
+    <polygon points="75,118 50,98 64,138" fill="#1d4ed8" stroke="#facc15" strokeWidth="1.5" />
+    <polygon points="75,118 100,98 86,138" fill="#1d4ed8" stroke="#facc15" strokeWidth="1.5" />
 
-    <ellipse cx="42" cy="122" rx={pose === 'left' ? 20 : 10} ry="8" fill="#eab308" stroke="#ca8a04" strokeWidth="2"
+    {/* Iconic Red Bow Tie 🎀 */}
+    <polygon points="75,118 60,111 62,126" fill="#dc2626" />
+    <polygon points="75,118 90,111 88,126" fill="#dc2626" />
+    <ellipse cx="75" cy="118" rx="4.5" ry="4" fill="#ef4444" />
+
+    {/* Wings: Pure White Feathers */}
+    <ellipse cx="42" cy="122" rx={pose === 'left' ? 20 : 10} ry="8" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2"
       transform={pose === 'left' ? 'rotate(-32 42 122)' : undefined} />
-    <ellipse cx="108" cy="122" rx={pose === 'right' ? 20 : 10} ry="8" fill="#eab308" stroke="#ca8a04" strokeWidth="2"
+    <ellipse cx="108" cy="122" rx={pose === 'right' ? 20 : 10} ry="8" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2"
       transform={pose === 'right' ? 'rotate(32 108 122)' : undefined} />
 
     {pose === 'up' ? (
@@ -86,10 +99,11 @@ export const QuackSprite: React.FC<QuackSpriteProps> = ({ pose, isEven, isFever,
 
     <defs>
       <linearGradient id="qkHead" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#fef08a" />
-        <stop offset="55%" stopColor="#facc15" />
-        <stop offset="100%" stopColor="#eab308" />
+        <stop offset="0%" stopColor="#ffffff" />
+        <stop offset="60%" stopColor="#f8fafc" />
+        <stop offset="100%" stopColor="#e2e8f0" />
       </linearGradient>
     </defs>
+
   </svg>
 );

@@ -48,7 +48,7 @@ export const Level4Stage: React.FC<Level4StageProps> = ({
 
       {/* Main Disco Floor Formation */}
       <div className="relative w-full h-52 flex items-center justify-center">
-        {/* Backup Dancers in formation */}
+        {/* Backup Dancers in formation (Donald Sailor style) */}
         {dancers.map((offset) => {
           const delayBeat = offset % 2 === 0 ? isEven : !isEven;
           const pose = delayBeat ? '-translate-y-3 rotate-6' : 'translate-y-1 -rotate-6';
@@ -59,10 +59,12 @@ export const Level4Stage: React.FC<Level4StageProps> = ({
               style={{ transform: `translateX(${offset * 75}px)` }}
             >
               <svg width="45" height="55" viewBox="0 0 50 60" fill="none">
-                <circle cx="25" cy="18" r="12" fill="#facc15" stroke="#ca8a04" />
+                <circle cx="25" cy="18" r="12" fill="#ffffff" stroke="#cbd5e1" />
                 <ellipse cx="36" cy="20" rx="6" ry="3" fill="#f97316" />
-                <rect x="18" y="14" width="14" height="6" rx="2" fill="#ec4899" />
-                <path d="M 12 32 C 12 24, 38 24, 38 32 L 44 58 L 6 58 Z" fill="#4c0519" />
+                <rect x="18" y="14" width="14" height="6" rx="2" fill="#00ffff" />
+                <path d="M 12 32 C 12 24, 38 24, 38 32 L 44 58 L 6 58 Z" fill="#1e40af" stroke="#3b82f6" />
+                {/* Red Bow Tie 🎀 */}
+                <ellipse cx="25" cy="30" rx="3" ry="2" fill="#ef4444" />
                 {/* Disco finger point pose */}
                 <line x1="38" y1="32" x2="48" y2="16" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
@@ -70,18 +72,28 @@ export const Level4Stage: React.FC<Level4StageProps> = ({
           );
         })}
 
-        {/* Center Golden Disco Mascot */}
+        {/* Center Sailor Disco Duck Mascot */}
         <div className={`relative z-10 transition-transform duration-100 ${isEven ? '-translate-y-4 scale-110' : 'translate-y-0'}`}>
           <svg width="85" height="100" viewBox="0 0 85 100" fill="none">
-            <circle cx="42" cy="30" r="22" fill="#fef08a" stroke="#ca8a04" strokeWidth="2" />
+            {/* Sailor Cap */}
+            <path d="M 34 10 C 34 2, 54 2, 54 10 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="1.5" />
+            <path d="M 50 10 L 60 16 L 55 19 Z" fill="#0f172a" />
+            {/* Donald White Feather Head */}
+            <circle cx="42" cy="30" r="22" fill="#ffffff" stroke="#cbd5e1" strokeWidth="2" />
             <rect x="28" y="24" width="28" height="10" rx="3" fill="#00ffff" />
             <ellipse cx="60" cy="32" rx="10" ry="5" fill="#f97316" />
-            <path d="M 22 52 C 22 40, 62 40, 62 52 L 72 94 L 12 94 Z" fill="#eab308" stroke="#facc15" strokeWidth="2" />
+            {/* Royal Blue Sailor Jacket */}
+            <path d="M 22 52 C 22 40, 62 40, 62 52 L 72 94 L 12 94 Z" fill="#1e40af" stroke="#3b82f6" strokeWidth="2" />
+            {/* Red Sailor Bow Tie 🎀 */}
+            <polygon points="42,50 30,45 32,56" fill="#dc2626" />
+            <polygon points="42,50 54,45 52,56" fill="#dc2626" />
+            <ellipse cx="42" cy="50" rx="3.5" ry="3" fill="#ef4444" />
             {/* Double disco point arms */}
             <line x1="22" y1="52" x2="6" y2="28" stroke="#facc15" strokeWidth="4" strokeLinecap="round" />
             <line x1="62" y1="52" x2="78" y2="28" stroke="#facc15" strokeWidth="4" strokeLinecap="round" />
           </svg>
         </div>
+
       </div>
 
       <div className="text-[10px] font-mono-rhythm text-yellow-300 tracking-widest uppercase">

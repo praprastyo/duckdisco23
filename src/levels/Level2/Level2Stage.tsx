@@ -76,18 +76,24 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
           }`}
         >
           <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Blue Sailor Cap */}
+            <path d="M 28 8 C 28 2, 42 2, 42 8 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="1" />
+            <path d="M 39 8 L 45 12 L 42 14 Z" fill="#0f172a" />
             {/* Sunglasses */}
             <rect x="36" y="16" width="16" height="7" rx="2" fill="#00ffff" />
-            {/* Duck Head */}
-            <circle cx="34" cy="22" r="14" fill="#facc15" stroke="#ca8a04" strokeWidth="1.5" />
+            {/* Donald White Feather Head */}
+            <circle cx="34" cy="22" r="14" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
             {/* Duck Beak */}
             <ellipse cx="50" cy="24" rx="8" ry="4" fill="#f97316" />
-            {/* Duck Body */}
-            <ellipse cx="26" cy="40" rx="16" ry="12" fill="#facc15" stroke="#ca8a04" strokeWidth="1.5" />
+            {/* Sailor Blue Body */}
+            <ellipse cx="26" cy="40" rx="16" ry="12" fill="#1e40af" stroke="#3b82f6" strokeWidth="1.5" />
+            {/* Red Bow Tie 🎀 */}
+            <ellipse cx="34" cy="32" rx="3.5" ry="2.5" fill="#ef4444" />
             {/* Running legs (animated like chrome dino) */}
             <line x1="22" y1="52" x2={isLegStep ? 16 : 26} y2="64" stroke="#f97316" strokeWidth="3" strokeLinecap="round" />
             <line x1="30" y1="52" x2={isLegStep ? 36 : 22} y2="64" stroke="#f97316" strokeWidth="3" strokeLinecap="round" />
           </svg>
+
         </div>
 
         {/* Incoming Obstacle (Cactus / Neon Disco Block) */}

@@ -1,10 +1,11 @@
 import { UNLOCK_SCHEDULE, LevelUnlockConfig } from '../config/unlockSchedule';
 import { TimeService } from './TimeService';
+import { SaveData } from './SaveService';
 
 /**
  * UnlockService
- * Determines level accessibility based on Asia/Jakarta calendar dates
- * and development overrides.
+ * Determines level accessibility based on sequential progression,
+ * Asia/Jakarta calendar dates, and development overrides.
  */
 export class UnlockService {
   private static devUnlockAll: boolean = false;
@@ -28,7 +29,7 @@ export class UnlockService {
   }
 
   /**
-   * Check if a specific level is currently unlocked
+   * Check if a specific level is currently unlocked by date
    */
   public static isLevelUnlocked(levelId: string): boolean {
     if (this.devUnlockAll) {
@@ -40,6 +41,52 @@ export class UnlockService {
 
     const diff = TimeService.getDifferenceFromNow(config.unlockAt);
     return diff <= 0;
+  }
+
+  /**
+   * Check if previous required level has been cleared in saveData
+   */
+  public static isPreviousLevelCleared(levelId: string, saveData?: SaveData): boolean {
+    if (this.devUnlockAll) return true;
+    if (levelId === 'level1') return true;
+    if (!saveData) return false;
+
+    if (levelId === 'level2') return Boolean(saveData.levels.level1?.cleared);
+    if (levelId === 'level3') return Boolean(saveData.levels.level2?.cleared);
+    if (levelId === 'level4') return Boolean(saveData.levels.level3?.cleared);
+
+    return false;
+  }
+
+  /**
+   * Check if a specific level is playable (date reached AND previous level cleared)
+   */
+  public static isLevelPlayable(levelId: string, saveData?: SaveData): boolean {
+    if (this.devUnlockAll) return true;
+    const isDateUnlocked = this.isLevelUnlocked(levelId);
+    if (!isDateUnlocked) return false;
+    return this.isPreviousLevelCleared(levelId, saveData);
+  }
+
+  /**
+   * Get detailed lock reason for UI card display
+   */
+  public static getLockReason(
+    levelId: string,
+    saveData?: SaveData
+  ): { type: 'DATE_LOCKED' | 'PREV_REQUIRED'; prevLevelName?: string } | null {
+    if (this.devUnlockAll) return null;
+
+    if (!this.isPreviousLevelCleared(levelId, saveData)) {
+      const prevName = levelId === 'level2' ? 'NIGHT 01' : levelId === 'level3' ? 'NIGHT 02' : 'NIGHT 03';
+      return { type: 'PREV_REQUIRED', prevLevelName: prevName };
+    }
+
+    if (!this.isLevelUnlocked(levelId)) {
+      return { type: 'DATE_LOCKED' };
+    }
+
+    return null;
   }
 
   /**
@@ -81,3 +128,4 @@ export class UnlockService {
     return null;
   }
 }
+

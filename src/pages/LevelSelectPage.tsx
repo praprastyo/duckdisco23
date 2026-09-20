@@ -121,6 +121,7 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
             level={level}
             record={saveData.levels[level.id]}
             collectibles={saveData.collectibles}
+            saveData={saveData}
             onSelect={onSelectLevel}
           />
         ))}

@@ -62,14 +62,22 @@ export const DuckCharacter: React.FC<DuckCharacterProps> = ({
         <rect x="42" y="80" width="22" height="38" rx="10" fill="#1e1b4b" stroke="#e11d48" strokeWidth="4" />
         <rect x="176" y="80" width="22" height="38" rx="10" fill="#1e1b4b" stroke="#e11d48" strokeWidth="4" />
 
-        {/* Duck Body & DJ Jacket */}
-        <path d="M 65 170 C 65 140, 175 140, 175 170 L 195 240 C 195 255, 45 255, 45 240 Z" fill="#4c0519" stroke="#fb7185" strokeWidth="3" />
-        <polygon points="120,180 80,145 105,210" fill="#be123c" />
-        <polygon points="120,180 160,145 135,210" fill="#be123c" />
-        <polygon points="120,195 105,245 135,245" fill="#facc15" />
+        {/* Sailor Cap with dangling black ribbon */}
+        <path d="M 98 62 C 98 44, 142 44, 142 62 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="2.5" />
+        <path d="M 134 62 L 152 74 L 144 78 Z" fill="#0f172a" />
 
-        {/* Duck Head */}
-        <circle cx="120" cy="115" r="54" fill="url(#goldFeather)" stroke="#ca8a04" strokeWidth="2.5" />
+        {/* Duck Body & Sailor Royal Blue Shirt */}
+        <path d="M 65 170 C 65 140, 175 140, 175 170 L 195 240 C 195 255, 45 255, 45 240 Z" fill="#1e40af" stroke="#3b82f6" strokeWidth="3" />
+        <polygon points="120,180 80,145 105,210" fill="#1d4ed8" stroke="#facc15" strokeWidth="2" />
+        <polygon points="120,180 160,145 135,210" fill="#1d4ed8" stroke="#facc15" strokeWidth="2" />
+
+        {/* Red Sailor Bow Tie 🎀 */}
+        <polygon points="120,182 98,172 100,194" fill="#dc2626" />
+        <polygon points="120,182 142,172 140,194" fill="#dc2626" />
+        <ellipse cx="120" cy="182" rx="6.5" ry="6" fill="#ef4444" />
+
+        {/* Donald White Feather Head */}
+        <circle cx="120" cy="115" r="54" fill="url(#whiteFeather)" stroke="#cbd5e1" strokeWidth="2.5" />
 
         {/* DJ Sunglasses */}
         <path d="M 82 105 L 115 105 C 117 105, 119 107, 119 110 L 115 125 C 114 128, 111 130, 108 130 L 88 130 C 84 130, 81 127, 81 123 Z" fill="#09090b" stroke="#06b6d4" strokeWidth="3" />
@@ -97,15 +105,16 @@ export const DuckCharacter: React.FC<DuckCharacterProps> = ({
 
         <defs>
           <radialGradient id="duckGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0" />
+            <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
           </radialGradient>
-          <linearGradient id="goldFeather" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fef08a" />
-            <stop offset="50%" stopColor="#facc15" />
-            <stop offset="100%" stopColor="#eab308" />
+          <linearGradient id="whiteFeather" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="60%" stopColor="#f8fafc" />
+            <stop offset="100%" stopColor="#e2e8f0" />
           </linearGradient>
         </defs>
+
       </svg>
 
       {/* Mascot Name Badge */}

@@ -37,10 +37,12 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
         style={{ left: surferLeft }}
       >
         <div className={`flex flex-col items-center ${isEven ? '-translate-y-4 rotate-12 scale-110' : 'translate-y-0 -rotate-6'}`}>
-          {/* Surfer duck sprite */}
-          <div className="relative">
+          {/* Sailor Donald Surfer duck */}
+          <div className="relative flex flex-col items-center">
+            <span className="text-[10px] -mb-1">🧢</span>
             <span className="text-2xl filter drop-shadow">🦆</span>
-            <span className="absolute top-1 right-0 text-[10px]">🕶️</span>
+            <span className="text-[8px] -mt-1">🎀</span>
+            <span className="absolute top-2 right-0 text-[9px]">🕶️</span>
           </div>
           {/* Surfboard with splash */}
           <div className="w-14 h-2 rounded-full bg-gradient-to-r from-pink-500 via-yellow-400 to-cyan-400 border border-white -mt-1 shadow-[0_0_10px_#06b6d4] flex items-center justify-between px-1">
@@ -59,10 +61,12 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
           }`}
         />
         <div className={`flex items-end ${isEven ? 'scale-105' : 'scale-95'}`}>
-          {/* Duck with Camera */}
-          <div className="relative">
+          {/* Sailor Duck with Camera */}
+          <div className="relative flex flex-col items-center">
+            <span className="text-[10px] -mb-1">🧢</span>
             <span className="text-3xl">🦆</span>
-            <span className="absolute -top-1 right-2 text-base animate-pulse">📸</span>
+            <span className="text-[9px] -mt-1">🎀</span>
+            <span className="absolute top-1 right-0 text-base animate-pulse">📸</span>
           </div>
         </div>
         <span className="text-[8px] font-mono-rhythm text-yellow-300 bg-black/60 px-1.5 py-0.2 rounded-full font-bold">
@@ -73,16 +77,18 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
       {/* 4. 🍹 Coconut Drink Barista Duck on Bottom Right */}
       <div className="absolute bottom-2 right-2 sm:right-6 flex flex-col items-center">
         <div className={`flex items-end ${!isEven ? 'scale-110 -rotate-6' : 'scale-100 rotate-6'}`}>
-          <div className="relative">
+          <div className="relative flex flex-col items-center">
+            <span className="text-[10px] -mb-1">🧢</span>
             <span className="text-3xl">🦆</span>
-            <span className="absolute -top-2 left-0 text-lg animate-bounce">🍹</span>
-            <span className="absolute top-1 left-2 text-[10px]">🤿</span>
+            <span className="text-[9px] -mt-1">🎀</span>
+            <span className="absolute -top-1 left-0 text-lg animate-bounce">🍹</span>
           </div>
         </div>
         <span className="text-[8px] font-mono-rhythm text-cyan-300 bg-black/60 px-1.5 py-0.2 rounded-full font-bold">
           BEACH BAR
         </span>
       </div>
+
 
       {/* 5. 🕶️ Club Bouncer Security Duck (appears when combo >= 10) */}
       {combo >= 10 && (

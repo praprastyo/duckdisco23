@@ -58,26 +58,32 @@ export const Level3Stage: React.FC<Level3StageProps> = ({
           style={{ transform: `translateX(-${(currentBeat % 4) * 40}px)` }}
         />
 
-        {/* Flappy Duck Flying Mascot */}
+        {/* Flappy Duck Flying Mascot (Donald Sailor Style) */}
         <div className={`absolute left-16 transition-transform duration-200 ease-out ${duckY}`}>
           <svg width="65" height="55" viewBox="0 0 65 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Sailor Cap */}
+            <path d="M 26 4 C 26 0, 38 0, 38 4 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="1" />
+            <path d="M 36 4 L 42 7 L 39 9 Z" fill="#0f172a" />
             {/* Sunglasses */}
             <rect x="34" y="10" width="14" height="6" rx="2" fill="#00ffff" />
-            {/* Duck Head */}
-            <circle cx="32" cy="16" r="12" fill="#facc15" stroke="#ca8a04" strokeWidth="1.5" />
+            {/* Donald White Feather Head */}
+            <circle cx="32" cy="16" r="12" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
             {/* Duck Bill */}
             <ellipse cx="46" cy="18" rx="7" ry="4" fill="#f97316" />
-            {/* Duck Body */}
-            <ellipse cx="24" cy="30" rx="14" ry="10" fill="#facc15" stroke="#ca8a04" strokeWidth="1.5" />
-            {/* Flapping Wing */}
+            {/* Sailor Blue Body */}
+            <ellipse cx="24" cy="30" rx="14" ry="10" fill="#1e40af" stroke="#3b82f6" strokeWidth="1.5" />
+            {/* Red Bow Tie 🎀 */}
+            <ellipse cx="32" cy="24" rx="3" ry="2" fill="#ef4444" />
+            {/* Flapping Wing (White Feather) */}
             <path
               d={isFlapping ? 'M 18 28 C 18 10, 32 10, 32 28 Z' : 'M 18 30 C 18 46, 32 46, 32 30 Z'}
-              fill="#fbbf24"
-              stroke="#d97706"
+              fill="#ffffff"
+              stroke="#cbd5e1"
               strokeWidth="1.5"
             />
           </svg>
         </div>
+
       </div>
 
       <div className="text-center text-[10px] font-mono-rhythm text-white/50 tracking-widest">
