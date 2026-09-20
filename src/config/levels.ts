@@ -21,7 +21,7 @@ export const LEVELS: LevelConfig[] = [
     levelNumber: 1,
     title: 'QUACK DANCE PARTY',
     dateDisplay: 'QUEST 01',
-    subtitle: 'Beach Disco Groove • Ayodance Rhythm Dance',
+    subtitle: 'Beach Disco Groove • Rhythm Dance',
     environmentName: 'Sunset Duck Beach Stage',
     song: songs.level1,
     collectibleName: 'RAINBOW FEATHER',

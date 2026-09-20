@@ -42,7 +42,7 @@ export const LevelSplashIntro: React.FC<LevelSplashIntroProps> = ({ level, onSta
       icon: '🏖️',
       tag: 'QUEST 01 • BEACH GROOVE',
       controls: '← SLIDE / ↑ JUMP / → WING SPIN / ↓ LOW GROOVE',
-      desc: 'Ayodance-style rhythm dance on the beach stage. Hit arrow keys right as notes reach the Dance Line to uncover your first clue!',
+      desc: 'Arrow-based rhythm dance on the beach stage. Hit arrow keys right as notes reach the Dance Line to uncover your first clue!',
     },
     level2: {
       icon: '🎧',

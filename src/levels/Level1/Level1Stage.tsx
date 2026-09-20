@@ -21,7 +21,7 @@ interface Level1StageProps {
 
 /**
  * Level 1 — Quack Dance Party
- * Ayodance-style 4-arrow rhythm dance on the Sunset Duck Beach stage.
+ * 4-arrow rhythm dance on the Sunset Duck Beach stage.
  */
 export const Level1Stage: React.FC<Level1StageProps> = ({
   currentBeat,

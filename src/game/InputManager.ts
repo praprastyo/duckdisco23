@@ -4,7 +4,7 @@ export type InputCallback = (action: InputAction, timestamp: number) => void;
 /**
  * InputManager
  * Unifies keyboard (Space, Arrow keys, WASD), touch, and pointer events.
- * Supports directional cues for AyoDance-style step mechanics.
+ * Supports directional cues for step rhythm mechanics.
  */
 export class InputManager {
   private isHolding: boolean = false;

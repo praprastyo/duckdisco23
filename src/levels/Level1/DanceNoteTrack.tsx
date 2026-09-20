@@ -27,7 +27,7 @@ interface DanceNoteTrackProps {
 }
 
 /**
- * Scrolling ayodance-style arrow track.
+ * Scrolling arrow track.
  * Note Y positions are driven by the authoritative audio clock in a rAF loop,
  * so notes stay locked to the music even if React re-renders.
  */

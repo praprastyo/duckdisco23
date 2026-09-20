@@ -88,7 +88,7 @@ export class AutoBeatDetector {
       beatTimes.push(Number(t.toFixed(3)));
     }
 
-    // 5. Generate Ayodance 4-arrow choreography events
+    // 5. Generate 4-arrow choreography events
     const directions: DanceDirection[] = ['left', 'up', 'right', 'down'];
     const generatedEvents: BeatmapEvent[] = [];
 

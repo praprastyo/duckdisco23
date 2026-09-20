@@ -6,7 +6,7 @@ function buildLevel1Beatmap() {
   const events = [];
   let id = 1;
 
-  // Ayodance-style 4-arrow choreography on the Sunset Duck Beach stage.
+  // 4-arrow choreography on the Sunset Duck Beach stage.
   // Phases: Intro tutorial -> Groove combos -> Dance Break -> Final Chorus.
   const patterns = [
     // ---- INTRO (single arrow, lots of reading time) ----
