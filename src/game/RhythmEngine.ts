@@ -32,6 +32,7 @@ export class RhythmEngine {
   private onCueCb: ((e: BeatmapEvent) => void) | null = null;
   private onStatusCb: ((s: GameStatus) => void) | null = null;
   private onCompleteCb: ((summary: ScoreSummary) => void) | null = null;
+  private onInputCb: ((action: InputAction) => void) | null = null;
 
   constructor(timingOffsetMs = 0) {
     this.inputManager.setLatencyOffset(timingOffsetMs);
@@ -54,9 +55,11 @@ export class RhythmEngine {
     });
     this.inputManager.subscribe((action) => {
       if (this.status !== 'playing' || this.isAutoplay) return;
+      this.onInputCb?.(action);
       this.handlePlayerAction(action);
     });
   }
+
 
   public async initializeLevel(trackUrl: string, beatmapData: BeatmapData): Promise<void> {
     this.stop();
@@ -180,7 +183,9 @@ export class RhythmEngine {
   public onJudgement(cb: (e: JudgementEvent) => void) { this.onJudgementCb = cb; }
   public onCue(cb: (e: BeatmapEvent) => void) { this.onCueCb = cb; }
   public onStatusChange(cb: (s: GameStatus) => void) { this.onStatusCb = cb; }
+  public onInput(cb: (a: InputAction) => void) { this.onInputCb = cb; }
   public onComplete(cb: (s: ScoreSummary) => void) { this.onCompleteCb = cb; }
+
 
   private setStatus(s: GameStatus) {
     this.status = s;

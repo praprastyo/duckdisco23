@@ -44,6 +44,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [accuracy, setAccuracy] = useState(100);
   const [triggerId, setTriggerId] = useState(0);
   const [energy, setEnergy] = useState<EnergyData>({ bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 });
+  const [lastAction, setLastAction] = useState<'left' | 'right' | 'tap'>('tap');
 
   useEffect(() => {
     const offset = SaveService.load().settings.timingOffset;
@@ -53,6 +54,11 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
     engine.onStatusChange(setStatus);
     engine.getBeatClock().onBeat(setCurrentBeat);
     engine.onCue(setCurrentCue);
+    engine.onInput((action) => {
+      if (action === 'left' || action === 'right') {
+        setLastAction(action);
+      }
+    });
 
     engine.onJudgement((j) => {
       setLastJudgement(j);
@@ -68,6 +74,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
     fetch(level.song.beatmap)
       .then((r) => r.json())
       .then((d: BeatmapData) => engine.initializeLevel(level.song.src, d))
+
       .catch(() => setStatus('error'));
 
     const energyTimer = setInterval(() => {
@@ -140,6 +147,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               currentCue={currentCue}
               lastJudgement={lastJudgement?.judgement}
               combo={combo}
+              externalAction={lastAction}
               onLaneSwitch={() => engineRef.current?.handlePlayerAction('tap')}
             />
           )}
