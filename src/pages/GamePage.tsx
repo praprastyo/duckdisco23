@@ -189,20 +189,20 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         </div>
       </div>
 
-      {/* Crowd Duck Silhouettes along the floor */}
-      <CrowdSilhouettes currentBeat={currentBeat} combo={combo} />
+      {/* Crowd Duck Silhouettes along the floor (Only for disco nightclub levels 2, 3, 4) */}
+      {level.id !== 'level1' && <CrowdSilhouettes currentBeat={currentBeat} combo={combo} />}
 
-      {/* Bottom control tip */}
-      <div className="relative z-20 text-center pb-2">
-        <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span className="font-mono-rhythm text-[11px] text-white/70 tracking-widest uppercase">
-            {level.id === 'level1'
-              ? 'ARROW KEYS (← ↑ ↓ →) / SPACEBAR'
-              : 'SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE'}
-          </span>
+      {/* Bottom control tip (Only for levels 2, 3, 4) */}
+      {level.id !== 'level1' && (
+        <div className="relative z-20 text-center pb-2">
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span className="font-mono-rhythm text-[11px] text-white/70 tracking-widest uppercase">
+              SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Animated Level Splash Screen Intro */}
       {status === 'readyToStart' && (

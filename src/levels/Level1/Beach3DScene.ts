@@ -8,15 +8,34 @@ export class Beach3DScene {
   private clock = new THREE.Clock();
 
   private duckGroup = new THREE.Group();
+  private starsGroup = new THREE.Group();
   private trees: THREE.Group[] = [];
   private obstacles: { mesh: THREE.Group; lane: 'left' | 'right' }[] = [];
 
   private targetX = -2.5;
   private currentX = -2.5;
 
+  private isStumbling = false;
+  private stumbleTime = 0;
+
+  private patternIndex = 0;
+  // Predictable, learnable rhythmic beach lane pattern
+  private readonly lanePattern: ('left' | 'right')[] = [
+    'right', 'left', 'right', 'left',
+    'left', 'right', 'left', 'right',
+    'right', 'right', 'left', 'left',
+    'right', 'left', 'right', 'left',
+  ];
+
+  public triggerCollision() {
+    this.isStumbling = true;
+    this.stumbleTime = 0.55;
+  }
+
   public init(container: HTMLElement) {
     const w = container.clientWidth || window.innerWidth;
     const h = container.clientHeight || window.innerHeight;
+
 
     this.scene.background = new THREE.Color(0x60c5fa);
     this.scene.fog = new THREE.FogExp2(0x93ddff, 0.015);
@@ -94,17 +113,31 @@ export class Beach3DScene {
     beak.position.set(0, 0.66, -0.65);
     this.duckGroup.add(beak);
 
+    // Dizzy Stars on Collision
+    for (let s = 0; s < 3; s++) {
+      const star = new THREE.Mesh(
+        new THREE.OctahedronGeometry(0.12),
+        new THREE.MeshBasicMaterial({ color: 0xffea00 })
+      );
+      star.position.set(Math.cos((s * Math.PI * 2) / 3) * 0.45, 0, Math.sin((s * Math.PI * 2) / 3) * 0.45);
+      this.starsGroup.add(star);
+    }
+    this.starsGroup.position.set(0, 1.25, -0.2);
+    this.duckGroup.add(this.starsGroup);
+    this.starsGroup.visible = false;
+
     this.scene.add(this.duckGroup);
 
-    // Obstacles (Coconut/Crab)
+    // Obstacles - Still on the sand floor (Y = 0.38)
     for (let i = 0; i < 3; i++) {
       const grp = new THREE.Group();
-      const coco = new THREE.Mesh(new THREE.SphereGeometry(0.5, 14, 14), new THREE.MeshStandardMaterial({ color: 0x5a3d28 }));
-      coco.position.y = 0.5;
+      const coco = new THREE.Mesh(new THREE.SphereGeometry(0.42, 14, 14), new THREE.MeshStandardMaterial({ color: 0x5a3d28 }));
+      coco.position.y = 0.38;
       grp.add(coco);
-      grp.position.set(i % 2 === 0 ? -2.5 : 2.5, 0, -30 - i * 18);
+      const lane = this.lanePattern[i % this.lanePattern.length];
+      grp.position.set(lane === 'left' ? -2.5 : 2.5, 0, -28 - i * 18);
       this.scene.add(grp);
-      this.obstacles.push({ mesh: grp, lane: i % 2 === 0 ? 'left' : 'right' });
+      this.obstacles.push({ mesh: grp, lane });
     }
 
     this.startLoop();
@@ -114,7 +147,6 @@ export class Beach3DScene {
     this.targetX = lane === 'left' ? -2.5 : 2.5;
   }
 
-
   public resize(w: number, h: number) {
     if (!this.renderer || !this.camera) return;
     this.camera.aspect = w / h;
@@ -123,28 +155,54 @@ export class Beach3DScene {
   }
 
   private startLoop() {
+    let lastTime = performance.now();
+
     const loop = () => {
       this.animId = requestAnimationFrame(loop);
+      const now = performance.now();
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
       const time = this.clock.getElapsedTime();
 
-      // Snappy, visible lane interpolation
+      // Smooth lane interpolation
       this.currentX += (this.targetX - this.currentX) * 0.28;
       this.duckGroup.position.x = this.currentX;
-      // Prominent banking tilt into the turn
-      this.duckGroup.rotation.z = -(this.targetX - this.currentX) * 0.35;
-      this.duckGroup.position.y = 0.6 + Math.abs(Math.sin(time * 8)) * 0.15;
 
+      // Stumble Collision Animation or Normal Run
+      if (this.isStumbling) {
+        this.stumbleTime -= delta;
+        this.duckGroup.rotation.x = -0.45; // Lean back in shock
+        this.duckGroup.rotation.z = Math.sin(time * 35) * 0.25; // Shake
+        this.duckGroup.position.y = 0.45;
+        this.starsGroup.visible = true;
+        this.starsGroup.rotation.y += 0.2; // Stars spin around head
+        if (this.stumbleTime <= 0) {
+          this.isStumbling = false;
+          this.starsGroup.visible = false;
+          this.duckGroup.rotation.x = 0;
+        }
+      } else {
+        this.starsGroup.visible = false;
+        this.duckGroup.rotation.x = 0;
+        this.duckGroup.rotation.z = -(this.targetX - this.currentX) * 0.35;
+        this.duckGroup.position.y = 0.6 + Math.abs(Math.sin(time * 8)) * 0.15;
+      }
+
+      // Scroll background trees
       this.trees.forEach((t) => {
         t.position.z += 0.25;
         if (t.position.z > 8) t.position.z = -90;
       });
 
+      // Move obstacles strictly on the sand (still, no bobbing!)
       this.obstacles.forEach((obs) => {
         obs.mesh.position.z += 0.35;
-        obs.mesh.rotation.x += 0.1;
+        obs.mesh.rotation.x += 0.08; // Rolling motion on sand
         if (obs.mesh.position.z > 6) {
           obs.mesh.position.z = -45;
-          const nextLane: 'left' | 'right' = Math.random() > 0.5 ? 'left' : 'right';
+          // Deterministic rhythmic pattern
+          const nextLane = this.lanePattern[this.patternIndex % this.lanePattern.length];
+          this.patternIndex++;
           obs.lane = nextLane;
           obs.mesh.position.x = nextLane === 'left' ? -2.5 : 2.5;
         }
@@ -154,6 +212,7 @@ export class Beach3DScene {
     };
     loop();
   }
+
 
   public dispose() {
     cancelAnimationFrame(this.animId);

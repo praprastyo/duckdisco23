@@ -52,7 +52,12 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
 
   useEffect(() => {
     if (!lastJudgement) return;
-    setFeedback(lastJudgement !== 'miss' ? '💨 DODGED!' : '💥 BUMPED!');
+    if (lastJudgement === 'miss') {
+      sceneRef.current?.triggerCollision();
+      setFeedback('💥 NABRAK!');
+    } else {
+      setFeedback('💨 LEWAT!');
+    }
     const t = setTimeout(() => setFeedback(''), 450);
     return () => clearTimeout(t);
   }, [lastJudgement]);
@@ -66,7 +71,7 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     sceneRef.current = scene;
 
     const handleResize = () => {
-      scene.resize(container.clientWidth, container.clientHeight);
+      scene.resize(container.clientWidth || window.innerWidth, container.clientHeight || window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
 
@@ -96,45 +101,34 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
         title="Tap to switch Right Lane"
       />
 
-      {/* Top Floating Beach Info Banner */}
-      <div className="absolute top-20 inset-x-4 max-w-lg mx-auto z-20 flex justify-between items-center bg-white/85 backdrop-blur-md px-5 py-2 rounded-2xl border-2 border-yellow-300 shadow-xl pointer-events-auto">
-        <div className="flex items-center gap-2.5">
-          <span className="text-2xl">🏖️</span>
-          <div>
-            <span className="text-xs font-mono-rhythm font-black text-sky-950 uppercase block">
-              TROPICAL BEACH RUNNER 3D
+      {/* Minimalist Top Floating Lane & Feedback Badge */}
+      <div className="absolute top-16 inset-x-0 flex justify-center z-20 pointer-events-none">
+        <div className="flex items-center gap-2.5 bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs font-mono-rhythm text-white shadow-lg">
+          <span>JALUR: <strong className="text-yellow-300 uppercase">{duckLane}</strong></span>
+          {feedback && (
+            <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
+              feedback.includes('NABRAK') ? 'bg-rose-500 text-white animate-bounce' : 'bg-emerald-500 text-white animate-pulse'
+            }`}>
+              {feedback}
             </span>
-            <span className="text-[10px] font-mono-rhythm text-slate-600">
-              JALUR: <strong className="text-amber-800 uppercase font-black">{duckLane}</strong>
-            </span>
-          </div>
+          )}
         </div>
-
-        {feedback && (
-          <span className="font-disco text-sm text-emerald-600 font-black animate-bounce bg-emerald-100 px-3.5 py-0.5 rounded-full border border-emerald-400">
-            {feedback}
-          </span>
-        )}
-
-        <span className="text-xs font-mono-rhythm font-bold text-amber-800">
-          {combo > 2 ? `🔥 ${combo}× COMBO` : '108 BPM'}
-        </span>
       </div>
 
-      {/* Large Floating Touch Buttons at Bottom */}
-      <div className="absolute bottom-6 inset-x-4 max-w-md mx-auto z-30 flex gap-4 h-14 pointer-events-auto">
+      {/* Clean Bottom Floating Lane Buttons */}
+      <div className="absolute bottom-6 inset-x-4 max-w-sm mx-auto z-30 flex gap-3 h-12 pointer-events-auto">
         <button
           type="button"
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
           onClick={() => switchLane('left')}
-          className={`flex-1 rounded-2xl font-disco font-black text-sm uppercase shadow-2xl active:scale-95 flex items-center justify-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 rounded-xl font-disco font-black text-xs uppercase shadow-lg active:scale-95 flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             duckLane === 'left'
-              ? 'bg-amber-400 text-black border-4 border-amber-500 shadow-amber-300/90 scale-105 ring-2 ring-yellow-200'
-              : 'bg-white/95 text-sky-950 hover:bg-white border-2 border-slate-300'
+              ? 'bg-amber-400 text-black border-2 border-amber-500 shadow-amber-300/80 scale-105'
+              : 'bg-black/60 text-white hover:bg-black/80 border border-white/20'
           }`}
         >
-          ⬅️ JALUR KIRI (A / ←)
+          ⬅️ KIRI (A / ←)
         </button>
 
         <button
@@ -142,16 +136,17 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
           onClick={() => switchLane('right')}
-          className={`flex-1 rounded-2xl font-disco font-black text-sm uppercase shadow-2xl active:scale-95 flex items-center justify-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 rounded-xl font-disco font-black text-xs uppercase shadow-lg active:scale-95 flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             duckLane === 'right'
-              ? 'bg-amber-400 text-black border-4 border-amber-500 shadow-amber-300/90 scale-105 ring-2 ring-yellow-200'
-              : 'bg-white/95 text-sky-950 hover:bg-white border-2 border-slate-300'
+              ? 'bg-amber-400 text-black border-2 border-amber-500 shadow-amber-300/80 scale-105'
+              : 'bg-black/60 text-white hover:bg-black/80 border border-white/20'
           }`}
         >
-          JALUR KANAN ➡️ (D / →)
+          KANAN ➡️ (D / →)
         </button>
       </div>
     </div>
   );
 };
+
 
