@@ -23,8 +23,9 @@ export const BeatmapEditorModal: React.FC<BeatmapEditorModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-5 overflow-y-auto">
+    <div data-modal="editor" className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-5 overflow-y-auto">
       <div className="w-full max-w-xl bg-[#100a26] border-2 border-yellow-400/60 rounded-3xl p-4 sm:p-5 shadow-2xl text-white select-none">
+
         {/* Header */}
         <div className="flex items-center justify-between pb-2.5 border-b border-white/10 mb-3">
           <div className="flex items-center gap-2">

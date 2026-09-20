@@ -66,23 +66,43 @@ export function useBeatmapEditor(isOpen: boolean, onApplyBeatmap?: (data: Beatma
   }, [bpm]);
 
   useEffect(() => {
-    if (!isOpen || !isRecording) return;
+    if (!isOpen) return;
+
     const handleKey = (e: KeyboardEvent) => {
+      // Don't intercept if user is typing numbers into BPM / Offset inputs
+      const target = e.target as HTMLElement | null;
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
       const map: Record<string, DanceDirection> = {
         ArrowLeft: 'left', KeyA: 'left',
         ArrowUp: 'up', KeyW: 'up',
         ArrowRight: 'right', KeyD: 'right',
         ArrowDown: 'down', KeyS: 'down',
       };
+
       const dir = map[e.code];
       if (dir) {
         e.preventDefault();
+        e.stopPropagation();
+
+        // Auto-enable recording and resume audio if not playing
+        setIsRecording(true);
+        const audio = AudioEngine.getInstance();
+        if (!audio.isPlaybackActive()) {
+          audio.resume();
+          setIsPlaying(true);
+        }
+
         stampNote(dir);
       }
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [isOpen, isRecording, stampNote]);
+
+    window.addEventListener('keydown', handleKey, { capture: true });
+    return () => window.removeEventListener('keydown', handleKey, { capture: true });
+  }, [isOpen, stampNote]);
+
 
   const handleTogglePlay = () => {
     const audio = AudioEngine.getInstance();

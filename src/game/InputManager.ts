@@ -59,8 +59,14 @@ export class InputManager {
   }
 
   private handleKeyDown = (e: KeyboardEvent) => {
+    // If beatmap editor modal is open or user is focused on an input, do not capture/block keys
+    if (document.querySelector('[data-modal="editor"]') || document.activeElement instanceof HTMLInputElement) {
+      return;
+    }
+
     const code = e.code;
     if (e.repeat) return;
+
 
     if (code === 'Space' || code === 'Enter') {
       e.preventDefault();
@@ -87,6 +93,10 @@ export class InputManager {
   };
 
   private handleKeyUp = (e: KeyboardEvent) => {
+    if (document.querySelector('[data-modal="editor"]') || document.activeElement instanceof HTMLInputElement) {
+      return;
+    }
+
     if (e.code === 'Space' || e.code === 'Enter') {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -94,9 +104,11 @@ export class InputManager {
     }
   };
 
-
   private handlePointerDown = (e: PointerEvent) => {
     if (e.button !== 0) return;
+    if (document.querySelector('[data-modal="editor"]')) {
+      return;
+    }
     const target = e.target as HTMLElement | null;
     if (target?.closest('button, [data-interactive="true"]')) {
       return;
@@ -104,6 +116,7 @@ export class InputManager {
     e.preventDefault();
     this.startPress('tap');
   };
+
 
   private handlePointerUp = (e: PointerEvent) => {
     if (e.button !== 0 && e.type !== 'pointercancel') return;
