@@ -5,9 +5,16 @@ interface PauseMenuProps {
   onResume: () => void;
   onRestart: () => void;
   onExit: () => void;
+  onOpenEditor?: () => void;
 }
 
-export const PauseMenu: React.FC<PauseMenuProps> = ({ isOpen, onResume, onRestart, onExit }) => {
+export const PauseMenu: React.FC<PauseMenuProps> = ({
+  isOpen,
+  onResume,
+  onRestart,
+  onExit,
+  onOpenEditor,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -22,6 +29,14 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({ isOpen, onResume, onRestar
         >
           RESUME
         </button>
+        {onOpenEditor && (
+          <button
+            onClick={onOpenEditor}
+            className="py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-disco text-sm font-bold tracking-widest uppercase transition-colors shadow-[0_0_20px_rgba(234,179,8,0.4)]"
+          >
+            🛠️ BEATMAP EDITOR
+          </button>
+        )}
         <button
           onClick={onRestart}
           className="py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco text-sm font-bold tracking-widest uppercase transition-colors"
@@ -38,3 +53,4 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({ isOpen, onResume, onRestar
     </div>
   );
 };
+

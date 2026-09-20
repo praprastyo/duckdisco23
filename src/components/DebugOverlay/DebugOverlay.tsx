@@ -6,9 +6,11 @@ import { AutoBeatDetector } from '../../audio/AutoBeatDetector';
 interface DebugOverlayProps {
   engine?: RhythmEngine | null;
   lastJudgement?: JudgementEvent | null;
+  onOpenEditor?: () => void;
 }
 
-export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgement }) => {
+export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgement, onOpenEditor }) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const [audioTime, setAudioTime] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
@@ -133,6 +135,14 @@ export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgemen
           <button onClick={toggleUnlockAll} className={`px-2 py-1 rounded font-bold ${unlockAll ? 'bg-amber-600 text-white' : 'bg-white/10'}`}>
             UNLOCK ALL: {unlockAll ? 'YES' : 'NO'}
           </button>
+          {onOpenEditor && (
+            <button
+              onClick={onOpenEditor}
+              className="col-span-2 py-1.5 bg-yellow-500 hover:bg-yellow-400 text-black rounded font-bold shadow transition-all"
+            >
+              🛠️ BUKA BEATMAP EDITOR
+            </button>
+          )}
           <button
             onClick={handleDetectBeats}
             className="col-span-2 py-1.5 bg-cyan-900/70 hover:bg-cyan-800 border border-cyan-400/50 text-cyan-200 rounded font-bold"
@@ -140,6 +150,7 @@ export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgemen
             🎵 DETECT BEAT DARI MP3/MP4
           </button>
         </div>
+
 
         {detectedInfo && (
           <div className="mt-1 p-1.5 bg-cyan-950/80 border border-cyan-500/40 rounded text-[9px] text-cyan-200">

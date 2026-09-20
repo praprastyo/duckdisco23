@@ -4,6 +4,7 @@ import { LevelCard } from '../components/LevelCard/LevelCard';
 import { SaveService, SaveData } from '../services/SaveService';
 import { TimeService } from '../services/TimeService';
 import { SettingsModal } from '../components/SettingsModal/SettingsModal';
+import { BeatmapEditorModal } from '../components/BeatmapEditor/BeatmapEditorModal';
 
 interface LevelSelectPageProps {
   onSelectLevel: (levelId: string) => void;
@@ -17,6 +18,8 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
   const [saveData, setSaveData] = useState<SaveData>(() => SaveService.load());
   const [jakartaTime, setJakartaTime] = useState(() => TimeService.getJakartaTimeString());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+
 
   useEffect(() => {
     const unsub = SaveService.subscribe((data) => setSaveData(data));
@@ -50,13 +53,22 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
           </span>
         </div>
 
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono-rhythm text-white/80 transition-colors"
-        >
-          ⚙️ SETTINGS
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsEditorOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-400/50 text-xs font-mono-rhythm text-yellow-300 font-bold transition-all shadow-[0_0_15px_rgba(234,179,8,0.2)]"
+          >
+            🛠️ BEATMAP EDITOR
+          </button>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono-rhythm text-white/80 transition-colors"
+          >
+            ⚙️ SETTINGS
+          </button>
+        </div>
       </div>
+
 
       {/* Page Title & Collectibles Showcase */}
       <div className="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
@@ -115,6 +127,8 @@ export const LevelSelectPage: React.FC<LevelSelectPageProps> = ({
       </div>
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+      <BeatmapEditorModal isOpen={isEditorOpen} onClose={() => setIsEditorOpen(false)} />
     </div>
   );
 };
+

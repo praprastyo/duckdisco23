@@ -20,8 +20,10 @@ import { Level2Stage } from '../levels/Level2/Level2Stage';
 import { Level3Stage } from '../levels/Level3/Level3Stage';
 import { Level4Stage } from '../levels/Level4/Level4Stage';
 import { DebugOverlay } from '../components/DebugOverlay/DebugOverlay';
+import { BeatmapEditorModal } from '../components/BeatmapEditor/BeatmapEditorModal';
 
 import { SaveService } from '../services/SaveService';
+
 import { EnergyData } from '../audio/AudioAnalyser';
 import { InputAction } from '../game/InputManager';
 import { LaneDir } from '../levels/Level1/DanceNoteTrack';
@@ -49,10 +51,19 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [energy, setEnergy] = useState<EnergyData>({ bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 });
   const [actionEvent, setActionEvent] = useState<{ id: number; action: InputAction }>({ id: 0, action: 'tap' });
   const [lastDirection, setLastDirection] = useState<LaneDir | null>(null);
-
   const [beatmapEvents, setBeatmapEvents] = useState<BeatmapEvent[]>([]);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+
+  const handleApplyBeatmap = (data: BeatmapData) => {
+    setBeatmapEvents(data.events);
+    if (engineRef.current) {
+      engineRef.current.getBeatmapRunner().load(data);
+      engineRef.current.getBeatClock().setConfig(data.bpm, data.offset);
+    }
+  };
 
   useEffect(() => {
+
     const offset = SaveService.load().settings.timingOffset;
     const engine = new RhythmEngine(offset, level.id);
     engineRef.current = engine;
@@ -241,11 +252,23 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         onResume={() => engineRef.current?.resume()}
         onRestart={() => engineRef.current?.restart()}
         onExit={onExit}
+        onOpenEditor={() => setIsEditorOpen(true)}
       />
 
-      <DebugOverlay engine={engineRef.current} lastJudgement={lastJudgement} />
+      <DebugOverlay
+        engine={engineRef.current}
+        lastJudgement={lastJudgement}
+        onOpenEditor={() => setIsEditorOpen(true)}
+      />
+
+      <BeatmapEditorModal
+        isOpen={isEditorOpen}
+        onClose={() => setIsEditorOpen(false)}
+        onApplyBeatmap={handleApplyBeatmap}
+      />
     </div>
   );
 };
+
 
 
