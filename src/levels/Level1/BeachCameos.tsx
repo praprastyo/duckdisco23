@@ -210,7 +210,7 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
           style={{ transform: isEven ? 'translateY(-4px) rotate(3deg)' : 'translateY(2px) rotate(-3deg)' }}
         >
           <div className="w-16 h-16 rounded-full bg-yellow-400 border-2 border-yellow-300 shadow-[0_0_20px_#facc15] flex items-center justify-center text-3xl">
-            🦆
+            ðŸ¦†
           </div>
           <span className="text-[7px] font-disco text-black bg-yellow-300 px-1.5 rounded-full -mt-1 font-black">
             MEGA DUCK
@@ -254,7 +254,7 @@ export const BeachCameos: React.FC<BeachCameosProps> = ({ beat, combo, isHit }) 
       {combo >= 25 && (
         <div className="absolute bottom-24 right-4 sm:right-16 flex flex-col items-center animate-bounce">
           <div className="px-2 py-0.5 mb-1 rounded bg-pink-600 text-white font-disco font-black text-[8px] shadow-[0_0_10px_#ec4899] animate-pulse">
-            HAPPY BIRTHDAY! 🎂
+            HAPPY BIRTHDAY! ðŸŽ‚
           </div>
           <VipDuckSVG />
           <span className="text-[9px] font-bold text-fuchsia-300 bg-black/80 px-2 py-0.5 rounded-full -mt-2 border border-fuchsia-400/50 shadow-[0_0_10px_#ec4899]">

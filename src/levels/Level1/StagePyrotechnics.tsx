@@ -20,6 +20,16 @@ export const StagePyrotechnics: React.FC<StagePyrotechnicsProps> = ({ beat, comb
   ];
   const currentStrobe = borderColors[beat % borderColors.length];
 
+  // Pure geometric confetti ribbons (Zero emojis)
+  const confettiShapes = [
+    { left: '12%', color: '#facc15', w: 8, h: 18, delay: '0s' },
+    { left: '26%', color: '#ec4899', w: 10, h: 14, delay: '0.4s' },
+    { left: '40%', color: '#06b6d4', w: 7, h: 20, delay: '0.2s' },
+    { left: '58%', color: '#a855f7', w: 9, h: 16, delay: '0.6s' },
+    { left: '74%', color: '#f43f5e', w: 10, h: 15, delay: '0.1s' },
+    { left: '88%', color: '#10b981', w: 8, h: 18, delay: '0.5s' },
+  ];
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-20">
       {/* 1. Pulsating Neon Strobe Border around the whole screen */}
@@ -34,9 +44,8 @@ export const StagePyrotechnics: React.FC<StagePyrotechnicsProps> = ({ beat, comb
         }}
       />
 
-      {/* 2. Left & Right Stage Flame Jets / Spark Cannons */}
+      {/* 2. Left & Right Stage Flame Jets */}
       <div className="absolute bottom-16 left-12 sm:left-24 flex flex-col items-center">
-        {/* Flame column shoots up on beat or hit */}
         <div
           className={`w-8 rounded-full transition-all duration-100 origin-bottom ${
             isEven || isHit
@@ -44,8 +53,8 @@ export const StagePyrotechnics: React.FC<StagePyrotechnicsProps> = ({ beat, comb
               : 'h-6 bg-orange-600/30 opacity-20'
           }`}
         />
-        <div className="w-10 h-6 bg-black/80 rounded-t-lg border border-yellow-400 flex items-center justify-center text-[10px]">
-          🔥
+        <div className="w-10 h-6 bg-black/80 rounded-t-lg border border-yellow-400 flex items-center justify-center">
+          <div className="w-2.5 h-2.5 rounded-full bg-orange-400 animate-ping" />
         </div>
       </div>
 
@@ -57,33 +66,29 @@ export const StagePyrotechnics: React.FC<StagePyrotechnicsProps> = ({ beat, comb
               : 'h-6 bg-pink-600/30 opacity-20'
           }`}
         />
-        <div className="w-10 h-6 bg-black/80 rounded-t-lg border border-cyan-400 flex items-center justify-center text-[10px]">
-          💨
+        <div className="w-10 h-6 bg-black/80 rounded-t-lg border border-cyan-400 flex items-center justify-center">
+          <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
         </div>
       </div>
 
-      {/* 3. Floating Confetti & Glitter Rain (when combo >= 10) */}
+      {/* 3. Floating Confetti Ribbon Rain (combo >= 10, zero emojis) */}
       {combo >= 10 && (
         <div className="absolute inset-0">
-          {[
-            { left: '15%', delay: '0s', text: '✨' },
-            { left: '28%', delay: '0.4s', text: '🎉' },
-            { left: '42%', delay: '0.2s', text: '⭐' },
-            { left: '60%', delay: '0.6s', text: '✨' },
-            { left: '75%', delay: '0.1s', text: '🎊' },
-            { left: '88%', delay: '0.5s', text: '⭐' },
-          ].map((c, i) => (
+          {confettiShapes.map((c, i) => (
             <div
               key={i}
-              className="absolute top-0 animate-bounce text-xl"
+              className="absolute top-0 animate-bounce"
               style={{
                 left: c.left,
+                width: `${c.w}px`,
+                height: `${c.h}px`,
+                backgroundColor: c.color,
+                boxShadow: `0 0 8px ${c.color}`,
+                transform: `rotate(${i * 45}deg)`,
                 animationDuration: isDisco ? '0.8s' : '1.4s',
                 animationDelay: c.delay,
               }}
-            >
-              {c.text}
-            </div>
+            />
           ))}
         </div>
       )}

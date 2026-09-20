@@ -4,6 +4,8 @@ import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { QuackTargetCircle } from './QuackTargetCircle';
 import { Level2Effects } from './Level2Effects';
 import { Level2Cameos } from './Level2Cameos';
+import { Level2Dancers } from './Level2Dancers';
+import { Level2Pyrotechnics } from './Level2Pyrotechnics';
 import { useLevel2Game } from './useLevel2Game';
 
 interface Level2StageProps {
@@ -45,7 +47,7 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full max-w-5xl h-[480px] sm:h-[580px] bg-[#070312] border-2 rounded-3xl overflow-hidden select-none touch-none shadow-2xl transition-all duration-500 ${
+      className={`relative w-full max-w-5xl h-[500px] sm:h-[600px] bg-[#070312] border-2 rounded-3xl overflow-hidden select-none touch-none shadow-2xl transition-all duration-500 ${
         isFever
           ? 'border-yellow-400 shadow-[0_0_80px_rgba(250,204,21,0.6)]'
           : isNeon
@@ -57,14 +59,14 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:28px_28px]" />
 
       {/* Top Playfield HUD */}
-      <div className="absolute top-4 inset-x-6 z-10 flex items-center justify-between pointer-events-none">
+      <div className="absolute top-4 inset-x-6 z-20 flex items-center justify-between pointer-events-none">
         <div className="flex items-center gap-2">
           <span className="px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/60 font-disco text-xs text-cyan-300 tracking-wider">
-            🎯 QUACK BEAT POP • 146 BPM
+            QUACK BEAT POP • 146 BPM
           </span>
           {isFever && (
             <span className="px-3 py-1 rounded-full bg-yellow-500 text-black font-disco font-black text-xs tracking-widest animate-bounce">
-              ⚡ QUACK FEVER ⚡
+              QUACK FEVER
             </span>
           )}
         </div>
@@ -98,10 +100,16 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
       {/* Safe Play Area (X: 8-92%, Y: 12-88%) */}
       <div className="absolute inset-x-[8%] inset-y-[12%] border border-white/5 rounded-2xl pointer-events-none" />
 
-      {/* Dynamic Cameos in the background */}
+      {/* Pyrotechnics, Lasers & Strobe Border */}
+      <Level2Pyrotechnics currentBeat={currentBeat} combo={combo} songTime={songTime} />
+
+      {/* Podium Backup Dancers & Side Spectator Fans */}
+      <Level2Dancers currentBeat={currentBeat} combo={combo} songTime={songTime} />
+
+      {/* Dynamic Moving Cameos (Skater, Glider, Breakdancer) */}
       <Level2Cameos currentBeat={currentBeat} combo={combo} songTime={songTime} />
 
-      {/* Visual Effects, Particles, Mascot, Reward */}
+      {/* Visual Effects, Large DJ Donald Booth, Particles, Popups */}
       <Level2Effects
         particles={particles}
         popups={popups}
@@ -122,7 +130,7 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
       ))}
 
       {/* Footer hint */}
-      <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none">
+      <div className="absolute bottom-3 inset-x-0 text-center pointer-events-none z-20">
         <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest uppercase bg-black/60 px-4 py-1.5 rounded-full border border-white/10">
           CLICK OR TAP THE CIRCLES AS THE OUTER RING CLOSES IN
         </span>
@@ -130,4 +138,3 @@ export const Level2Stage: React.FC<Level2StageProps> = ({
     </div>
   );
 };
-

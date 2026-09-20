@@ -11,14 +11,14 @@ const PoseEffects: React.FC<{ pose: DancePose }> = ({ pose }) => {
   if (pose === 'right') {
     return (
       <div className="absolute -top-6 flex gap-2 animate-ping">
-        <span className="text-lg">✨</span><span className="text-xl">🪶</span><span className="text-lg">✨</span>
+        <span className="text-lg">âœ¨</span><span className="text-xl">ðŸª¶</span><span className="text-lg">âœ¨</span>
       </div>
     );
   }
   if (pose === 'up') {
     return (
       <div className="absolute -top-4 flex gap-3 animate-bounce">
-        <span className="text-sm text-cyan-300">˄</span><span className="text-sm text-cyan-300">˄</span>
+        <span className="text-sm text-cyan-300">Ë„</span><span className="text-sm text-cyan-300">Ë„</span>
       </div>
     );
   }
@@ -43,16 +43,17 @@ const PoseEffects: React.FC<{ pose: DancePose }> = ({ pose }) => {
   if (pose === 'miss') {
     return (
       <div className="absolute -top-5 flex gap-2 animate-spin">
-        <span className="text-base">⭐</span><span className="text-base">💫</span>
+        <div className="w-3 h-3 rounded-full bg-rose-400 shadow-[0_0_8px_#f43f5e]" />
+        <div className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#facc15]" />
       </div>
     );
   }
   if (pose === 'super') {
     return (
-      <div className="absolute -top-8 flex gap-2">
-        <span className="text-2xl animate-bounce">🎉</span>
-        <span className="text-2xl animate-ping">🌈</span>
-        <span className="text-2xl animate-bounce">🎉</span>
+      <div className="absolute -top-8 flex gap-3 animate-bounce">
+        <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-400 to-pink-500 shadow-[0_0_12px_#ec4899]" />
+        <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-amber-300 shadow-[0_0_12px_#06b6d4] animate-ping" />
+        <div className="w-5 h-5 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 shadow-[0_0_12px_#ec4899]" />
       </div>
     );
   }
