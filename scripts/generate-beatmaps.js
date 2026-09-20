@@ -2,6 +2,18 @@ import fs from 'fs';
 import path from 'path';
 
 function buildLevel1Beatmap() {
+  const customPath = path.resolve('public/beatmaps/level1.json');
+  if (fs.existsSync(customPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(customPath, 'utf8'));
+      if (data.events && data.events.length > 60) {
+        return data; // Preserve full custom authored beatmap
+      }
+    } catch {
+      // fallback
+    }
+  }
+
   const bpm = 79, offset = 0.20, beatSec = 60 / bpm;
   const events = [];
   let id = 1;
