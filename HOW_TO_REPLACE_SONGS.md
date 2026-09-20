@@ -1,17 +1,20 @@
 # CARA MENGGANTI LAGU DI DISCO DUCK
 
 DISCO DUCK dirancang dengan arsitektur modular (*data-driven*), sehingga lagu apapun bisa diganti tanpa perlu mengubah engine game.
+Game ini **mendukung file MP3, WAV, dan MP4 (video)** — jika memakai file `.mp4`, sistem otomatis mengambil musik audionya saja!
 
 ---
 
 ## 3 Langkah Mudah Mengganti Lagu:
 
-### 1. Salin File Lagu Anda
-Taruh file audio (`.mp3` atau `.wav`) ke dalam folder:
+### 1. Salin File Lagu atau Video Anda
+Taruh file audio (`.mp3`, `.wav`) atau video (`.mp4`) ke dalam folder:
 ```text
 public/audio/
 ```
-Contoh: `public/audio/my-disco-funk.mp3`
+Contoh:
+- `public/audio/lagu-pantai.mp4` (video MP4 akan diambil suara musiknya secara otomatis)
+- atau `public/audio/my-disco.mp3`
 
 ---
 
@@ -23,9 +26,9 @@ export const songs: Record<string, SongConfig> = {
   level1: {
     id: 'level1',
     title: 'Judul Lagu Anda',
-    src: '/audio/my-disco-funk.mp3', // Nama file lagu baru
-    bpm: 115,                        // Masukkan BPM lagu baru Anda
-    beatOffset: 0.18,                 // Jeda awal lagu dalam detik sebelum ketukan pertama
+    src: '/audio/lagu-pantai.mp4', // Bisa file .mp4, .mp3, atau .wav!
+    bpm: 108,                      // Masukkan BPM lagu baru Anda
+    beatOffset: 0.18,               // Jeda awal lagu dalam detik sebelum ketukan pertama
     intensity: {
       bassMultiplier: 0.8,
       midMultiplier: 0.7,
@@ -39,6 +42,7 @@ export const songs: Record<string, SongConfig> = {
   // ...
 };
 ```
+
 
 ---
 

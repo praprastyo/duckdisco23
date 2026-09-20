@@ -88,11 +88,11 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-between p-4 select-none overflow-hidden">
-      {/* Top Hanging Disco Ball */}
-      <DiscoBall highEnergy={energy.high} bassEnergy={energy.bass} />
+      {/* Top Hanging Disco Ball (Only for disco nightclub levels 2, 3, 4) */}
+      {level.id !== 'level1' && <DiscoBall highEnergy={energy.high} bassEnergy={energy.bass} />}
 
-      {/* Dual Bass Speaker Stacks */}
-      <SpeakerStacks bassEnergy={energy.bass} midEnergy={energy.mid} />
+      {/* Dual Bass Speaker Stacks (Only for disco nightclub levels 2, 3, 4) */}
+      {level.id !== 'level1' && <SpeakerStacks bassEnergy={energy.bass} midEnergy={energy.mid} />}
 
       {/* Top HUD */}
       <div className="relative z-30 flex items-center justify-between w-full max-w-6xl mx-auto">
@@ -113,7 +113,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
         </div>
 
         <div className="flex items-center gap-3">
-          <EqualizerVisualizer energy={energy} />
+          {level.id !== 'level1' && <EqualizerVisualizer energy={energy} />}
           <ScoreDisplay score={score} accuracy={accuracy} />
         </div>
 
@@ -140,7 +140,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               currentCue={currentCue}
               lastJudgement={lastJudgement?.judgement}
               combo={combo}
-              onArrowInput={(dir) => engineRef.current?.handlePlayerAction(dir)}
+              onLaneSwitch={() => engineRef.current?.handlePlayerAction('tap')}
             />
           )}
 
