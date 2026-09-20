@@ -16,8 +16,10 @@ const LANE_COLORS: Record<LaneDir, { ring: string; note: string; glow: string }>
 
 /** Seconds a note takes to travel from the top of the track to the hit line. */
 const APPROACH_SEC = 2.4;
-/** Vertical travel distance of the note track in px. */
-const TRACK_HEIGHT = 300;
+/** Total track height in px. */
+const TRACK_HEIGHT = 290;
+/** Exact Y position where notes hit delta = 0 (the target line). */
+const TARGET_LINE_Y = 235;
 
 interface DanceNoteTrackProps {
   events: BeatmapEvent[];
@@ -29,7 +31,7 @@ interface DanceNoteTrackProps {
 /**
  * Scrolling arrow track.
  * Note Y positions are driven by the authoritative audio clock in a rAF loop,
- * so notes stay locked to the music even if React re-renders.
+ * mathematically centered on TARGET_LINE_Y at delta = 0 for perfect visual sync.
  */
 export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
   events,
@@ -38,7 +40,6 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
 }) => {
   const noteRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeLaneRef = useRef<LaneDir | null>(null);
-  const [showStealthNotice, setShowStealthNotice] = useState(false);
 
   useEffect(() => {
     let frameId: number;
@@ -51,24 +52,8 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
       let nearest: LaneDir | null = null;
       let nearestDelta = Infinity;
 
-      // Notice banner for 40s - 45s
-      setShowStealthNotice(t >= 40 && t <= 45);
-
-      const isPast40s = t > 40;
-
-      // Progressive difficulty wobble / sway
-      // 0 - 40s: 0px (steady)
-      // 40 - 70s: ramps 0 -> 7px (light wobble)
-      // 70 - 100s: ramps 7 -> 14px (disco dance sway)
-      // 100s+: ramps up to 20px (crazy sway)
-      let swayAmp = 0;
-      if (t > 100) {
-        swayAmp = Math.min(20, 14 + (t - 100) * 0.2);
-      } else if (t > 70) {
-        swayAmp = 7 + ((t - 70) / 30) * 7;
-      } else if (t > 40) {
-        swayAmp = ((t - 40) / 30) * 7;
-      }
+      // Gentle disco sway after 60s
+      const swayAmp = t > 60 ? Math.min(8, (t - 60) * 0.15) : 0;
 
       events.forEach((ev, i) => {
         const el = noteRefs.current[i];
@@ -78,42 +63,29 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
         const delta = ev.time - t;
 
         // Hide notes far outside the approach window
-        if (delta > APPROACH_SEC || delta < -0.4) {
+        if (delta > APPROACH_SEC || delta < -0.35) {
           el.style.opacity = '0';
           el.style.pointerEvents = 'none';
         } else {
-          // Progress: 0 = top of track, 1 = target box line
-          const progress = 1 - delta / APPROACH_SEC;
-
+          // Keep notes fully readable until just past the hit line
           let opacity = 1;
-          if (delta < -0.25) {
-            opacity = 0;
-          } else if (isPast40s) {
-            // Challenging stealth fade: clearly visible at top (0 - 35%),
-            // then fades smoothly across mid-track (35% - 70%),
-            // and completely invisible (0 opacity) for the final 30% before the target box!
-            if (progress < 0.35) {
-              opacity = 1.0;
-            } else if (progress <= 0.70) {
-              const ratio = (progress - 0.35) / (0.70 - 0.35); // 0 to 1
-              opacity = Math.max(0, 1.0 - ratio);
-            } else {
-              // Completely invisible 30% before and inside target box
-              opacity = 0;
-            }
+          if (delta < -0.15) {
+            opacity = Math.max(0, 1 - (-delta - 0.15) / 0.2);
           }
           el.style.opacity = String(opacity);
+          el.style.pointerEvents = 'auto';
         }
 
-        // Progress 0 = top of track, 1 = hit line
+        // Progress: 0 at spawn, 1.0 exactly at delta = 0 (hit moment)
         const progress = 1 - delta / APPROACH_SEC;
-        const y = Math.max(-40, Math.min(TRACK_HEIGHT + 20, progress * TRACK_HEIGHT));
+        // Y position of note center: at progress = 1, y = TARGET_LINE_Y exactly!
+        const y = progress * TARGET_LINE_Y;
 
-        // Horizontal sway oscillation as note descends
-        const swayX = swayAmp > 0 ? Math.sin(t * 5.5 + progress * 4 + i) * swayAmp : 0;
-        const swayRot = swayAmp > 0 ? Math.sin(t * 4 + i) * (swayAmp * 0.9) : 0;
+        // Subtle horizontal sway oscillation as note descends
+        const swayX = swayAmp > 0 ? Math.sin(t * 5 + progress * 3 + i) * swayAmp : 0;
 
-        el.style.transform = `translate(calc(-50% + ${swayX.toFixed(1)}px), ${y}px) rotate(${swayRot.toFixed(1)}deg)`;
+        // Note is vertically centered using calc(${y}px - 50%) so its exact center hits the line at delta = 0!
+        el.style.transform = `translate(calc(-50% + ${swayX.toFixed(1)}px), calc(${y.toFixed(1)}px - 50%))`;
         el.dataset.y = String(y);
 
         if (Math.abs(delta) < Math.abs(nearestDelta)) {
@@ -135,20 +107,36 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
   }, [events, isPlaying, onActiveNoteChange]);
 
   return (
-    <div className="relative w-full" style={{ height: TRACK_HEIGHT }}>
-      {/* 40s Stealth Fade Notice */}
-      {showStealthNotice && (
-        <div className="absolute -top-6 inset-x-0 z-30 flex justify-center animate-bounce pointer-events-none">
-          <span className="px-2.5 py-0.5 rounded-full bg-purple-900/90 border border-purple-400 text-[9px] font-mono-rhythm text-yellow-300 font-bold shadow-[0_0_14px_#c084fc]">
-            👻 DISCO WOBBLE & GHOST NOTES: PANAH BERGOYANG & LENYAP SEBELUM KOTAK!
-          </span>
-        </div>
-      )}
-      {/* Approach guide lines */}
-      <div className="absolute inset-0 flex justify-around opacity-25">
+    <div className="relative w-full overflow-hidden rounded-2xl" style={{ height: TRACK_HEIGHT }}>
+      {/* Approach guide vertical dashed lines */}
+      <div className="absolute inset-0 flex justify-around opacity-20 pointer-events-none">
         {LANE_ORDER.map((dir) => (
           <div key={dir} className={`w-px h-full border-l border-dashed ${LANE_COLORS[dir].ring}`} />
         ))}
+      </div>
+
+      {/* Target Hit Line (Garis Sasaran Presisi di Tengah) */}
+      <div
+        className="absolute inset-x-0 pointer-events-none z-10"
+        style={{ top: `${TARGET_LINE_Y}px` }}
+      >
+        {/* Glowing soft blur line */}
+        <div className="absolute inset-x-0 -top-1.5 h-3 bg-gradient-to-r from-amber-400/30 via-cyan-400/50 to-emerald-400/30 blur-sm" />
+        {/* Core glowing target line */}
+        <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-amber-400 via-cyan-300 to-emerald-400 shadow-[0_0_12px_#38bdf8]" />
+
+        {/* Center Target Crosshairs for each lane */}
+        <div className="relative w-full flex justify-around">
+          {LANE_ORDER.map((dir) => (
+            <div key={dir} className="relative -top-2 flex items-center justify-center">
+              <div
+                className={`w-5 h-5 rounded-full border-2 border-white/90 bg-black/70 shadow-[0_0_12px_white] flex items-center justify-center`}
+              >
+                <div className={`w-1.5 h-1.5 rounded-full ${LANE_COLORS[dir].ring.replace('border-', 'bg-')}`} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Falling arrow notes */}
@@ -160,31 +148,20 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
         return (
           <div
             key={ev.id}
-            ref={(el) => { noteRefs.current[i] = el; }}
-            className="absolute top-0 transition-opacity duration-150"
-            style={{ left: leftPct, opacity: 0, transform: 'translate(-50%, 0px)' }}
+            ref={(el) => {
+              noteRefs.current[i] = el;
+            }}
+            className="absolute top-0 z-20 will-change-transform"
+            style={{ left: leftPct, opacity: 0, transform: 'translate(-50%, -50%)' }}
           >
             <div
-              className={`w-11 h-11 rounded-xl flex items-center justify-center font-disco font-black text-xl border-2 border-white/70 ${col.note} ${col.glow}`}
+              className={`w-11 h-11 rounded-xl flex items-center justify-center font-disco font-black text-xl border-2 border-white/90 ${col.note} ${col.glow}`}
             >
               {ARROW_ICONS[dir]}
             </div>
           </div>
         );
       })}
-
-      {/* Hit line */}
-      <div
-        className="absolute inset-x-0 flex justify-around"
-        style={{ top: TRACK_HEIGHT - 22 }}
-      >
-        {LANE_ORDER.map((dir) => (
-          <div
-            key={dir}
-            className={`w-12 h-12 rounded-xl border-2 border-dashed bg-black/40 ${LANE_COLORS[dir].ring}`}
-          />
-        ))}
-      </div>
     </div>
   );
 };
