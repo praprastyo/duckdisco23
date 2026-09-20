@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BeatmapEvent } from '../../game/BeatmapRunner';
 import { JudgementType } from '../../config/scoring';
 import { AudioEngine } from '../../audio/AudioEngine';
+import { InputAction } from '../../game/InputManager';
 import { Beach3DScene } from './Beach3DScene';
 
 interface Beach3DStageProps {
@@ -10,15 +11,16 @@ interface Beach3DStageProps {
   lastJudgement?: JudgementType | null;
   combo: number;
   events?: BeatmapEvent[];
-  externalAction?: 'left' | 'right' | 'tap';
+  actionEvent?: { id: number; action: InputAction };
   onLaneSwitch?: (lane: 'left' | 'right') => void;
 }
+
 
 export const Beach3DStage: React.FC<Beach3DStageProps> = ({
   lastJudgement,
   combo,
   events = [],
-  externalAction,
+  actionEvent,
   onLaneSwitch,
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -42,10 +44,16 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     onLaneSwitch?.('right');
   };
 
+  // Re-trigger movement on every actionEvent ID change!
   useEffect(() => {
-    if (externalAction === 'left') handleMoveLeft();
-    else if (externalAction === 'right') handleMoveRight();
-  }, [externalAction]);
+    if (!actionEvent) return;
+    if (actionEvent.action === 'left') {
+      handleMoveLeft();
+    } else if (actionEvent.action === 'right') {
+      handleMoveRight();
+    }
+  }, [actionEvent?.id]);
+
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -112,15 +120,19 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
 
       {/* Screen Left Half Touch Area */}
       <div
+        data-interactive="true"
+        onPointerDown={handleMoveLeft}
         onClick={handleMoveLeft}
-        className="absolute inset-y-0 left-0 w-1/2 pointer-events-auto cursor-pointer z-10 opacity-0"
+        className="absolute inset-y-0 left-0 w-1/2 pointer-events-auto cursor-pointer z-30 opacity-0"
         title="Tap to move Left"
       />
 
       {/* Screen Right Half Touch Area */}
       <div
+        data-interactive="true"
+        onPointerDown={handleMoveRight}
         onClick={handleMoveRight}
-        className="absolute inset-y-0 right-0 w-1/2 pointer-events-auto cursor-pointer z-10 opacity-0"
+        className="absolute inset-y-0 right-0 w-1/2 pointer-events-auto cursor-pointer z-30 opacity-0"
         title="Tap to move Right"
       />
 
@@ -139,11 +151,13 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
       </div>
 
       {/* 2 Big Clear Bottom Controls: MOVE LEFT & MOVE RIGHT */}
-      <div className="absolute bottom-6 inset-x-4 max-w-sm mx-auto z-30 flex gap-3 h-14 pointer-events-auto">
+      <div className="absolute bottom-6 inset-x-4 max-w-sm mx-auto z-40 flex gap-3 h-14 pointer-events-auto">
         <button
           type="button"
+          data-interactive="true"
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
+          onPointerDown={handleMoveLeft}
           onClick={handleMoveLeft}
           className="flex-1 rounded-2xl font-disco font-black text-sm uppercase shadow-2xl active:scale-95 flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black border-2 border-yellow-200 hover:brightness-105 transition-all cursor-pointer"
         >
@@ -152,8 +166,10 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
 
         <button
           type="button"
+          data-interactive="true"
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
+          onPointerDown={handleMoveRight}
           onClick={handleMoveRight}
           className="flex-1 rounded-2xl font-disco font-black text-sm uppercase shadow-2xl active:scale-95 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black border-2 border-yellow-200 hover:brightness-105 transition-all cursor-pointer"
         >
@@ -163,6 +179,7 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
     </div>
   );
 };
+
 
 
 

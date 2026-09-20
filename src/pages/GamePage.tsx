@@ -23,6 +23,8 @@ import { DebugOverlay } from '../components/DebugOverlay/DebugOverlay';
 
 import { SaveService } from '../services/SaveService';
 import { EnergyData } from '../audio/AudioAnalyser';
+import { InputAction } from '../game/InputManager';
+
 
 interface GamePageProps {
   levelId: string;
@@ -44,7 +46,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
   const [accuracy, setAccuracy] = useState(100);
   const [triggerId, setTriggerId] = useState(0);
   const [energy, setEnergy] = useState<EnergyData>({ bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 });
-  const [lastAction, setLastAction] = useState<'left' | 'right' | 'tap'>('tap');
+  const [actionEvent, setActionEvent] = useState<{ id: number; action: InputAction }>({ id: 0, action: 'tap' });
+
   const [beatmapEvents, setBeatmapEvents] = useState<BeatmapEvent[]>([]);
 
   useEffect(() => {
@@ -56,10 +59,9 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
     engine.getBeatClock().onBeat(setCurrentBeat);
     engine.onCue(setCurrentCue);
     engine.onInput((action) => {
-      if (action === 'left' || action === 'right') {
-        setLastAction(action);
-      }
+      setActionEvent({ id: performance.now(), action });
     });
+
 
     engine.onJudgement((j) => {
       setLastJudgement(j);
@@ -152,7 +154,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               lastJudgement={lastJudgement?.judgement}
               combo={combo}
               events={beatmapEvents}
-              externalAction={lastAction}
+              actionEvent={actionEvent}
               onLaneSwitch={() => engineRef.current?.handlePlayerAction('tap')}
             />
           )}
