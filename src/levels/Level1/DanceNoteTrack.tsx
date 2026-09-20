@@ -73,19 +73,22 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
 
           let opacity = 1;
           if (delta < -0.25) {
-            opacity = 0.25;
+            opacity = 0;
           } else if (isPast40s) {
-            // Smooth proximity fade: visible at top, gently fading as it nears the box
-            if (progress >= 0.38 && progress <= 0.92) {
-              const ratio = (progress - 0.38) / (0.92 - 0.38); // 0 to 1
-              opacity = 1.0 - ratio * 0.85; // 1.0 down to 0.15 smoothly
-            } else if (progress > 0.92) {
-              opacity = 0.15;
-            } else {
+            // Early stealth fade: visible at the top (0 - 15%), fades smoothly (15% - 55%),
+            // and completely invisible (0 opacity) from 55% all the way through the target box!
+            if (progress < 0.15) {
               opacity = 1.0;
+            } else if (progress <= 0.55) {
+              const ratio = (progress - 0.15) / (0.55 - 0.15); // 0 to 1
+              opacity = Math.max(0, 1.0 - ratio);
+            } else {
+              // Completely gone when nearing or at the target box!
+              opacity = 0;
             }
           }
           el.style.opacity = String(opacity);
+
         }
 
         // Progress 0 = top of track, 1 = hit line
@@ -117,8 +120,8 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
       {/* 40s Stealth Fade Notice */}
       {showStealthNotice && (
         <div className="absolute -top-6 inset-x-0 z-30 flex justify-center animate-bounce pointer-events-none">
-          <span className="px-2.5 py-0.5 rounded-full bg-purple-900/80 border border-purple-400 text-[9px] font-mono-rhythm text-yellow-300 font-bold shadow-[0_0_12px_#c084fc]">
-            👻 STEALTH FADE: PANAH MEMUDAR MENDEKATI TARGET!
+          <span className="px-2.5 py-0.5 rounded-full bg-purple-900/90 border border-purple-400 text-[9px] font-mono-rhythm text-yellow-300 font-bold shadow-[0_0_14px_#c084fc]">
+            👻 GHOST NOTES: PANAH LENYAP SEBELUM KOTAK TARGET!
           </span>
         </div>
       )}
