@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 Screenshot*.png
 level1 (*).json
+/*.mp3
 
