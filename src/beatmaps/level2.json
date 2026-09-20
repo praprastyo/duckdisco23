@@ -1,0 +1,133 @@
+{
+  "bpm": 118,
+  "offset": 0.12,
+  "duration": 36,
+  "events": [
+    {
+      "id": "l2_tap_1",
+      "cueTime": 3.934,
+      "time": 4.188,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "TAP",
+      "bar": 2,
+      "beat": 1
+    },
+    {
+      "id": "l2_hold_2",
+      "cueTime": 4.442,
+      "time": 4.696,
+      "endTime": 5.713,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "HOLD & SCRATCH!",
+      "bar": 2,
+      "beat": 2
+    },
+    {
+      "id": "l2_tap_3",
+      "cueTime": 8.001,
+      "time": 8.256,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "TAP",
+      "bar": 4,
+      "beat": 1
+    },
+    {
+      "id": "l2_hold_4",
+      "cueTime": 8.51,
+      "time": 8.764,
+      "endTime": 9.781,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "HOLD & SCRATCH!",
+      "bar": 4,
+      "beat": 2
+    },
+    {
+      "id": "l2_tap_5",
+      "cueTime": 12.069,
+      "time": 12.323,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "TAP",
+      "bar": 6,
+      "beat": 1
+    },
+    {
+      "id": "l2_hold_6",
+      "cueTime": 12.578,
+      "time": 12.832,
+      "endTime": 13.849,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "HOLD & SCRATCH!",
+      "bar": 6,
+      "beat": 2
+    },
+    {
+      "id": "l2_tap_7",
+      "cueTime": 16.137,
+      "time": 16.391,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "TAP",
+      "bar": 8,
+      "beat": 1
+    },
+    {
+      "id": "l2_hold_8",
+      "cueTime": 16.645,
+      "time": 16.9,
+      "endTime": 17.917,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "HOLD & SCRATCH!",
+      "bar": 8,
+      "beat": 2
+    },
+    {
+      "id": "l2_tap_9",
+      "cueTime": 20.205,
+      "time": 20.459,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "TAP",
+      "bar": 10,
+      "beat": 1
+    },
+    {
+      "id": "l2_hold_10",
+      "cueTime": 20.713,
+      "time": 20.967,
+      "endTime": 21.984,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "HOLD & SCRATCH!",
+      "bar": 10,
+      "beat": 2
+    },
+    {
+      "id": "l2_tap_11",
+      "cueTime": 24.273,
+      "time": 24.527,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "TAP",
+      "bar": 12,
+      "beat": 1
+    },
+    {
+      "id": "l2_hold_12",
+      "cueTime": 24.781,
+      "time": 25.035,
+      "endTime": 26.052,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "HOLD & SCRATCH!",
+      "bar": 12,
+      "beat": 2
+    }
+  ]
+}

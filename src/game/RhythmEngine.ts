@@ -1,0 +1,188 @@
+import { AudioEngine } from '../audio/AudioEngine';
+import { BeatClock } from '../audio/BeatClock';
+import { BeatmapRunner, BeatmapEvent, BeatmapData } from './BeatmapRunner';
+import { InputManager } from './InputManager';
+import { ScoringEngine, ScoreSummary } from './ScoringEngine';
+import { JudgementType } from '../config/scoring';
+
+export type GameStatus = 'loading' | 'readyToStart' | 'playing' | 'paused' | 'completed' | 'error';
+
+export interface JudgementEvent {
+  judgement: JudgementType;
+  deltaMs: number;
+  points: number;
+  combo: number;
+  score: number;
+  event?: BeatmapEvent;
+}
+
+export class RhythmEngine {
+  private audioEngine = AudioEngine.getInstance();
+  private beatClock = new BeatClock();
+  private beatmapRunner = new BeatmapRunner();
+  private inputManager = new InputManager();
+  private scoringEngine = new ScoringEngine();
+
+  private status: GameStatus = 'loading';
+  private frameId: number | null = null;
+  private isAutoplay = false;
+
+  private onJudgementCb: ((e: JudgementEvent) => void) | null = null;
+  private onCueCb: ((e: BeatmapEvent) => void) | null = null;
+  private onStatusCb: ((s: GameStatus) => void) | null = null;
+  private onCompleteCb: ((summary: ScoreSummary) => void) | null = null;
+
+  constructor(timingOffsetMs = 0) {
+    this.inputManager.setLatencyOffset(timingOffsetMs);
+    this.setupListeners();
+  }
+
+  private setupListeners() {
+    this.beatmapRunner.onCue((ev) => this.onCueCb?.(ev));
+    this.beatmapRunner.onMiss((ev) => {
+      const res = this.scoringEngine.registerMiss();
+      this.audioEngine.playSfx('miss');
+      this.onJudgementCb?.({
+        judgement: res.judgement,
+        deltaMs: 0,
+        points: 0,
+        combo: this.scoringEngine.getCurrentCombo(),
+        score: this.scoringEngine.getScore(),
+        event: ev,
+      });
+    });
+    this.inputManager.subscribe((action) => {
+      if (this.status !== 'playing' || this.isAutoplay) return;
+      this.handlePlayerAction(action);
+    });
+  }
+
+  public async initializeLevel(trackUrl: string, beatmapData: BeatmapData): Promise<void> {
+    this.stop();
+    this.setStatus('loading');
+    try {
+      await this.audioEngine.loadTrack(trackUrl);
+      this.beatClock.setConfig(beatmapData.bpm, beatmapData.offset);
+      this.beatmapRunner.load(beatmapData);
+      this.scoringEngine.reset();
+      this.setStatus('readyToStart');
+    } catch (err) {
+      console.error('Level load err:', err);
+      this.setStatus('error');
+      throw err;
+    }
+  }
+
+  public start(): void {
+    if (this.status !== 'readyToStart') return;
+    this.inputManager.attach(window);
+    this.audioEngine.play(0, () => this.handleTrackComplete());
+    this.setStatus('playing');
+    this.startLoop();
+  }
+
+  public pause(): void {
+    if (this.status !== 'playing') return;
+    this.audioEngine.pause();
+    this.setStatus('paused');
+  }
+
+  public resume(): void {
+    if (this.status !== 'paused') return;
+    this.audioEngine.resume();
+    this.setStatus('playing');
+    this.startLoop();
+  }
+
+  public restart(): void {
+    this.stop();
+    this.scoringEngine.reset();
+    this.beatClock.reset(0);
+    this.beatmapRunner.reset(0);
+    this.setStatus('readyToStart');
+    this.start();
+  }
+
+  public stop(): void {
+    if (this.frameId !== null) {
+      cancelAnimationFrame(this.frameId);
+      this.frameId = null;
+    }
+    this.audioEngine.stop();
+    this.inputManager.detach();
+  }
+
+  private startLoop() {
+    const loop = () => {
+      if (this.status === 'playing') {
+        const time = this.audioEngine.getCurrentTime();
+        this.beatClock.update(time);
+        this.audioEngine.getAnalyser().update();
+
+        if (this.isAutoplay) {
+          const target = this.beatmapRunner.getActiveTarget(time);
+          if (target && Math.abs(target.deltaSec) <= 0.015) {
+            this.handlePlayerAction('tap');
+          }
+        }
+        this.beatmapRunner.update(time);
+        this.frameId = requestAnimationFrame(loop);
+      }
+    };
+    this.frameId = requestAnimationFrame(loop);
+  }
+
+  private handlePlayerAction(_action: 'tap' | 'holdStart' | 'release') {
+    const time = this.audioEngine.getCurrentTime() - this.inputManager.getLatencyOffsetSec();
+    const target = this.beatmapRunner.getActiveTarget(time);
+    if (!target) {
+      this.audioEngine.playSfx('miss');
+      return;
+    }
+
+    this.beatmapRunner.markHit(target.event.id);
+    const result = this.scoringEngine.judge(target.deltaSec);
+
+    if (result.judgement !== 'miss') {
+      const cue = target.event.cue;
+      if (cue === 'quack') this.audioEngine.playSfx('quack');
+      else if (cue === 'scratch') this.audioEngine.playSfx('scratch');
+      else if (cue === 'clap') this.audioEngine.playSfx('clap');
+      else this.audioEngine.playSfx('cowbell');
+    } else {
+      this.audioEngine.playSfx('miss');
+    }
+
+    this.onJudgementCb?.({
+      judgement: result.judgement,
+      deltaMs: result.deltaMs,
+      points: result.points,
+      combo: this.scoringEngine.getCurrentCombo(),
+      score: this.scoringEngine.getScore(),
+      event: target.event,
+    });
+  }
+
+  private handleTrackComplete() {
+    this.setStatus('completed');
+    this.onCompleteCb?.(this.scoringEngine.getSummary());
+  }
+
+  public getBeatClock() { return this.beatClock; }
+  public getAudioEngine() { return this.audioEngine; }
+  public getBeatmapRunner() { return this.beatmapRunner; }
+  public getScoringEngine() { return this.scoringEngine; }
+  public getStatus() { return this.status; }
+  public setAutoplay(v: boolean) { this.isAutoplay = v; }
+  public getAutoplay() { return this.isAutoplay; }
+
+  public onJudgement(cb: (e: JudgementEvent) => void) { this.onJudgementCb = cb; }
+  public onCue(cb: (e: BeatmapEvent) => void) { this.onCueCb = cb; }
+  public onStatusChange(cb: (s: GameStatus) => void) { this.onStatusCb = cb; }
+  public onComplete(cb: (s: ScoreSummary) => void) { this.onCompleteCb = cb; }
+
+  private setStatus(s: GameStatus) {
+    this.status = s;
+    this.onStatusCb?.(s);
+  }
+}

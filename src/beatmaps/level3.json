@@ -1,0 +1,127 @@
+{
+  "bpm": 126,
+  "offset": 0.09,
+  "duration": 36,
+  "events": [
+    {
+      "id": "l3_cue_1",
+      "cueTime": 3.9,
+      "time": 4.852,
+      "action": "tap",
+      "cue": "shake",
+      "promptText": "SHAKE",
+      "bar": 2,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_2",
+      "cueTime": 5.804,
+      "time": 6.28,
+      "action": "tap",
+      "cue": "spin",
+      "promptText": "SPIN",
+      "bar": 3,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_3",
+      "cueTime": 7.709,
+      "time": 7.709,
+      "action": "tap",
+      "cue": "quack",
+      "promptText": "QUACK",
+      "bar": 4,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_4",
+      "cueTime": 9.614,
+      "time": 10.328,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "CLAP",
+      "bar": 5,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_5",
+      "cueTime": 11.519,
+      "time": 12.471,
+      "action": "tap",
+      "cue": "shake",
+      "promptText": "SHAKE",
+      "bar": 6,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_6",
+      "cueTime": 13.423,
+      "time": 13.9,
+      "action": "tap",
+      "cue": "spin",
+      "promptText": "SPIN",
+      "bar": 7,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_7",
+      "cueTime": 15.328,
+      "time": 15.328,
+      "action": "tap",
+      "cue": "quack",
+      "promptText": "QUACK",
+      "bar": 8,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_8",
+      "cueTime": 17.233,
+      "time": 17.947,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "CLAP",
+      "bar": 9,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_9",
+      "cueTime": 19.138,
+      "time": 20.09,
+      "action": "tap",
+      "cue": "shake",
+      "promptText": "SHAKE",
+      "bar": 10,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_10",
+      "cueTime": 21.042,
+      "time": 21.519,
+      "action": "tap",
+      "cue": "spin",
+      "promptText": "SPIN",
+      "bar": 11,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_11",
+      "cueTime": 22.947,
+      "time": 22.947,
+      "action": "tap",
+      "cue": "quack",
+      "promptText": "QUACK",
+      "bar": 12,
+      "beat": 1
+    },
+    {
+      "id": "l3_cue_12",
+      "cueTime": 24.852,
+      "time": 25.566,
+      "action": "tap",
+      "cue": "clap",
+      "promptText": "CLAP",
+      "bar": 13,
+      "beat": 1
+    }
+  ]
+}

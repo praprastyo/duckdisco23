@@ -1,0 +1,80 @@
+{
+  "bpm": 124,
+  "offset": 0.15,
+  "duration": 45,
+  "events": [
+    {
+      "id": "l4_mix1_1",
+      "cueTime": 4.989,
+      "time": 5.473,
+      "action": "tap",
+      "cue": "quack",
+      "promptText": "REMIX CHECK-IN",
+      "bar": 2,
+      "beat": 4
+    },
+    {
+      "id": "l4_mix1_2",
+      "cueTime": 6.924,
+      "time": 7.408,
+      "action": "tap",
+      "cue": "quack",
+      "promptText": "REMIX CHECK-IN",
+      "bar": 3,
+      "beat": 4
+    },
+    {
+      "id": "l4_mix1_3",
+      "cueTime": 8.86,
+      "time": 9.344,
+      "action": "tap",
+      "cue": "quack",
+      "promptText": "REMIX CHECK-IN",
+      "bar": 4,
+      "beat": 4
+    },
+    {
+      "id": "l4_hold_4",
+      "cueTime": 10.069,
+      "time": 10.311,
+      "endTime": 11.279,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "TURNTABLE DROP",
+      "bar": 5,
+      "beat": 2
+    },
+    {
+      "id": "l4_hold_5",
+      "cueTime": 12.005,
+      "time": 12.247,
+      "endTime": 13.215,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "TURNTABLE DROP",
+      "bar": 6,
+      "beat": 2
+    },
+    {
+      "id": "l4_hold_6",
+      "cueTime": 13.94,
+      "time": 14.182,
+      "endTime": 15.15,
+      "action": "hold",
+      "cue": "scratch",
+      "promptText": "TURNTABLE DROP",
+      "bar": 7,
+      "beat": 2
+    },
+    {
+      "id": "l4_final_reveal",
+      "cueTime": 31.3,
+      "time": 32.5,
+      "action": "special",
+      "cue": "quack",
+      "promptText": "FINAL QUACK!",
+      "bar": 16,
+      "beat": 1
+    }
+  ]
+}
