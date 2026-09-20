@@ -56,6 +56,20 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
 
       const isPast40s = t > 40;
 
+      // Progressive difficulty wobble / sway
+      // 0 - 40s: 0px (steady)
+      // 40 - 70s: ramps 0 -> 7px (light wobble)
+      // 70 - 100s: ramps 7 -> 14px (disco dance sway)
+      // 100s+: ramps up to 20px (crazy sway)
+      let swayAmp = 0;
+      if (t > 100) {
+        swayAmp = Math.min(20, 14 + (t - 100) * 0.2);
+      } else if (t > 70) {
+        swayAmp = 7 + ((t - 70) / 30) * 7;
+      } else if (t > 40) {
+        swayAmp = ((t - 40) / 30) * 7;
+      }
+
       events.forEach((ev, i) => {
         const el = noteRefs.current[i];
         if (!el) return;
@@ -75,27 +89,31 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
           if (delta < -0.25) {
             opacity = 0;
           } else if (isPast40s) {
-            // Balanced stealth fade: clearly visible through majority of track (0 - 55%),
-            // then fades smoothly closer to the box (55% - 85%),
-            // and completely invisible (0 opacity) right at and inside the target box (>= 85%)!
-            if (progress < 0.55) {
+            // Challenging stealth fade: clearly visible at top (0 - 35%),
+            // then fades smoothly across mid-track (35% - 70%),
+            // and completely invisible (0 opacity) for the final 30% before the target box!
+            if (progress < 0.35) {
               opacity = 1.0;
-            } else if (progress <= 0.85) {
-              const ratio = (progress - 0.55) / (0.85 - 0.55); // 0 to 1
+            } else if (progress <= 0.70) {
+              const ratio = (progress - 0.35) / (0.70 - 0.35); // 0 to 1
               opacity = Math.max(0, 1.0 - ratio);
             } else {
-              // Completely invisible inside and just before target box
+              // Completely invisible 30% before and inside target box
               opacity = 0;
             }
           }
           el.style.opacity = String(opacity);
-
         }
 
         // Progress 0 = top of track, 1 = hit line
         const progress = 1 - delta / APPROACH_SEC;
         const y = Math.max(-40, Math.min(TRACK_HEIGHT + 20, progress * TRACK_HEIGHT));
-        el.style.transform = `translate(-50%, ${y}px)`;
+
+        // Horizontal sway oscillation as note descends
+        const swayX = swayAmp > 0 ? Math.sin(t * 5.5 + progress * 4 + i) * swayAmp : 0;
+        const swayRot = swayAmp > 0 ? Math.sin(t * 4 + i) * (swayAmp * 0.9) : 0;
+
+        el.style.transform = `translate(calc(-50% + ${swayX.toFixed(1)}px), ${y}px) rotate(${swayRot.toFixed(1)}deg)`;
         el.dataset.y = String(y);
 
         if (Math.abs(delta) < Math.abs(nearestDelta)) {
@@ -122,7 +140,7 @@ export const DanceNoteTrack: React.FC<DanceNoteTrackProps> = ({
       {showStealthNotice && (
         <div className="absolute -top-6 inset-x-0 z-30 flex justify-center animate-bounce pointer-events-none">
           <span className="px-2.5 py-0.5 rounded-full bg-purple-900/90 border border-purple-400 text-[9px] font-mono-rhythm text-yellow-300 font-bold shadow-[0_0_14px_#c084fc]">
-            👻 GHOST NOTES: PANAH LENYAP SEBELUM KOTAK TARGET!
+            👻 DISCO WOBBLE & GHOST NOTES: PANAH BERGOYANG & LENYAP SEBELUM KOTAK!
           </span>
         </div>
       )}
