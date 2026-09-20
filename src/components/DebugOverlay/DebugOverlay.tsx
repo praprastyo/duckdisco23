@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RhythmEngine, JudgementEvent } from '../../game/RhythmEngine';
 import { UnlockService } from '../../services/UnlockService';
+import { AutoBeatDetector } from '../../audio/AutoBeatDetector';
 
 interface DebugOverlayProps {
   engine?: RhythmEngine | null;
@@ -12,6 +13,8 @@ export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgemen
   const [audioTime, setAudioTime] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [unlockAll, setUnlockAll] = useState(UnlockService.isDevUnlockAll());
+  const [detectedInfo, setDetectedInfo] = useState<string | null>(null);
+
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -49,6 +52,21 @@ export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgemen
     if (!engine) return;
     engine.getAudioEngine().seek(engine.getAudioEngine().getCurrentTime() + sec);
   };
+
+  const handleDetectBeats = () => {
+    if (!engine) return;
+    const buf = engine.getAudioEngine().getCurrentBuffer();
+    if (!buf) {
+      setDetectedInfo('No audio buffer loaded');
+      return;
+    }
+    const res = AutoBeatDetector.analyze(buf);
+    console.log('--- AUTO-DETECTED BEATMAP DATA ---');
+    console.log('BPM:', res.bpm, 'Offset:', res.offset);
+    console.log('Beatmap Events (JSON):', JSON.stringify({ bpm: res.bpm, offset: res.offset, events: res.generatedEvents }, null, 2));
+    setDetectedInfo(`BPM: ${res.bpm} | Offset: ${res.offset}s (${res.beatTimes.length} beats)`);
+  };
+
 
   if (!isOpen) {
     return (
@@ -115,8 +133,22 @@ export const DebugOverlay: React.FC<DebugOverlayProps> = ({ engine, lastJudgemen
           <button onClick={toggleUnlockAll} className={`px-2 py-1 rounded font-bold ${unlockAll ? 'bg-amber-600 text-white' : 'bg-white/10'}`}>
             UNLOCK ALL: {unlockAll ? 'YES' : 'NO'}
           </button>
+          <button
+            onClick={handleDetectBeats}
+            className="col-span-2 py-1.5 bg-cyan-900/70 hover:bg-cyan-800 border border-cyan-400/50 text-cyan-200 rounded font-bold"
+          >
+            🎵 DETECT BEAT DARI MP3/MP4
+          </button>
         </div>
+
+        {detectedInfo && (
+          <div className="mt-1 p-1.5 bg-cyan-950/80 border border-cyan-500/40 rounded text-[9px] text-cyan-200">
+            {detectedInfo}
+            <span className="block text-[8px] text-white/50 mt-0.5">Data JSON beatmap otomatis di-print ke Console (F12)!</span>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+

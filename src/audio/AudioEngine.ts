@@ -142,7 +142,9 @@ export class AudioEngine {
   }
 
   public getDuration(): number { return this.trackDuration; }
+  public getCurrentBuffer(): AudioBuffer | null { return this.currentBuffer; }
   public isPlaybackActive(): boolean { return this.isStarted && !this.isPaused; }
+
 
   public setMasterVolume(val: number): void {
     if (this.masterGain) this.masterGain.gain.setValueAtTime(Math.max(0, Math.min(1, val)), this.ctx?.currentTime || 0);

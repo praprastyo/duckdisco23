@@ -141,30 +141,14 @@ export class RhythmEngine {
 
   public handlePlayerAction(action: InputAction = 'tap') {
     const time = this.audioEngine.getCurrentTime() - this.inputManager.getLatencyOffsetSec();
-    const target = this.beatmapRunner.getActiveTarget(time);
+    // Match only targets corresponding to this action/direction
+    const target = this.beatmapRunner.getActiveTarget(time, action);
     if (!target) {
       this.audioEngine.playSfx('miss');
       return;
     }
 
-    // Directional Dance Validation (Level 1 arrow choreography)
     const ev = target.event;
-    const required = ev.direction;
-    if (required && action !== required) {
-      // Wrong dance move breaks combo but leaves the note hittable
-      this.scoringEngine.registerMiss();
-      this.audioEngine.playSfx('miss');
-      this.onJudgementCb?.({
-        judgement: 'miss',
-        deltaMs: 0,
-        points: 0,
-        combo: this.scoringEngine.getCurrentCombo(),
-        score: this.scoringEngine.getScore(),
-        event: ev,
-      });
-      return;
-    }
-
     this.beatmapRunner.markHit(ev.id);
     const result = this.scoringEngine.judge(target.deltaSec);
 
@@ -177,6 +161,7 @@ export class RhythmEngine {
     } else {
       this.audioEngine.playSfx('miss');
     }
+
 
     this.onJudgementCb?.({
       judgement: result.judgement,

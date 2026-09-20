@@ -106,28 +106,36 @@ export class BeatmapRunner {
   }
 
   /**
-   * Find closest unhit event within interactive window
+   * Find closest unhit event within interactive window.
+   * If action is directional, only matches notes of that specific direction or directionless notes.
+   * This prevents pressing 'left' from consuming or blocking an upcoming 'up' note.
    */
-  public getActiveTarget(currentTime: number): { event: BeatmapEvent; deltaSec: number } | null {
+  public getActiveTarget(currentTime: number, action?: string): { event: BeatmapEvent; deltaSec: number } | null {
     const missThreshold = this.windows.good;
+    const isDirectional = action === 'left' || action === 'right' || action === 'up' || action === 'down';
 
     for (let i = this.nextHitIndex; i < this.events.length; i++) {
       const ev = this.events[i];
       if (this.hitStates.get(ev.id)) continue;
+
+      // Skip events requiring a different direction
+      if (ev.direction && isDirectional && ev.direction !== action) {
+        continue;
+      }
 
       const deltaSec = currentTime - ev.time;
       if (Math.abs(deltaSec) <= missThreshold) {
         return { event: ev, deltaSec };
       }
 
-      // Beyond interactive window ahead
-      if (ev.time - currentTime > missThreshold) {
+      if (ev.time - currentTime > missThreshold * 2) {
         break;
       }
     }
 
     return null;
   }
+
 
   public markHit(eventId: string): void {
     this.hitStates.set(eventId, true);
