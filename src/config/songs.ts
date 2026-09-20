@@ -18,16 +18,16 @@ export interface SongConfig {
 export const songs: Record<string, SongConfig> = {
   level1: {
     id: 'level1',
-    title: 'Quack Check-In Funk',
+    title: 'Quack Beach Dash Tropical Groove',
     src: '/audio/level-1.mp3',
-    bpm: 108,
-    beatOffset: 0.18,
+    bpm: 81,
+    beatOffset: 0.20,
     intensity: {
-      bassMultiplier: 0.7,
-      midMultiplier: 0.6,
+      bassMultiplier: 0.8,
+      midMultiplier: 0.65,
       highMultiplier: 0.5,
       pulseStrength: 0.45,
-      particleStrength: 0.25,
+      particleStrength: 0.3,
       laserStrength: 0.15,
     },
     beatmap: '/beatmaps/level1.json',

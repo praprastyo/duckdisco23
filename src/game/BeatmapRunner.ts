@@ -8,7 +8,9 @@ export interface BeatmapEvent {
   action: 'tap' | 'hold' | 'release' | 'special';
   cue?: string;
   promptText?: string;
-  lane?: 'left' | 'right';
+  lane?: 'left' | 'mid' | 'right';
+  obstacleType?: string;
+
   bar?: number;
   beat?: number;
 }

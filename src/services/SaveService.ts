@@ -14,9 +14,11 @@ export interface GameSettings {
 
 export interface Collectibles {
   neonFeather: boolean;
+  rainbowFeather?: boolean;
   goldenVinyl: boolean;
   mirrorFeather: boolean;
 }
+
 
 export interface SaveData {
   levels: {

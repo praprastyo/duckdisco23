@@ -8,6 +8,7 @@ interface ActiveObstacle {
   mesh: THREE.Group;
   shattered: boolean;
   debris: RockDebris[];
+  laneIndices: number[];
 }
 
 export class Beach3DScene {
@@ -21,9 +22,10 @@ export class Beach3DScene {
   private trees: THREE.Group[] = [];
   private obstacles: ActiveObstacle[] = [];
 
-  private duckLane: 'left' | 'right' = 'left';
-  private targetX = -2.2;
-  private currentX = -2.2;
+  private readonly laneCoords = [-2.6, 0.0, 2.6];
+  private duckLaneIndex = 1;
+  private targetX = 0.0;
+  private currentX = 0.0;
   private isCrashing = false;
   private crashTimer = 0;
   private cameraShake = 0;
@@ -57,24 +59,56 @@ export class Beach3DScene {
     this.obstacles = [];
 
     events.forEach((ev) => {
-      const lane = ev.lane || 'right';
+      const type = ev.obstacleType || 'ball';
+      const laneIdx = ev.lane === 'left' ? 0 : ev.lane === 'right' ? 2 : 1;
+      let laneIndices = [laneIdx];
       const grp = new THREE.Group();
-      const coco = new THREE.Mesh(new THREE.SphereGeometry(0.48, 14, 14), new THREE.MeshStandardMaterial({ color: 0x5a3d28, roughness: 0.9 }));
-      coco.position.y = 0.38; // Still on sand
-      grp.add(coco);
+
+      if (type === 'wave') {
+        const safeIdx = laneIdx === 0 ? 0 : 2;
+        laneIndices = safeIdx === 0 ? [1, 2] : [0, 1];
+        const wave = new THREE.Mesh(
+          new THREE.BoxGeometry(4.8, 0.9, 1.2),
+          new THREE.MeshStandardMaterial({ color: 0x00bfff, transparent: true, opacity: 0.85 })
+        );
+        wave.position.set(safeIdx === 0 ? 1.3 : -1.3, 0.45, 0);
+        grp.add(wave);
+      } else if (type === 'crab') {
+        const crab = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.35, 0.5), new THREE.MeshStandardMaterial({ color: 0xf43f5e }));
+        crab.position.y = 0.2;
+        grp.add(crab);
+      } else if (type === 'bucket') {
+        const bucket = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.25, 0.6, 12), new THREE.MeshStandardMaterial({ color: 0xfacc15 }));
+        bucket.position.y = 0.3;
+        grp.add(bucket);
+      } else {
+        const ball = new THREE.Mesh(new THREE.SphereGeometry(0.48, 14, 14), new THREE.MeshStandardMaterial({ color: 0xff3366 }));
+        ball.position.y = 0.42;
+        grp.add(ball);
+      }
 
       const debris = createDebrisCluster(grp);
-      grp.position.set(lane === 'left' ? -2.2 : 2.2, 0, -100);
+      grp.position.set(type === 'wave' ? 0 : this.laneCoords[laneIdx], 0, -100);
       grp.visible = false;
       this.scene.add(grp);
-      this.obstacles.push({ event: ev, mesh: grp, shattered: false, debris });
+      this.obstacles.push({ event: ev, mesh: grp, shattered: false, debris, laneIndices });
     });
   }
 
-  public setLane(lane: 'left' | 'right') {
-    this.duckLane = lane;
-    this.targetX = lane === 'left' ? -2.2 : 2.2;
+  public moveLeft() {
+    this.duckLaneIndex = Math.max(0, this.duckLaneIndex - 1);
+    this.targetX = this.laneCoords[this.duckLaneIndex];
+    return this.duckLaneIndex;
   }
+
+
+  public moveRight() {
+    this.duckLaneIndex = Math.min(2, this.duckLaneIndex + 1);
+    this.targetX = this.laneCoords[this.duckLaneIndex];
+    return this.duckLaneIndex;
+  }
+
+  public getLaneIndex() { return this.duckLaneIndex; }
 
   public resize(w: number, h: number) {
     if (!this.renderer || !this.camera) return;
@@ -84,7 +118,7 @@ export class Beach3DScene {
   }
 
   public update(audioTime: number) {
-    this.currentX += (this.targetX - this.currentX) * 0.32;
+    this.currentX += (this.targetX - this.currentX) * 0.35;
     this.duckGroup.position.x = this.currentX;
     const time = this.clock.getElapsedTime();
 
@@ -105,7 +139,7 @@ export class Beach3DScene {
       this.starsGroup.visible = false;
       this.duckGroup.rotation.x = 0;
       this.duckGroup.rotation.z = -(this.targetX - this.currentX) * 0.35;
-      this.duckGroup.position.y = 0.6 + Math.abs(Math.sin(time * 8)) * 0.15;
+      this.duckGroup.position.y = 0.6 + Math.abs(Math.sin(time * 6)) * 0.14;
     }
 
     if (this.cameraShake > 0) {
@@ -117,13 +151,12 @@ export class Beach3DScene {
     }
 
     this.trees.forEach((t) => {
-      t.position.z += 0.25;
+      t.position.z += 0.22;
       if (t.position.z > 8) t.position.z = -110;
     });
 
-    // Move obstacles mathematically tied to audioTime
     this.obstacles.forEach((obs) => {
-      const z = (audioTime - obs.event.time) * 16;
+      const z = (audioTime - obs.event.time) * 12;
       if (z < -45 || z > 12) {
         obs.mesh.visible = false;
         return;
@@ -136,16 +169,14 @@ export class Beach3DScene {
       }
 
       obs.mesh.position.z = z;
-      obs.mesh.rotation.x = z * 0.5;
+      if (obs.event.obstacleType !== 'wave') obs.mesh.rotation.x = z * 0.5;
 
-      // Real 3D collision check at target line Z = 0
       if (z >= -0.5 && z <= 0.5 && !obs.shattered) {
-        const obsLane = obs.event.lane || 'right';
-        if (this.duckLane === obsLane) {
+        if (obs.laneIndices.includes(this.duckLaneIndex)) {
           obs.shattered = true;
           this.isCrashing = true;
-          this.crashTimer = 0.6;
-          this.cameraShake = 0.35;
+          this.crashTimer = 0.65;
+          this.cameraShake = 0.4;
           obs.mesh.children[0].visible = false;
           obs.debris.forEach((d) => {
             d.mesh.visible = true;
@@ -165,3 +196,4 @@ export class Beach3DScene {
     this.renderer?.dispose();
   }
 }
+

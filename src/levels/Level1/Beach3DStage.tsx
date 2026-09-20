@@ -23,33 +23,46 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<Beach3DScene | null>(null);
-  const [duckLane, setDuckLane] = useState<'left' | 'right'>('left');
+  const [duckLaneIndex, setDuckLaneIndex] = useState(1);
   const [feedback, setFeedback] = useState<string>('');
 
-  const switchLane = (lane: 'left' | 'right') => {
-    setDuckLane(lane);
-    sceneRef.current?.setLane(lane);
-    onLaneSwitch?.(lane);
+  const laneLabels = ['JALUR 1 (KIRI)', 'JALUR 2 (TENGAH)', 'JALUR 3 (KANAN)'];
+
+  const handleMoveLeft = () => {
+    if (!sceneRef.current) return;
+    const next = sceneRef.current.moveLeft();
+    setDuckLaneIndex(next);
+    onLaneSwitch?.('left');
+  };
+
+  const handleMoveRight = () => {
+    if (!sceneRef.current) return;
+    const next = sceneRef.current.moveRight();
+    setDuckLaneIndex(next);
+    onLaneSwitch?.('right');
   };
 
   useEffect(() => {
-    if (externalAction === 'left') switchLane('left');
-    else if (externalAction === 'right') switchLane('right');
+    if (externalAction === 'left') handleMoveLeft();
+    else if (externalAction === 'right') handleMoveRight();
   }, [externalAction]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-        switchLane('left');
+        handleMoveLeft();
       } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-        switchLane('right');
+        handleMoveRight();
       } else if (e.code === 'Space') {
-        switchLane(duckLane === 'left' ? 'right' : 'left');
+        if (duckLaneIndex === 0) handleMoveRight();
+        else if (duckLaneIndex === 2) handleMoveLeft();
+        else handleMoveLeft();
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [duckLane]);
+  }, [duckLaneIndex]);
+
 
   useEffect(() => {
     if (!lastJudgement) return;
@@ -97,26 +110,26 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
       {/* Full-Screen 3D Beach WebGL Canvas */}
       <div ref={mountRef} className="absolute inset-0 w-full h-full" />
 
-      {/* Screen Left Half Touch Zone */}
+      {/* Screen Left Half Touch Area */}
       <div
-        onClick={() => switchLane('left')}
+        onClick={handleMoveLeft}
         className="absolute inset-y-0 left-0 w-1/2 pointer-events-auto cursor-pointer z-10 opacity-0"
-        title="Tap to switch Left Lane"
+        title="Tap to move Left"
       />
 
-      {/* Screen Right Half Touch Zone */}
+      {/* Screen Right Half Touch Area */}
       <div
-        onClick={() => switchLane('right')}
+        onClick={handleMoveRight}
         className="absolute inset-y-0 right-0 w-1/2 pointer-events-auto cursor-pointer z-10 opacity-0"
-        title="Tap to switch Right Lane"
+        title="Tap to move Right"
       />
 
-      {/* Minimalist Top Floating Lane & Feedback Badge */}
+      {/* Minimalist Top Lane Indicator */}
       <div className="absolute top-16 inset-x-0 flex justify-center z-20 pointer-events-none">
-        <div className="flex items-center gap-2.5 bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs font-mono-rhythm text-white shadow-lg">
-          <span>JALUR: <strong className="text-yellow-300 uppercase">{duckLane}</strong></span>
+        <div className="flex items-center gap-3 bg-black/55 backdrop-blur-md px-5 py-1.5 rounded-full border border-white/20 text-xs font-mono-rhythm text-white shadow-xl">
+          <span>POSISI: <strong className="text-yellow-300 font-black">{laneLabels[duckLaneIndex]}</strong></span>
           {feedback && (
-            <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
+            <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
               feedback.includes('NABRAK') ? 'bg-rose-500 text-white animate-bounce' : 'bg-emerald-500 text-white animate-pulse'
             }`}>
               {feedback}
@@ -125,38 +138,31 @@ export const Beach3DStage: React.FC<Beach3DStageProps> = ({
         </div>
       </div>
 
-      {/* Clean Bottom Floating Lane Buttons */}
-      <div className="absolute bottom-6 inset-x-4 max-w-sm mx-auto z-30 flex gap-3 h-12 pointer-events-auto">
+      {/* 2 Big Clear Bottom Controls: MOVE LEFT & MOVE RIGHT */}
+      <div className="absolute bottom-6 inset-x-4 max-w-sm mx-auto z-30 flex gap-3 h-14 pointer-events-auto">
         <button
           type="button"
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
-          onClick={() => switchLane('left')}
-          className={`flex-1 rounded-xl font-disco font-black text-xs uppercase shadow-lg active:scale-95 flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            duckLane === 'left'
-              ? 'bg-amber-400 text-black border-2 border-amber-500 shadow-amber-300/80 scale-105'
-              : 'bg-black/60 text-white hover:bg-black/80 border border-white/20'
-          }`}
+          onClick={handleMoveLeft}
+          className="flex-1 rounded-2xl font-disco font-black text-sm uppercase shadow-2xl active:scale-95 flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black border-2 border-yellow-200 hover:brightness-105 transition-all cursor-pointer"
         >
-          ⬅️ KIRI (A / ←)
+          ⬅️ MOVE LEFT (A / ←)
         </button>
 
         <button
           type="button"
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
-          onClick={() => switchLane('right')}
-          className={`flex-1 rounded-xl font-disco font-black text-xs uppercase shadow-lg active:scale-95 flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            duckLane === 'right'
-              ? 'bg-amber-400 text-black border-2 border-amber-500 shadow-amber-300/80 scale-105'
-              : 'bg-black/60 text-white hover:bg-black/80 border border-white/20'
-          }`}
+          onClick={handleMoveRight}
+          className="flex-1 rounded-2xl font-disco font-black text-sm uppercase shadow-2xl active:scale-95 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black border-2 border-yellow-200 hover:brightness-105 transition-all cursor-pointer"
         >
-          KANAN ➡️ (D / →)
+          MOVE RIGHT ➡️ (D / →)
         </button>
       </div>
     </div>
   );
 };
+
 
 

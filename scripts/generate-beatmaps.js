@@ -2,48 +2,56 @@ import fs from 'fs';
 import path from 'path';
 
 function buildLevel1Beatmap() {
-  const bpm = 108, offset = 0.18, beatSec = 60 / bpm;
+  const bpm = 81, offset = 0.20, beatSec = 60 / bpm;
   const events = [];
   let id = 1;
 
-  // Predictable, learnable rhythmic beach lane sequence:
-  // Starts early at bar 1 (approx 2.4s in)
+  // 3-Lane Rhythm Dodge Sequence at 81 BPM (Left, Mid, Right)
   const pattern = [
-    { bar: 1, beat: 4, lane: 'right' },
-    { bar: 2, beat: 4, lane: 'left' },
-    { bar: 3, beat: 4, lane: 'right' },
-    { bar: 4, beat: 4, lane: 'left' },
-    { bar: 5, beat: 3, lane: 'right' },
-    { bar: 6, beat: 3, lane: 'left' },
-    { bar: 7, beat: 4, lane: 'right' },
-    { bar: 8, beat: 4, lane: 'left' },
-    { bar: 9, beat: 3, lane: 'right' },
-    { bar: 10, beat: 4, lane: 'left' },
-    { bar: 11, beat: 3, lane: 'right' },
-    { bar: 12, beat: 1, lane: 'left' },
-    { bar: 12, beat: 3, lane: 'right' },
-    { bar: 13, beat: 1, lane: 'left' },
-    { bar: 13, beat: 3, lane: 'right' },
+    // Intro Tutorial (Beach Ball 🏐)
+    { bar: 1, beat: 4, lane: 'mid', type: 'ball', prompt: '🏐 BOLA DI TENGAH!' },
+    { bar: 2, beat: 4, lane: 'right', type: 'ball', prompt: '🏐 BOLA DI KANAN!' },
+    { bar: 3, beat: 4, lane: 'left', type: 'ball', prompt: '🏐 BOLA DI KIRI!' },
+    { bar: 4, beat: 4, lane: 'mid', type: 'crab', prompt: '🦀 KEPITING TENGAH!' },
+
+    // Alternating Dodge (Crab 🦀 & Bucket 🪣)
+    { bar: 5, beat: 3, lane: 'right', type: 'crab', prompt: '🦀 KEPITING KANAN!' },
+    { bar: 6, beat: 3, lane: 'left', type: 'bucket', prompt: '🪣 EMBER KIRI!' },
+    { bar: 7, beat: 3, lane: 'mid', type: 'crab', prompt: '🦀 KEPITING TENGAH!' },
+    { bar: 8, beat: 3, lane: 'right', type: 'bucket', prompt: '🪣 EMBER KANAN!' },
+
+    // Wave 🌊 (Covers 2 lanes! Player must choose the 1 safe lane!)
+    { bar: 9, beat: 4, lane: 'left', type: 'wave', prompt: '🌊 OMBAK! AMAN DI KIRI!' },
+    { bar: 10, beat: 4, lane: 'right', type: 'wave', prompt: '🌊 OMBAK! AMAN DI KANAN!' },
+
+    // Surfboard & Party Rush 🏄
+    { bar: 11, beat: 3, lane: 'mid', type: 'surfboard', prompt: '🏄 SURFBOARD TENGAH!' },
+    { bar: 12, beat: 2, lane: 'left', type: 'ball', prompt: '🏐 DODGE KIRI!' },
+    { bar: 12, beat: 4, lane: 'right', type: 'crab', prompt: '🦀 DODGE KANAN!' },
+    { bar: 13, beat: 2, lane: 'mid', type: 'wave', prompt: '🌊 FINALE WAVE!' },
+    { bar: 13, beat: 4, lane: 'right', type: 'ball', prompt: '🎉 BEACH DISCO CLEAR!' },
   ];
 
   for (const p of pattern) {
     const targetTime = offset + (p.bar * 4 + (p.beat - 1)) * beatSec;
     const cueTime = targetTime - beatSec * 1.5;
     events.push({
-      id: `l1_beach_${id++}`,
+      id: `l1_dash_${id++}`,
       cueTime: Number(cueTime.toFixed(3)),
       time: Number(targetTime.toFixed(3)),
       action: 'tap',
       cue: 'quack',
       lane: p.lane,
-      promptText: p.lane === 'left' ? 'AWAS KIRI!' : 'AWAS KANAN!',
+      obstacleType: p.type,
+      promptText: p.prompt,
       bar: p.bar,
       beat: p.beat,
     });
   }
 
-  return { bpm, offset, duration: 36, events };
+  return { bpm, offset, duration: 45, events };
 }
+
 
 
 function buildLevel2Beatmap() {

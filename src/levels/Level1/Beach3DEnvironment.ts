@@ -13,19 +13,27 @@ export function setupBeachEnvironment(scene: THREE.Scene): { duckGroup: THREE.Gr
   ocean.position.set(-36, -0.1, -30);
   scene.add(ocean);
 
-  // Sand
-  const sand = new THREE.Mesh(new THREE.PlaneGeometry(32, 160), new THREE.MeshStandardMaterial({ color: 0xf5cb5c, roughness: 0.8 }));
+  // Sand Floor (Covers 3 lanes)
+  const sand = new THREE.Mesh(new THREE.PlaneGeometry(36, 160), new THREE.MeshStandardMaterial({ color: 0xf5cb5c, roughness: 0.8 }));
   sand.rotation.x = -Math.PI / 2;
   sand.position.set(0, 0, -30);
   scene.add(sand);
 
-  // Target Line (Z = 0)
+  // Two Lane Dividers (separating Lane 1, Lane 2, Lane 3)
+  [-1.3, 1.3].forEach((x) => {
+    const div = new THREE.Mesh(new THREE.PlaneGeometry(0.12, 120), new THREE.MeshBasicMaterial({ color: 0xdfaa30 }));
+    div.rotation.x = -Math.PI / 2;
+    div.position.set(x, 0.02, -30);
+    scene.add(div);
+  });
+
+  // Target Dodge Line (Z = 0) spanning all 3 lanes
   const targetLine = new THREE.Mesh(new THREE.PlaneGeometry(10, 0.45), new THREE.MeshBasicMaterial({ color: 0x00ff88 }));
   targetLine.rotation.x = -Math.PI / 2;
   targetLine.position.set(0, 0.03, 0);
   scene.add(targetLine);
 
-  // Trees
+  // Trees on right coast
   const trees: THREE.Group[] = [];
   for (let i = 0; i < 9; i++) {
     const tree = new THREE.Group();
@@ -35,14 +43,14 @@ export function setupBeachEnvironment(scene: THREE.Scene): { duckGroup: THREE.Gr
     const crown = new THREE.Mesh(new THREE.ConeGeometry(2.4, 3.2, 7), new THREE.MeshStandardMaterial({ color: 0x228b22 }));
     crown.position.y = 5.2;
     tree.add(crown);
-    tree.position.set(10, 0, -i * 14);
+    tree.position.set(10.5, 0, -i * 14);
     scene.add(tree);
     trees.push(tree);
   }
 
-  // 3D Duck Mascot
+  // 3D Duck Mascot (Starts at Mid Lane X = 0)
   const duckGroup = new THREE.Group();
-  duckGroup.position.set(-2.2, 0.6, 1.0);
+  duckGroup.position.set(0, 0.6, 1.0);
   const body = new THREE.Mesh(new THREE.SphereGeometry(0.65, 16, 16), new THREE.MeshStandardMaterial({ color: 0xfacc15 }));
   body.scale.set(0.9, 0.9, 1.1);
   duckGroup.add(body);
@@ -73,3 +81,4 @@ export function setupBeachEnvironment(scene: THREE.Scene): { duckGroup: THREE.Gr
 
   return { duckGroup, starsGroup, trees };
 }
+

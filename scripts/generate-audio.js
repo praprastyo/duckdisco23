@@ -138,11 +138,12 @@ const outDir = path.resolve('public/audio');
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 const tracks = [
-  { file: 'level-1.mp3', bpm: 108, dur: 36, style: 'level1' },
+  { file: 'level-1.mp3', bpm: 81, dur: 45, style: 'level1' },
   { file: 'level-2.mp3', bpm: 118, dur: 36, style: 'level2' },
   { file: 'level-3.mp3', bpm: 126, dur: 36, style: 'level3' },
   { file: 'level-4.mp3', bpm: 124, dur: 45, style: 'level4' },
 ];
+
 
 console.log('Synthesizing disco soundtracks...');
 for (const t of tracks) {
