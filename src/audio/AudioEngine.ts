@@ -18,6 +18,8 @@ export class AudioEngine {
   private isPaused: boolean = false;
   private startCtxTime: number = 0;
   private pauseOffsetTime: number = 0;
+  private lastPlayCtxTime: number = 0;
+  private playbackRate: number = 1.0;
   private trackDuration: number = 0;
 
   private stateListeners: Set<AudioStateListener> = new Set();
@@ -78,9 +80,12 @@ export class AudioEngine {
     source.connect(this.musicGain!);
 
     const safeOffset = Math.min(Math.max(0, offsetSeconds), this.trackDuration);
-    this.startCtxTime = ctx.currentTime - safeOffset;
+    this.lastPlayCtxTime = ctx.currentTime;
+    this.startCtxTime = ctx.currentTime - safeOffset / Math.max(0.1, this.playbackRate);
     this.pauseOffsetTime = safeOffset;
     this.onEndedCallback = onEnded || null;
+
+    source.playbackRate.setValueAtTime(this.playbackRate, ctx.currentTime);
 
     source.onended = () => {
       if (this.isStarted && !this.isPaused) {
@@ -114,6 +119,7 @@ export class AudioEngine {
     this.isStarted = false;
     this.isPaused = false;
     this.pauseOffsetTime = 0;
+    this.lastPlayCtxTime = 0;
     this.stopSource();
   }
 
@@ -137,8 +143,26 @@ export class AudioEngine {
 
   public getCurrentTime(): number {
     if (!this.ctx || !this.isStarted || this.isPaused) return this.pauseOffsetTime;
-    const current = this.ctx.currentTime - this.startCtxTime;
+    const elapsedSec = (this.ctx.currentTime - this.lastPlayCtxTime) * this.playbackRate;
+    const current = this.pauseOffsetTime + elapsedSec;
     return Math.min(Math.max(0, current), this.trackDuration);
+  }
+
+  public setPlaybackRate(rate: number): void {
+    const safeRate = Math.max(0.5, Math.min(3.0, rate));
+    if (this.isStarted && !this.isPaused) {
+      const cur = this.getCurrentTime();
+      this.pauseOffsetTime = cur;
+      this.lastPlayCtxTime = this.ctx?.currentTime || 0;
+      if (this.currentSource) {
+        this.currentSource.playbackRate.setValueAtTime(safeRate, this.ctx?.currentTime || 0);
+      }
+    }
+    this.playbackRate = safeRate;
+  }
+
+  public getPlaybackRate(): number {
+    return this.playbackRate;
   }
 
   public getDuration(): number { return this.trackDuration; }

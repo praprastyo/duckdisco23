@@ -44,6 +44,7 @@ export interface Level3GameState {
   expectedDirection: Direction | null;
   countIn: string | null;
   isMissShaking: boolean;
+  playbackSpeed: number;
   energy: EnergyData;
   autoplay: boolean;
   isSpecialFinish: boolean;
@@ -89,6 +90,7 @@ export function useLevel3Game(
     expectedDirection: null,
     countIn: null,
     isMissShaking: false,
+    playbackSpeed: 1.0,
     energy: { bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 },
     autoplay: initialAutoplay,
     isSpecialFinish: false,
@@ -273,14 +275,14 @@ export function useLevel3Game(
       const absError = Math.abs(timingError);
       const deltaMs = Math.round(timingError * 1000);
 
-      // 1. If pressed significantly too early before this note's window:
-      if (!isAutoplayTrigger && timingError < -cfg.hitWindows.good - 0.08) {
-        audio.playSfx('miss');
+      // 1. If pressed too early before this note's window:
+      if (!isAutoplayTrigger && timingError < -cfg.hitWindows.good) {
+        audio.playSfx('cowbell');
         setState((s) => ({
           ...s,
           lastRating: 'early',
           lastDeltaMs: deltaMs,
-          feedbackMessage: `TOO EARLY (${deltaMs}ms)! Hold the groove!`,
+          feedbackMessage: `⚠️ EARLY (${deltaMs}ms)! Almost ready...`,
           isMissShaking: false,
         }));
         return;
@@ -320,13 +322,23 @@ export function useLevel3Game(
           g.isAllPerfectInRound = false;
           audio.playSfx('cowbell');
           feedbackMsg = `GREAT! +200 (${deltaMs > 0 ? '+' : ''}${deltaMs}ms)`;
-        } else if (absError <= cfg.hitWindows.good + 0.06) {
+        } else if (absError <= cfg.hitWindows.good) {
           rating = 'good';
           scoreGained = 100;
           g.good++;
           g.isAllPerfectInRound = false;
           audio.playSfx('quack');
           feedbackMsg = `GOOD! +100 (${deltaMs > 0 ? '+' : ''}${deltaMs}ms)`;
+        } else if (deltaMs < 0) {
+          audio.playSfx('cowbell');
+          setState((s) => ({
+            ...s,
+            lastRating: 'early',
+            lastDeltaMs: deltaMs,
+            feedbackMessage: `⚠️ EARLY (${deltaMs}ms)! Wait for the beat!`,
+            isMissShaking: false,
+          }));
+          return;
         } else {
           rating = 'miss';
           g.miss++;
@@ -335,7 +347,7 @@ export function useLevel3Game(
           g.isAllPerfectInRound = false;
           audio.playSfx('miss');
           isShake = true;
-          feedbackMsg = `LATE MISS (${deltaMs}ms)!`;
+          feedbackMsg = `TOO LATE (+${deltaMs}ms)!`;
         }
       }
 
@@ -590,7 +602,7 @@ export function useLevel3Game(
               quackPose: 'miss',
               lastRating: 'miss',
               lastDeltaMs: null,
-              feedbackMessage: `MISSED! Too late on ${ARROW_SYM[c.command.direction]} (${c.command.direction.toUpperCase()})`,
+              feedbackMessage: `MISSED STEP! ${ARROW_SYM[c.command.direction]} (${c.command.direction.toUpperCase()})`,
               expectedDirection: nextTarget ? nextTarget.command.direction : null,
               isMissShaking: true,
             }));
@@ -679,6 +691,10 @@ export function useLevel3Game(
     }
   }, [externalAction, handleDirectionInput]);
 
+  const setPlaybackSpeed = useCallback((speed: number) => {
+    AudioEngine.getInstance().setPlaybackRate(speed);
+    setState((s) => ({ ...s, playbackSpeed: speed }));
+  }, []);
 
   return {
     state,
@@ -690,6 +706,7 @@ export function useLevel3Game(
     syncStats,
     handleDirectionInput,
     restartLevel,
+    setPlaybackSpeed,
     gameRef,
   };
 }

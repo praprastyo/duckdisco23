@@ -1,6 +1,6 @@
 import { Level3Config } from './level3Types';
 
-export const LEVEL3_STORAGE_KEY = 'duckdisco_level3_config_v2';
+export const LEVEL3_STORAGE_KEY = 'duckdisco_level3_config_v3';
 
 export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
   sections: [
@@ -44,9 +44,9 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     },
   ],
   hitWindows: {
-    perfect: 0.070,
-    great: 0.140,
-    good: 0.230,
+    perfect: 0.130, // Widened from 70ms to 130ms
+    great: 0.240,   // Widened from 140ms to 240ms
+    good: 0.380,    // Widened from 230ms to 380ms
   },
   inputLatencyOffset: 0,
   sequenceBonus: 1000,

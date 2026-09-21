@@ -17,10 +17,10 @@ assert.strictEqual(SCORING_WINDOWS_L1.great, 0.220, 'L1 Great window must be 220
 assert.strictEqual(SCORING_WINDOWS_L1.good, 0.340, 'L1 Good window must be 340ms');
 assert.deepStrictEqual(getScoringWindows('level1'), SCORING_WINDOWS_L1, 'level1 must resolve to L1 windows');
 
-// Level 3 dance command hit windows (Prompt #40: Perfect <= 70ms, Great <= 140ms, Good <= 230ms)
-assert.strictEqual(SCORING_WINDOWS_L3.perfect, 0.070, 'L3 Perfect window must be 70ms');
-assert.strictEqual(SCORING_WINDOWS_L3.great, 0.140, 'L3 Great window must be 140ms');
-assert.strictEqual(SCORING_WINDOWS_L3.good, 0.230, 'L3 Good window must be 230ms');
+// Level 3 dance command hit windows (Widened error rate: Perfect <= 130ms, Great <= 240ms, Good <= 380ms)
+assert.strictEqual(SCORING_WINDOWS_L3.perfect, 0.130, 'L3 Perfect window must be 130ms');
+assert.strictEqual(SCORING_WINDOWS_L3.great, 0.240, 'L3 Great window must be 240ms');
+assert.strictEqual(SCORING_WINDOWS_L3.good, 0.380, 'L3 Good window must be 380ms');
 assert.deepStrictEqual(getScoringWindows('level3'), SCORING_WINDOWS_L3, 'level3 must resolve to L3 windows');
 
 const engine = new ScoringEngine();
