@@ -25,10 +25,17 @@ export const SCORING_WINDOWS_L2: ScoringWindows = {
   good: 0.180,    // <= 180ms
 };
 
+// Tactical dance memory windows for Level 3 (Duck Floor Command)
+export const SCORING_WINDOWS_L3: ScoringWindows = {
+  perfect: 0.070, // <= 70ms
+  great: 0.140,   // <= 140ms
+  good: 0.230,    // <= 230ms
+};
+
 export const SCORING_WINDOWS_BY_LEVEL: Record<string, ScoringWindows> = {
   level1: SCORING_WINDOWS_L1,
   level2: SCORING_WINDOWS_L2,
-  level3: SCORING_WINDOWS,
+  level3: SCORING_WINDOWS_L3,
   level4: SCORING_WINDOWS,
 };
 

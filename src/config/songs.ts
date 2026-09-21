@@ -53,17 +53,17 @@ export const songs: Record<string, SongConfig> = {
 
   level3: {
     id: 'level3',
-    title: 'Duck Floor Fever Nu-Disco',
+    title: 'Duck Floor Command (Trilogy Dance Battle)',
     src: '/audio/level-3.mp3',
-    bpm: 126,
-    beatOffset: 0.09,
+    bpm: 115,
+    beatOffset: 0,
     intensity: {
       bassMultiplier: 1.1,
       midMultiplier: 1,
       highMultiplier: 1,
       pulseStrength: 0.85,
       particleStrength: 0.75,
-      laserStrength: 0.75,
+      laserStrength: 0.85,
     },
     beatmap: '/beatmaps/level3.json',
   },

@@ -71,9 +71,8 @@ export class RhythmEngine {
       if (this.status !== 'playing' || this.isAutoplay) return;
       this.onInputCb?.(action);
 
-      // In Level 2 (OSU 2D target clicking), global window clicks must NOT auto-hit notes!
-      // Hits only register when the player clicks the actual circle target via handleTargetClick.
-      if (this.levelId === 'level2') {
+      // In Level 2 & Level 3, inputs are handled by their custom interactive stages!
+      if (this.levelId === 'level2' || this.levelId === 'level3') {
         return;
       }
 
@@ -239,6 +238,8 @@ export class RhythmEngine {
   }
 
   private checkMissLimit() {
+    // Prompt requirement: Level 3 never stops mid-song due to misses. Always let player finish.
+    if (this.levelId === 'level3') return;
     if (this.scoringEngine.getMissCount() >= this.maxMisses && this.status === 'playing') {
       this.handleStageFailed();
     }

@@ -1,94 +1,204 @@
-import React, { useState, useEffect } from 'react';
-import { BeatmapEvent } from '../../game/BeatmapRunner';
-import { JudgementType } from '../../config/scoring';
+import React, { useState } from 'react';
+import { useLevel3Game } from './useLevel3Game';
+import { QuackCharacter2D } from './QuackCharacter2D';
+import { Level3Floor } from './Level3Floor';
+import { Level3VirtualPad } from './Level3VirtualPad';
+import { Level3EditorModal } from './Level3EditorModal';
+import { Level3Summary, Direction } from './level3Types';
+import { getGradeTier } from '../../config/scoring';
+import { ScoreSummary } from '../../game/ScoringEngine';
+import { DevModeService } from '../../services/DevModeService';
 
 interface Level3StageProps {
-  currentBeat: number;
-  currentCue: BeatmapEvent | null;
-  lastJudgement?: JudgementType | null;
-  combo: number;
+  onLevelComplete?: (summary: ScoreSummary, extraL3?: Level3Summary) => void;
 }
 
-export const Level3Stage: React.FC<Level3StageProps> = ({
-  currentBeat,
-  lastJudgement,
-}) => {
-  const [isFlapping, setIsFlapping] = useState(false);
+const ARROW_SYMBOLS: Record<Direction, string> = { left: '←', up: '↑', right: '→', down: '↓' };
+const MOVE_TITLES: Record<Direction, string> = {
+  left: 'DUCK SLIDE',
+  up: 'WING POP',
+  right: 'QUACK SPIN',
+  down: 'LOW GROOVE',
+};
 
-  useEffect(() => {
-    if (lastJudgement && lastJudgement !== 'miss') {
-      setIsFlapping(true);
-      const t = setTimeout(() => setIsFlapping(false), 300);
-      return () => clearTimeout(t);
-    }
-  }, [lastJudgement]);
+export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => {
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-  // Blackout breakdown effect during bar 8-10
-  const isBlackout = (currentBeat >= 32 && currentBeat <= 42);
-  const duckY = isFlapping ? '-translate-y-8 -rotate-12' : 'translate-y-6 rotate-12';
+  const handleFinish = (summary: Level3Summary) => {
+    const grade = getGradeTier(summary.accuracy);
+    const converted: ScoreSummary = {
+      score: summary.score,
+      accuracy: summary.accuracy,
+      perfect: summary.perfect,
+      great: summary.great,
+      good: summary.good,
+      miss: summary.miss + summary.wrongMoves,
+      currentCombo: 0,
+      maxCombo: summary.maxCombo,
+      grade,
+      cleared: summary.cleared,
+    };
+    onLevelComplete?.(converted, summary);
+  };
+
+  const { state, config, setConfig, autoplay, setAutoplay, handleDirectionInput } =
+    useLevel3Game(handleFinish);
+
+  const {
+    songTime,
+    phase,
+    phaseBanner,
+    currentSection,
+    activeDemoDirection,
+    isDemoFake,
+    activePlayerDirection,
+    quackPose,
+    score,
+    combo,
+    lastRating,
+    lastDeltaMs,
+    energy,
+    isSpecialFinish,
+  } = state;
+
+  const currentBeat = Math.floor((songTime * currentSection.bpm) / 60);
+  const progressPercent = Math.min(100, Math.max(0, (songTime / 257) * 100));
 
   return (
-    <div className={`relative w-full max-w-lg h-56 rounded-3xl p-4 overflow-hidden flex flex-col justify-between select-none pointer-events-none transition-all duration-300 ${
-      isBlackout
-        ? 'bg-black border-2 border-dashed border-rose-500 shadow-[0_0_50px_rgba(244,63,94,0.5)]'
-        : 'bg-black/70 border border-fuchsia-500/50 shadow-[0_0_30px_rgba(236,72,153,0.3)]'
-    }`}>
-      {/* Top HUD */}
-      <div className="flex justify-between items-center z-10">
-        <span className="text-[10px] font-mono-rhythm text-fuchsia-300 tracking-widest font-bold">
-          🪽 FLAPPY DISCO DUCK
-        </span>
-        {isBlackout && (
-          <span className="text-[11px] font-disco text-rose-400 animate-ping font-bold">
-            ⚠️ BLACKOUT BREAKDOWN! TRUST YOUR EARS!
-          </span>
-        )}
+    <div className="relative w-full max-w-5xl h-[520px] sm:h-[620px] bg-[#070312] border-2 border-yellow-400/60 rounded-3xl overflow-hidden select-none shadow-[0_0_50px_rgba(250,204,21,0.3)] flex flex-col justify-between p-4">
+      <Level3Floor
+        currentSectionId={currentSection.id}
+        bpm={currentSection.bpm}
+        currentBeat={currentBeat}
+        energy={energy}
+        combo={combo}
+        isSpecialFinish={isSpecialFinish}
+      />
+
+      {/* Progress Bar */}
+      <div className="absolute top-0 inset-x-0 h-1.5 bg-black/60 z-30">
+        <div className="h-full bg-gradient-to-r from-cyan-400 via-yellow-400 to-fuchsia-500 transition-all duration-100" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      {/* Flappy Flight Zone */}
-      <div className="relative w-full h-36 flex items-center justify-between overflow-hidden">
-        {/* Neon Laser Upper Gate */}
-        <div
-          className="absolute top-0 right-16 w-8 h-12 bg-gradient-to-b from-cyan-400 to-transparent border-x border-cyan-300 shadow-[0_0_15px_#06b6d4] transition-all"
-          style={{ transform: `translateX(-${(currentBeat % 4) * 40}px)` }}
-        />
-        {/* Neon Laser Lower Gate */}
-        <div
-          className="absolute bottom-0 right-16 w-8 h-12 bg-gradient-to-t from-fuchsia-500 to-transparent border-x border-fuchsia-300 shadow-[0_0_15px_#ec4899] transition-all"
-          style={{ transform: `translateX(-${(currentBeat % 4) * 40}px)` }}
-        />
+      {/* Top HUD */}
+      <div className="relative z-20 flex items-center justify-between w-full">
+        <div>
+          <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">SCORE</span>
+          <span className="font-disco text-2xl sm:text-3xl font-black text-yellow-300">{score.toLocaleString()}</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="px-3 py-1 rounded-full bg-black/70 border border-yellow-400/40 text-xs text-yellow-300 uppercase">
+            {currentSection.label} • {currentSection.bpm} BPM
+          </span>
+          {autoplay && <span className="text-[9px] font-mono-rhythm text-cyan-300 mt-0.5">⚡ AUTOPLAY</span>}
+        </div>
+        <div className="text-right">
+          <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">COMBO</span>
+          <span className="font-disco text-2xl sm:text-3xl font-black text-fuchsia-400">{combo}×</span>
+        </div>
+      </div>
 
-        {/* Flappy Duck Flying Mascot (Donald Sailor Style) */}
-        <div className={`absolute left-16 transition-transform duration-200 ease-out ${duckY}`}>
-          <svg width="65" height="55" viewBox="0 0 65 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Sailor Cap */}
-            <path d="M 26 4 C 26 0, 38 0, 38 4 Z" fill="#1e40af" stroke="#2563eb" strokeWidth="1" />
-            <path d="M 36 4 L 42 7 L 39 9 Z" fill="#0f172a" />
-            {/* Sunglasses */}
-            <rect x="34" y="10" width="14" height="6" rx="2" fill="#00ffff" />
-            {/* Donald White Feather Head */}
-            <circle cx="32" cy="16" r="12" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
-            {/* Duck Bill */}
-            <ellipse cx="46" cy="18" rx="7" ry="4" fill="#f97316" />
-            {/* Sailor Blue Body */}
-            <ellipse cx="24" cy="30" rx="14" ry="10" fill="#1e40af" stroke="#3b82f6" strokeWidth="1.5" />
-            {/* Red Bow Tie 🎀 */}
-            <ellipse cx="32" cy="24" rx="3" ry="2" fill="#ef4444" />
-            {/* Flapping Wing (White Feather) */}
-            <path
-              d={isFlapping ? 'M 18 28 C 18 10, 32 10, 32 28 Z' : 'M 18 30 C 18 46, 32 46, 32 30 Z'}
-              fill="#ffffff"
-              stroke="#cbd5e1"
-              strokeWidth="1.5"
-            />
-          </svg>
+      {/* Arena */}
+      <div className="relative z-20 flex flex-col items-center justify-center my-auto w-full">
+        <div className="mb-2">
+          <span
+            className={`px-5 py-1.5 rounded-2xl font-disco font-black text-lg sm:text-xl tracking-widest border shadow-xl uppercase ${
+              phase === 'watch'
+                ? 'bg-cyan-950/90 border-cyan-400 text-cyan-300'
+                : phase === 'response'
+                ? 'bg-yellow-950/90 border-yellow-400 text-yellow-300 animate-pulse'
+                : phase === 'round-result'
+                ? 'bg-fuchsia-950/90 border-fuchsia-400 text-fuchsia-300'
+                : 'bg-black/70 border-white/20 text-white/80'
+            }`}
+          >
+            {phaseBanner}
+          </span>
         </div>
 
+        {/* Demo Direction Banner */}
+        <div className="h-10 flex items-center justify-center mb-1">
+          {activeDemoDirection && phase === 'watch' && (
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border shadow-lg ${
+                isDemoFake ? 'bg-purple-950/90 border-purple-400 text-purple-300' : 'bg-yellow-400 text-black border-yellow-200'
+              }`}
+            >
+              <span className="text-xl font-black font-disco">{ARROW_SYMBOLS[activeDemoDirection]}</span>
+              <span className="text-xs font-bold font-mono-rhythm">{MOVE_TITLES[activeDemoDirection]}</span>
+            </div>
+          )}
+        </div>
+
+        <QuackCharacter2D
+          pose={quackPose}
+          bpm={currentSection.bpm}
+          beatIndex={currentBeat}
+          isFakeDemo={isDemoFake}
+          activeDirection={activeDemoDirection || activePlayerDirection}
+          bassEnergy={energy.bass}
+        />
+
+        {/* Tactile Rating */}
+        <div className="h-7 flex items-center justify-center mt-1">
+          {lastRating && (
+            <div className="flex items-center gap-1.5">
+              <span
+                className={`font-disco font-black text-xs uppercase px-2 py-0.5 rounded ${
+                  lastRating === 'perfect'
+                    ? 'bg-yellow-400 text-black'
+                    : lastRating === 'great'
+                    ? 'bg-cyan-400 text-black'
+                    : lastRating === 'good'
+                    ? 'bg-emerald-400 text-black'
+                    : 'bg-rose-500 text-white'
+                }`}
+              >
+                {lastRating === 'wrong' ? 'WRONG MOVE!' : lastRating.toUpperCase()}
+              </span>
+              {DevModeService.isEnabled() && lastDeltaMs !== null && (
+                <span className="text-[9px] font-mono-rhythm text-white/70">
+                  {lastDeltaMs > 0 ? `+${lastDeltaMs}ms` : `${lastDeltaMs}ms`}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="text-center text-[10px] font-mono-rhythm text-white/50 tracking-widest">
-        SPACEBAR / TAP TO FLAP ON THE BEAT • CRUISE THROUGH NEON GATES
+      {/* Controls */}
+      <div className="relative z-20 flex flex-col items-center">
+        <Level3VirtualPad
+          onDirectionPress={(dir) => handleDirectionInput(dir)}
+          activeDirection={activePlayerDirection || activeDemoDirection}
+          disabled={phase !== 'response'}
+        />
+        <div className="flex items-center justify-between w-full pt-2">
+          <span className="text-[10px] font-mono-rhythm text-white/50 uppercase">
+            DESKTOP: ARROWS / WASD • MOBILE: 4-WAY PAD
+          </span>
+          {DevModeService.isEnabled() && (
+            <button
+              onClick={() => setIsEditorOpen(true)}
+              className="px-2 py-0.5 rounded bg-yellow-400/20 hover:bg-yellow-400/40 border border-yellow-400/50 text-[10px] font-mono-rhythm text-yellow-300 font-bold"
+            >
+              🛠️ LEVEL 3 TIMING EDITOR
+            </button>
+          )}
+        </div>
       </div>
+
+      <Level3EditorModal
+        isOpen={isEditorOpen}
+        onClose={() => setIsEditorOpen(false)}
+        config={config}
+        onUpdateConfig={setConfig}
+        songTime={songTime}
+        currentPhase={phase}
+        autoplay={autoplay}
+        onToggleAutoplay={() => setAutoplay((a) => !a)}
+      />
     </div>
   );
 };
+

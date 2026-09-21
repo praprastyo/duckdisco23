@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 
 // 1. Test Scoring Logic
-import { SCORING_WINDOWS, SCORING_WINDOWS_L1, getScoringWindows, JUDGEMENT_SCORES, getGradeTier } from '../src/config/scoring.ts';
+import { SCORING_WINDOWS, SCORING_WINDOWS_L1, SCORING_WINDOWS_L3, getScoringWindows, JUDGEMENT_SCORES, getGradeTier } from '../src/config/scoring.ts';
 import { ScoringEngine } from '../src/game/ScoringEngine.ts';
 
 console.log('Running self-check tests...');
@@ -16,7 +16,12 @@ assert.strictEqual(SCORING_WINDOWS_L1.perfect, 0.130, 'L1 Perfect window must be
 assert.strictEqual(SCORING_WINDOWS_L1.great, 0.220, 'L1 Great window must be 220ms');
 assert.strictEqual(SCORING_WINDOWS_L1.good, 0.340, 'L1 Good window must be 340ms');
 assert.deepStrictEqual(getScoringWindows('level1'), SCORING_WINDOWS_L1, 'level1 must resolve to L1 windows');
-assert.deepStrictEqual(getScoringWindows('level3'), SCORING_WINDOWS, 'level3 must resolve to default windows');
+
+// Level 3 dance command hit windows (Prompt #40: Perfect <= 70ms, Great <= 140ms, Good <= 230ms)
+assert.strictEqual(SCORING_WINDOWS_L3.perfect, 0.070, 'L3 Perfect window must be 70ms');
+assert.strictEqual(SCORING_WINDOWS_L3.great, 0.140, 'L3 Great window must be 140ms');
+assert.strictEqual(SCORING_WINDOWS_L3.good, 0.230, 'L3 Good window must be 230ms');
+assert.deepStrictEqual(getScoringWindows('level3'), SCORING_WINDOWS_L3, 'level3 must resolve to L3 windows');
 
 const engine = new ScoringEngine();
 engine.reset();
@@ -117,4 +122,35 @@ assert.strictEqual(runner.isHit('n2'), false, 'n2 must remain active');
 runner.markHit('n2');
 assert.strictEqual(runner.isHit('n2'), true, 'n2 must be marked as hit');
 
-console.log('All assert checks passed successfully! (11/11)');
+// 4. Test Level 3 (Duck Floor Command) Configurations
+import { DEFAULT_LEVEL3_CONFIG } from '../src/levels/Level3/level3Data.ts';
+import { LEVELS } from '../src/config/levels.ts';
+
+// Level 3 metadata check
+const l3Config = LEVELS.find((l) => l.id === 'level3');
+assert.ok(l3Config, 'Level 3 must exist in LEVELS');
+assert.strictEqual(l3Config.title, 'DUCK FLOOR COMMAND', 'Level 3 title must be DUCK FLOOR COMMAND');
+assert.strictEqual(l3Config.collectibleName, 'MIRROR FEATHER', 'Level 3 collectible must be MIRROR FEATHER');
+
+// 3 Music Sections check
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.sections.length, 3, 'Must have 3 music sections');
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.sections[0].bpm, 115, 'Part 1 must be 115 BPM');
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.sections[1].bpm, 85, 'Part 2 must be 85 BPM');
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.sections[2].bpm, 123, 'Part 3 must be 123 BPM');
+
+// 2 Transition Zones check
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.transitions.length, 2, 'Must have 2 transition zones');
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.transitions[0].label, 'SLOW IT DOWN', 'Transition 1 label');
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.transitions[1].label, 'FINAL GROOVE', 'Transition 2 label');
+
+// Authored rounds & Fake command presence in section 2
+assert.ok(DEFAULT_LEVEL3_CONFIG.rounds.length >= 10, 'Must have at least 10 authored rounds');
+const fakeCommands = DEFAULT_LEVEL3_CONFIG.rounds
+  .flatMap((r) => r.commands)
+  .filter((c) => c.fake);
+assert.ok(fakeCommands.length > 0, 'Section 2 must contain fake commands');
+
+// Clear condition accuracy
+assert.strictEqual(DEFAULT_LEVEL3_CONFIG.clearAccuracyThreshold, 70, 'Clear threshold must be 70%');
+
+console.log('All assert checks passed successfully! (15/15)');

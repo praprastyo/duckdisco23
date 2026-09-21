@@ -5,6 +5,7 @@ import { getLevelConfig } from '../config/levels';
 import { SaveService } from '../services/SaveService';
 import { AudioEngine } from '../audio/AudioEngine';
 import { PrizeReveal3D } from '../three/PrizeReveal3D';
+import { MirrorFeatherReward2D } from '../levels/Level3/MirrorFeatherReward2D';
 
 interface ResultsPageProps {
   levelId: string;
@@ -90,9 +91,16 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
           <span className="font-bold text-yellow-400 text-sm">{summary.maxCombo}×</span>
         </div>
 
-        {isGoalMet && !isL4 && (
+        {/* Level 3 Specific 2D Mirror Feather Unlocked Animation */}
+        {isGoalMet && levelId === 'level3' && (
+          <div className="mb-4">
+            <MirrorFeatherReward2D />
+          </div>
+        )}
+
+        {isGoalMet && !isL4 && levelId !== 'level3' && (
           <div className="p-4 rounded-2xl bg-gradient-to-r from-yellow-500/20 via-fuchsia-500/20 to-cyan-500/20 border border-yellow-400/40 mb-8 flex items-center justify-center gap-4 animate-pulse">
-            <span className="text-4xl">{level.id === 'level1' ? '🌈' : level.id === 'level2' ? '💿' : '🪞'}</span>
+            <span className="text-4xl">{level.id === 'level1' ? '🌈' : '💿'}</span>
             <div className="text-left">
               <span className="text-[9px] uppercase font-mono-rhythm tracking-widest text-yellow-400 block font-bold">SECRET CLUE UNLOCKED!</span>
               <span className="font-disco text-lg text-white tracking-wide">{level.collectibleName}</span>

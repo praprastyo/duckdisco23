@@ -174,8 +174,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
       {/* Main Dynamic Level Stage */}
       <div className="relative z-20 flex flex-col items-center justify-center my-auto w-full">
-        {/* Levels 1 & 2 have their own custom visual guidance */}
-        {level.id !== 'level1' && level.id !== 'level2' && <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />}
+        {/* Levels 1, 2, 3 have their own custom visual guidance */}
+        {level.id !== 'level1' && level.id !== 'level2' && level.id !== 'level3' && <TutorialCue currentCue={currentCue} currentBeat={currentBeat} />}
 
         {/* Dynamic mini-game stage per level */}
         <div className="my-2 flex flex-col items-center w-full">
@@ -214,10 +214,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
 
           {level.id === 'level3' && (
             <Level3Stage
-              currentBeat={currentBeat}
-              currentCue={currentCue}
-              lastJudgement={lastJudgement?.judgement}
-              combo={combo}
+              onLevelComplete={(summary) => onFinish(summary)}
             />
           )}
 
@@ -233,10 +230,12 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
           )}
         </div>
 
-        <RhythmFeedback judgement={lastJudgement?.judgement ?? null} deltaMs={lastJudgement?.deltaMs} triggerId={triggerId} />
+        {level.id !== 'level3' && (
+          <RhythmFeedback judgement={lastJudgement?.judgement ?? null} deltaMs={lastJudgement?.deltaMs} triggerId={triggerId} />
+        )}
 
-        {/* Combo counter (Levels 1 & 2 show combo in their own stage HUD) */}
-        {level.id !== 'level1' && level.id !== 'level2' && (
+        {/* Combo counter (Levels 1, 2, 3 show combo in their own stage HUD) */}
+        {level.id !== 'level1' && level.id !== 'level2' && level.id !== 'level3' && (
           <div className="mt-1">
             <ComboCounter combo={combo} maxCombo={maxCombo} />
           </div>
@@ -244,7 +243,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
       </div>
 
       {/* Crowd Duck Silhouettes along the floor (Only for disco nightclub levels 2, 3, 4) */}
-      {level.id !== 'level1' && <CrowdSilhouettes currentBeat={currentBeat} combo={combo} />}
+      {level.id !== 'level1' && level.id !== 'level3' && <CrowdSilhouettes currentBeat={currentBeat} combo={combo} />}
 
       {/* Bottom control tip (Only for levels 2, 3, 4) */}
       {level.id !== 'level1' && (
@@ -254,6 +253,8 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
             <span className="font-mono-rhythm text-[11px] text-white/70 tracking-widest uppercase">
               {level.id === 'level2'
                 ? 'CLICK OR TAP THE TARGET CIRCLES IN RHYTHM'
+                : level.id === 'level3'
+                ? 'WATCH → REMEMBER → REPEAT DIRECTIONAL DANCE COMMANDS'
                 : 'SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE'}
             </span>
           </div>
