@@ -44,7 +44,6 @@ export interface Level3GameState {
   expectedDirection: Direction | null;
   countIn: string | null;
   isMissShaking: boolean;
-  playbackSpeed: number;
   energy: EnergyData;
   autoplay: boolean;
   isSpecialFinish: boolean;
@@ -90,7 +89,6 @@ export function useLevel3Game(
     expectedDirection: null,
     countIn: null,
     isMissShaking: false,
-    playbackSpeed: 1.0,
     energy: { bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 },
     autoplay: initialAutoplay,
     isSpecialFinish: false,
@@ -478,9 +476,35 @@ export function useLevel3Game(
           const r = cfg.rounds[roundIdx];
           g.hasFailedAnyInRound = false;
           g.isAllPerfectInRound = true;
-          g.realCommands = r.commands
-            .filter((c) => !c.fake)
-            .map((c) => ({ command: c, absTime: r.responseStart + c.offset, judged: false }));
+
+          // Build real commands: when a fake command occurs in demo, player response skips the delay
+          // so the next real command is ready immediately on the next rhythmic beat!
+          let playerAccumOffset = 0;
+          let lastRealOffset = -1;
+          const beatDuration = 60 / Math.max(60, currentSec.bpm);
+          g.realCommands = [];
+
+          for (let i = 0; i < r.commands.length; i++) {
+            const cmd = r.commands[i];
+            if (cmd.fake) {
+              continue; // Skip fake cue during player turn
+            }
+            if (lastRealOffset === -1) {
+              playerAccumOffset = 0;
+            } else {
+              const rawGap = cmd.offset - lastRealOffset;
+              const hasFakeBetween = r.commands.slice(0, i).some((c) => c.fake && c.offset > lastRealOffset && c.offset < cmd.offset);
+              const stepGap = hasFakeBetween ? Math.min(rawGap, beatDuration) : rawGap;
+              playerAccumOffset += stepGap;
+            }
+            lastRealOffset = cmd.offset;
+            g.realCommands.push({
+              command: cmd,
+              absTime: r.responseStart + playerAccumOffset,
+              judged: false,
+            });
+          }
+
           g.demoCommands = r.commands.map((c) => ({
             command: c,
             absTime: r.demoStart + c.offset,
@@ -507,9 +531,10 @@ export function useLevel3Game(
 
       const activeRound = cfg.rounds[roundIdx];
       const maxOffset = activeRound.commands.reduce((max, c) => Math.max(max, c.offset), 0);
-      const demoEnd = activeRound.demoStart + maxOffset + 0.6;
+      const demoEnd = activeRound.demoStart + maxOffset + 0.5;
       const responseStart = activeRound.responseStart;
-      const responseEnd = responseStart + maxOffset + cfg.hitWindows.good + 0.5;
+      const maxRealOffset = g.realCommands.reduce((max, c) => Math.max(max, c.absTime - responseStart), 0);
+      const responseEnd = responseStart + maxRealOffset + cfg.hitWindows.good + 0.4;
 
       let curPhase: GamePhase = 'watch';
       let banner = 'WATCH';
@@ -691,11 +716,6 @@ export function useLevel3Game(
     }
   }, [externalAction, handleDirectionInput]);
 
-  const setPlaybackSpeed = useCallback((speed: number) => {
-    AudioEngine.getInstance().setPlaybackRate(speed);
-    setState((s) => ({ ...s, playbackSpeed: speed }));
-  }, []);
-
   return {
     state,
     setState,
@@ -706,7 +726,6 @@ export function useLevel3Game(
     syncStats,
     handleDirectionInput,
     restartLevel,
-    setPlaybackSpeed,
     gameRef,
   };
 }

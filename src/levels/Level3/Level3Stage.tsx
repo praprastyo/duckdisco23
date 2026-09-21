@@ -43,7 +43,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
     onLevelComplete?.(converted, summary);
   };
 
-  const { state, config, setConfig, autoplay, setAutoplay, handleDirectionInput, restartLevel, setPlaybackSpeed } =
+  const { state, config, setConfig, autoplay, setAutoplay, handleDirectionInput, restartLevel } =
     useLevel3Game(handleFinish, false, actionEvent);
 
   const {
@@ -65,7 +65,6 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
     isMissShaking,
     totalFailures,
     isFailed,
-    playbackSpeed,
     energy,
     isSpecialFinish,
   } = state;
@@ -106,29 +105,10 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
           <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">SCORE</span>
           <span className="font-disco text-2xl sm:text-3xl font-black text-yellow-300">{score.toLocaleString()}</span>
         </div>
-        <div className="flex flex-col items-center gap-1">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-black/70 border border-yellow-400/40 text-xs text-yellow-300 uppercase">
-              {currentSection.label} • {Math.round(currentSection.bpm * playbackSpeed)} BPM
-            </span>
-            {/* Speed Multiplier: 1x, 1.5x, 2x */}
-            <div className="flex items-center bg-black/70 border border-white/20 rounded-lg p-0.5">
-              {([1.0, 1.5, 2.0] as const).map((spd) => (
-                <button
-                  key={spd}
-                  onClick={() => setPlaybackSpeed(spd)}
-                  className={`px-2 py-0.5 rounded text-[10px] font-disco font-bold transition-all ${
-                    playbackSpeed === spd
-                      ? 'bg-yellow-400 text-black shadow-[0_0_10px_#facc15]'
-                      : 'text-white/60 hover:text-white'
-                  }`}
-                  aria-label={`Playback speed ${spd}x`}
-                >
-                  {spd}×
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="flex flex-col items-center">
+          <span className="px-3.5 py-1 rounded-full bg-black/70 border border-yellow-400/40 text-xs text-yellow-300 uppercase">
+            {currentSection.label} • {currentSection.bpm} BPM
+          </span>
           {autoplay && <span className="text-[9px] font-mono-rhythm text-cyan-300 mt-0.5">⚡ AUTOPLAY</span>}
         </div>
         <div className="flex items-center gap-3">

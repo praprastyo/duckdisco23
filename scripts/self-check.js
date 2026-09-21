@@ -143,8 +143,8 @@ assert.strictEqual(DEFAULT_LEVEL3_CONFIG.transitions.length, 2, 'Must have 2 tra
 assert.strictEqual(DEFAULT_LEVEL3_CONFIG.transitions[0].label, 'SLOW IT DOWN', 'Transition 1 label');
 assert.strictEqual(DEFAULT_LEVEL3_CONFIG.transitions[1].label, 'FINAL GROOVE', 'Transition 2 label');
 
-// Authored rounds & Fake command presence in section 2
-assert.ok(DEFAULT_LEVEL3_CONFIG.rounds.length >= 10, 'Must have at least 10 authored rounds');
+// Authored rounds & Fake command presence in section 2 (2x gameplay density: 26 rounds)
+assert.ok(DEFAULT_LEVEL3_CONFIG.rounds.length >= 20, 'Must have at least 20 authored rounds (2x gameplay density)');
 const fakeCommands = DEFAULT_LEVEL3_CONFIG.rounds
   .flatMap((r) => r.commands)
   .filter((c) => c.fake);
