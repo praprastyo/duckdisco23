@@ -11,6 +11,7 @@ import { DevModeService } from '../../services/DevModeService';
 
 interface Level3StageProps {
   onLevelComplete?: (summary: ScoreSummary, extraL3?: Level3Summary) => void;
+  onExit?: () => void;
 }
 
 const ARROW_SYMBOLS: Record<Direction, string> = { left: '←', up: '↑', right: '→', down: '↓' };
@@ -21,7 +22,7 @@ const MOVE_TITLES: Record<Direction, string> = {
   down: 'LOW GROOVE',
 };
 
-export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => {
+export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExit }) => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   const handleFinish = (summary: Level3Summary) => {
@@ -41,7 +42,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
     onLevelComplete?.(converted, summary);
   };
 
-  const { state, config, setConfig, autoplay, setAutoplay, handleDirectionInput } =
+  const { state, config, setConfig, autoplay, setAutoplay, handleDirectionInput, restartLevel } =
     useLevel3Game(handleFinish);
 
   const {
@@ -61,6 +62,8 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
     expectedDirection,
     countIn,
     isMissShaking,
+    totalFailures,
+    isFailed,
     energy,
     isSpecialFinish,
   } = state;
@@ -95,7 +98,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
         <div className="h-full bg-gradient-to-r from-cyan-400 via-yellow-400 to-fuchsia-500 transition-all duration-100" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      {/* Top HUD */}
+      {/* Top HUD: Score, Section/BPM, Combo, and Miss Limit (Max 10) */}
       <div className="relative z-20 flex items-center justify-between w-full">
         <div>
           <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">SCORE</span>
@@ -107,9 +110,25 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
           </span>
           {autoplay && <span className="text-[9px] font-mono-rhythm text-cyan-300 mt-0.5">⚡ AUTOPLAY</span>}
         </div>
-        <div className="text-right">
-          <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">COMBO</span>
-          <span className="font-disco text-2xl sm:text-3xl font-black text-fuchsia-400">{combo}×</span>
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">COMBO</span>
+            <span className="font-disco text-2xl sm:text-3xl font-black text-fuchsia-400">{combo}×</span>
+          </div>
+          <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-black/70 border border-white/15">
+            <span className="text-white/50 text-[10px] font-mono-rhythm">MISS:</span>
+            <span
+              className={`font-mono-rhythm font-black text-xs ${
+                totalFailures >= 8
+                  ? 'text-rose-400 animate-pulse'
+                  : totalFailures >= 5
+                  ? 'text-amber-300'
+                  : 'text-emerald-400'
+              }`}
+            >
+              {totalFailures}/10
+            </span>
+          </div>
         </div>
       </div>
 
@@ -195,8 +214,8 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
           disabled={phase !== 'response' && countIn !== '1'}
         />
         <div className="flex items-center justify-between w-full pt-2">
-          <span className="text-[10px] font-mono-rhythm text-white/50 uppercase">
-            DESKTOP: ARROWS / WASD • MOBILE: 4-WAY PAD
+          <span className="text-[10px] font-mono-rhythm text-white/50 uppercase tracking-wider">
+            DESKTOP: WASD OR ARROW KEYS (W: ↑, A: ←, S: ↓, D: →) • MOBILE: 4-WAY PAD
           </span>
           {DevModeService.isEnabled() && (
             <button
@@ -208,6 +227,40 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
           )}
         </div>
       </div>
+
+      {/* 10 Miss Limit Reached Failure Overlay */}
+      {isFailed && (
+        <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center select-none animate-fadeIn">
+          <div className="w-16 h-16 rounded-full bg-rose-600/30 border-2 border-rose-500 flex items-center justify-center text-3xl mb-3 animate-bounce">
+            😵
+          </div>
+          <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
+            OUT OF GROOVE • 10 MISS LIMIT REACHED
+          </span>
+          <h2 className="font-disco text-3xl sm:text-4xl text-white neon-glow-magenta mb-2">
+            KEEP TO THE GROOVE!
+          </h2>
+          <p className="max-w-md text-white/70 text-xs font-mono-rhythm mb-6 leading-relaxed">
+            10 steps fell off-beat! Relax, watch DJ Quack's dance cues closely, and try again to unlock the Mirror Feather.
+          </p>
+          <div className="flex gap-3 w-full max-w-xs">
+            <button
+              onClick={restartLevel}
+              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco text-xs font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(234,179,8,0.5)] active:scale-95 transition-all cursor-pointer"
+            >
+              🔁 TRY AGAIN
+            </button>
+            {onExit && (
+              <button
+                onClick={onExit}
+                className="flex-1 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco text-xs tracking-wider uppercase border border-white/20 active:scale-95 transition-all cursor-pointer"
+              >
+                🚪 EXIT
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <Level3EditorModal
         isOpen={isEditorOpen}

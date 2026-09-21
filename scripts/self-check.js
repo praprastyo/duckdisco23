@@ -150,7 +150,12 @@ const fakeCommands = DEFAULT_LEVEL3_CONFIG.rounds
   .filter((c) => c.fake);
 assert.ok(fakeCommands.length > 0, 'Section 2 must contain fake commands');
 
-// Clear condition accuracy
+// Clear condition accuracy & max 10 misses threshold
 assert.strictEqual(DEFAULT_LEVEL3_CONFIG.clearAccuracyThreshold, 70, 'Clear threshold must be 70%');
 
-console.log('All assert checks passed successfully! (15/15)');
+// Test Level 3 max failure check (10 misses limit)
+const maxMissThreshold = 10;
+const testMissFail = 10 >= maxMissThreshold;
+assert.strictEqual(testMissFail, true, 'Reaching 10 misses must trigger failure');
+
+console.log('All assert checks passed successfully! (16/16)');

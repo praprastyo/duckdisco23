@@ -12,7 +12,7 @@ interface Level3FloorProps {
 
 export const Level3Floor: React.FC<Level3FloorProps> = ({
   currentSectionId,
-  bpm,
+  bpm: _bpm,
   currentBeat,
   energy,
   combo: _combo,
@@ -20,89 +20,102 @@ export const Level3Floor: React.FC<Level3FloorProps> = ({
 }) => {
   const isPart2 = currentSectionId === 'part-2';
   const isPart3 = currentSectionId === 'part-3';
-  const stageOpacity = isPart2 ? 'opacity-35' : isPart3 ? 'opacity-95' : 'opacity-65';
+  const isEvenBeat = currentBeat % 2 === 0;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-      {/* 1. Ambient Lighting */}
+      {/* 1. Deep Nightclub Gradient Atmosphere */}
       <div
-        className={`absolute inset-0 transition-opacity duration-700 ${stageOpacity}`}
+        className="absolute inset-0 transition-colors duration-700"
         style={{
           background: isPart2
-            ? 'radial-gradient(ellipse at 50% 60%, rgba(30,10,60,0.85) 0%, #05020c 80%)'
+            ? 'radial-gradient(ellipse at 50% 50%, #15082a 0%, #06020c 75%, #000000 100%)'
             : isPart3
-            ? 'radial-gradient(ellipse at 50% 50%, rgba(76,29,149,0.7) 0%, rgba(13,4,30,0.95) 75%)'
-            : 'radial-gradient(ellipse at 50% 50%, rgba(24,10,48,0.7) 0%, #080315 80%)',
+            ? 'radial-gradient(ellipse at 50% 45%, #2a0845 0%, #120326 65%, #05010d 100%)'
+            : 'radial-gradient(ellipse at 50% 50%, #1a0b2e 0%, #0a0418 70%, #03010a 100%)',
         }}
       />
 
-      {/* 2. Spotlights & Lasers */}
-      <div className="absolute top-0 inset-x-0 h-96 overflow-hidden">
+      {/* 2. Full-Stage Glowing Disco Floor Grid Tiles */}
+      <div
+        className="absolute inset-0 transition-opacity duration-500"
+        style={{ opacity: isPart2 ? 0.25 : isPart3 ? 0.65 : 0.4 }}
+      >
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-64 sm:w-96 h-full blur-xl transition-all duration-300"
+          className={`w-full h-full transition-all duration-200 ${
+            currentBeat % 4 === 0
+              ? 'bg-[radial-gradient(#ec4899_2px,transparent_2px)] [background-size:36px_36px]'
+              : currentBeat % 4 === 1
+              ? 'bg-[radial-gradient(#06b6d4_2px,transparent_2px)] [background-size:36px_36px]'
+              : currentBeat % 4 === 2
+              ? 'bg-[radial-gradient(#facc15_2px,transparent_2px)] [background-size:36px_36px]'
+              : 'bg-[radial-gradient(#a855f7_2px,transparent_2px)] [background-size:36px_36px]'
+          }`}
+        />
+      </div>
+
+      {/* 3. Central Circular Dance Stage / Light Podium Beneath DJ Quack */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div
+          className="w-80 sm:w-[460px] h-48 sm:h-72 rounded-[100%] blur-3xl transition-transform duration-150"
           style={{
-            background: isPart2
-              ? 'conic-gradient(from 180deg at 50% 0%, rgba(168,85,247,0.3) 0deg, transparent 60deg)'
+            transform: `scale(${1 + energy.bass * 0.35})`,
+            background: isSpecialFinish
+              ? 'radial-gradient(ellipse, rgba(250,204,21,0.7) 0%, rgba(236,72,153,0.3) 60%, transparent 80%)'
               : isPart3
-              ? 'conic-gradient(from 180deg at 50% 0%, rgba(250,204,21,0.45) 0deg, rgba(236,72,153,0.35) 45deg, transparent 75deg)'
-              : 'conic-gradient(from 180deg at 50% 0%, rgba(6,182,212,0.35) 0deg, rgba(236,72,153,0.2) 40deg, transparent 65deg)',
-            transform: `translateX(-50%) rotate(${Math.sin(currentBeat * 0.4) * (isPart2 ? 4 : 16)}deg) scale(${1 + energy.bass * 0.35})`,
+              ? 'radial-gradient(ellipse, rgba(236,72,153,0.5) 0%, rgba(6,182,212,0.3) 50%, transparent 80%)'
+              : isPart2
+              ? 'radial-gradient(ellipse, rgba(168,85,247,0.35) 0%, transparent 75%)'
+              : 'radial-gradient(ellipse, rgba(6,182,212,0.4) 0%, rgba(236,72,153,0.2) 60%, transparent 80%)',
           }}
         />
-        {!isPart2 && (
-          <>
-            <div
-              className="absolute top-0 left-1/4 w-1 h-[140%] origin-top bg-cyan-400 blur-[1px] shadow-[0_0_12px_#06b6d4] transition-transform duration-150"
-              style={{ transform: `rotate(${Math.sin(currentBeat * 0.6) * 35 - 15}deg)`, opacity: 0.4 + energy.high * 0.6 }}
-            />
-            <div
-              className="absolute top-0 right-1/4 w-1 h-[140%] origin-top bg-fuchsia-400 blur-[1px] shadow-[0_0_12px_#ec4899] transition-transform duration-150"
-              style={{ transform: `rotate(${Math.cos(currentBeat * 0.6) * 35 + 15}deg)`, opacity: 0.4 + energy.high * 0.6 }}
-            />
-          </>
-        )}
-      </div>
 
-      {/* 3. Disco Dance Floor */}
-      <div className="absolute bottom-0 inset-x-0 h-48 sm:h-60 overflow-hidden [perspective:600px]">
+        {/* Concentric Dance Floor Disc Rings */}
         <div
-          className="w-full h-full origin-bottom transition-all duration-150"
+          className="absolute w-64 sm:w-88 h-28 sm:h-40 rounded-[100%] border-2 transition-all duration-200"
           style={{
-            transform: 'rotateX(58deg)',
-            backgroundImage: `linear-gradient(to right, rgba(255,255,255,${0.08 + energy.bass * 0.15}) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,${0.08 + energy.bass * 0.15}) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-            backgroundColor: isPart2 ? '#090414' : isPart3 ? (currentBeat % 2 === 0 ? '#19072e' : '#230940') : (currentBeat % 2 === 0 ? '#0f0822' : '#080518'),
+            borderColor: isPart2 ? 'rgba(168,85,247,0.4)' : isPart3 ? 'rgba(250,204,21,0.6)' : 'rgba(6,182,212,0.5)',
+            transform: `translateY(40px) scale(${isEvenBeat ? 1.03 : 1.0})`,
+            boxShadow: isPart3 ? '0 0 35px rgba(236,72,153,0.5)' : '0 0 20px rgba(6,182,212,0.35)',
           }}
-        >
-          <div
-            className="absolute inset-0 rounded-full blur-2xl transition-all"
-            style={{
-              background: isSpecialFinish
-                ? 'radial-gradient(circle, rgba(250,204,21,0.6) 0%, transparent 70%)'
-                : isPart3
-                ? 'radial-gradient(circle, rgba(236,72,153,0.4) 0%, rgba(6,182,212,0.2) 50%, transparent 80%)'
-                : 'radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 60%)',
-              transform: `scale(${1 + energy.bass * 0.4})`,
-            }}
-          />
-        </div>
+        />
+        <div
+          className="absolute w-44 sm:w-60 h-20 sm:h-28 rounded-[100%] border border-dashed transition-all duration-200"
+          style={{
+            borderColor: isEvenBeat ? '#facc15' : '#ec4899',
+            transform: `translateY(40px) scale(${isEvenBeat ? 1.0 : 1.04})`,
+            opacity: 0.6 + energy.bass * 0.4,
+          }}
+        />
       </div>
 
-      {/* 4. DJ Turntable Booth */}
-      <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 w-72 sm:w-88 h-14 bg-gradient-to-b from-gray-900 via-gray-950 to-black border-t-2 border-cyan-400/50 rounded-t-xl shadow-2xl flex items-center justify-between px-6 z-10">
-        <div className="w-10 h-10 rounded-full bg-black border-2 border-yellow-400/80 relative flex items-center justify-center shadow-lg">
-          <div className="w-4 h-4 rounded-full bg-cyan-400 animate-spin" style={{ animationDuration: `${60 / Math.max(60, bpm)}s` }} />
-        </div>
-        <div className="flex items-center gap-1.5 px-3 py-1 bg-black/60 rounded-md border border-white/10">
-          <span className={`w-1.5 h-1.5 rounded-full ${energy.bass > 0.4 ? 'bg-rose-500 shadow-[0_0_6px_#f43f5e]' : 'bg-rose-900'}`} />
-          <span className={`w-1.5 h-1.5 rounded-full ${energy.mid > 0.3 ? 'bg-amber-400 shadow-[0_0_6px_#f59e0b]' : 'bg-amber-900'}`} />
-          <span className={`w-1.5 h-1.5 rounded-full ${energy.high > 0.3 ? 'bg-emerald-400 shadow-[0_0_6px_#10b981]' : 'bg-emerald-900'}`} />
-          <span className="text-[9px] font-mono-rhythm text-white/50 ml-1">{bpm} BPM</span>
-        </div>
-        <div className="w-10 h-10 rounded-full bg-black border-2 border-fuchsia-400/80 relative flex items-center justify-center shadow-lg">
-          <div className="w-4 h-4 rounded-full bg-pink-400 animate-spin" style={{ animationDuration: `${60 / Math.max(60, bpm)}s` }} />
-        </div>
-      </div>
+      {/* 4. Overhead Sweeping Spotlights */}
+      <div
+        className="absolute -top-10 left-1/2 -translate-x-1/2 w-80 sm:w-[500px] h-[400px] blur-2xl transition-transform duration-300"
+        style={{
+          transform: `translateX(-50%) rotate(${Math.sin(currentBeat * 0.35) * (isPart2 ? 6 : 18)}deg) scale(${1 + energy.bass * 0.3})`,
+          background: isPart2
+            ? 'conic-gradient(from 180deg at 50% 0%, rgba(168,85,247,0.25) 0deg, transparent 55deg)'
+            : isPart3
+            ? 'conic-gradient(from 180deg at 50% 0%, rgba(250,204,21,0.4) 0deg, rgba(236,72,153,0.3) 40deg, transparent 70deg)'
+            : 'conic-gradient(from 180deg at 50% 0%, rgba(6,182,212,0.3) 0deg, rgba(236,72,153,0.2) 35deg, transparent 65deg)',
+        }}
+      />
+
+      {/* 5. Stage Lasers (Part 1 and Part 3) */}
+      {!isPart2 && (
+        <>
+          <div
+            className="absolute top-0 left-1/6 w-1 h-[150%] origin-top bg-cyan-400 blur-[1px] shadow-[0_0_15px_#06b6d4] transition-transform duration-100"
+            style={{ transform: `rotate(${Math.sin(currentBeat * 0.5) * 35 - 20}deg)`, opacity: 0.3 + energy.high * 0.7 }}
+          />
+          <div
+            className="absolute top-0 right-1/6 w-1 h-[150%] origin-top bg-fuchsia-400 blur-[1px] shadow-[0_0_15px_#ec4899] transition-transform duration-100"
+            style={{ transform: `rotate(${Math.cos(currentBeat * 0.5) * 35 + 20}deg)`, opacity: 0.3 + energy.high * 0.7 }}
+          />
+        </>
+      )}
     </div>
   );
 };
+

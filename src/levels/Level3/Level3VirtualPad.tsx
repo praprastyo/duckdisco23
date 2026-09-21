@@ -40,10 +40,10 @@ export const Level3VirtualPad: React.FC<Level3VirtualPadProps> = ({
         type="button"
         onPointerDown={(e) => handlePointer('up', e)}
         className={getButtonClass('up')}
-        aria-label="Up - Wing Pop"
+        aria-label="Up - Wing Pop (W / Up Arrow)"
       >
-        <span>↑</span>
-        <span className="text-[8px] font-mono-rhythm font-bold text-cyan-300 -mt-1 tracking-tighter">POP</span>
+        <span className="leading-none">↑</span>
+        <span className="text-[8px] font-mono-rhythm font-bold text-cyan-300 -mt-0.5 tracking-tight">W / POP</span>
       </button>
 
       {/* LEFT & RIGHT */}
@@ -52,20 +52,20 @@ export const Level3VirtualPad: React.FC<Level3VirtualPadProps> = ({
           type="button"
           onPointerDown={(e) => handlePointer('left', e)}
           className={getButtonClass('left')}
-          aria-label="Left - Duck Slide"
+          aria-label="Left - Duck Slide (A / Left Arrow)"
         >
-          <span>←</span>
-          <span className="text-[8px] font-mono-rhythm font-bold text-fuchsia-300 -mt-1 tracking-tighter">SLIDE</span>
+          <span className="leading-none">←</span>
+          <span className="text-[8px] font-mono-rhythm font-bold text-fuchsia-300 -mt-0.5 tracking-tight">A / SLIDE</span>
         </button>
 
         <button
           type="button"
           onPointerDown={(e) => handlePointer('right', e)}
           className={getButtonClass('right')}
-          aria-label="Right - Quack Spin"
+          aria-label="Right - Quack Spin (D / Right Arrow)"
         >
-          <span>→</span>
-          <span className="text-[8px] font-mono-rhythm font-bold text-yellow-300 -mt-1 tracking-tighter">SPIN</span>
+          <span className="leading-none">→</span>
+          <span className="text-[8px] font-mono-rhythm font-bold text-yellow-300 -mt-0.5 tracking-tight">D / SPIN</span>
         </button>
       </div>
 
@@ -74,10 +74,10 @@ export const Level3VirtualPad: React.FC<Level3VirtualPadProps> = ({
         type="button"
         onPointerDown={(e) => handlePointer('down', e)}
         className={getButtonClass('down')}
-        aria-label="Down - Low Groove"
+        aria-label="Down - Low Groove (S / Down Arrow)"
       >
-        <span>↓</span>
-        <span className="text-[8px] font-mono-rhythm font-bold text-emerald-300 -mt-1 tracking-tighter">GROOVE</span>
+        <span className="leading-none">↓</span>
+        <span className="text-[8px] font-mono-rhythm font-bold text-emerald-300 -mt-0.5 tracking-tight">S / GROOVE</span>
       </button>
     </div>
   );

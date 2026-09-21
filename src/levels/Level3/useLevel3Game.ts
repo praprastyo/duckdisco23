@@ -34,6 +34,9 @@ export interface Level3GameState {
   goodCount: number;
   missCount: number;
   wrongMovesCount: number;
+  totalFailures: number;
+  maxMisses: number;
+  isFailed: boolean;
   fullGroovesCount: number;
   lastRating: JudgementRating | null;
   lastDeltaMs: number | null;
@@ -74,6 +77,9 @@ export function useLevel3Game(
     goodCount: 0,
     missCount: 0,
     wrongMovesCount: 0,
+    totalFailures: 0,
+    maxMisses: 10,
+    isFailed: false,
     fullGroovesCount: 0,
     lastRating: null,
     lastDeltaMs: null,
@@ -138,7 +144,74 @@ export function useLevel3Game(
       goodCount: g.good,
       missCount: g.miss,
       wrongMovesCount: g.wrongMoves,
+      totalFailures: g.miss + g.wrongMoves,
       fullGroovesCount: g.fullGrooves,
+    }));
+  }, []);
+
+  const checkMissLimit = useCallback(() => {
+    const g = gameRef.current;
+    const totalFailures = g.miss + g.wrongMoves;
+    if (totalFailures >= 10 && !g.finishedDispatched) {
+      g.finishedDispatched = true;
+      const audio = AudioEngine.getInstance();
+      audio.pause();
+      audio.playSfx('scratch');
+      setState((s) => ({
+        ...s,
+        isFailed: true,
+        phaseBanner: 'OUT OF GROOVE',
+        quackPose: 'miss',
+        feedbackMessage: 'OUT OF GROOVE! 10 Miss limit reached.',
+        isMissShaking: true,
+      }));
+      return true;
+    }
+    return false;
+  }, []);
+
+  const restartLevel = useCallback(() => {
+    const g = gameRef.current;
+    g.activeRoundIndex = -1;
+    g.realCommands = [];
+    g.demoCommands = [];
+    g.score = 0;
+    g.combo = 0;
+    g.maxCombo = 0;
+    g.perfect = 0;
+    g.great = 0;
+    g.good = 0;
+    g.miss = 0;
+    g.wrongMoves = 0;
+    g.fullGrooves = 0;
+    g.finishedDispatched = false;
+    g.prevSongTime = -1;
+
+    const audio = AudioEngine.getInstance();
+    audio.seek(0);
+    audio.play(0);
+
+    setState((s) => ({
+      ...s,
+      songTime: 0,
+      phase: 'intro',
+      phaseBanner: 'GET READY',
+      isFailed: false,
+      score: 0,
+      combo: 0,
+      maxCombo: 0,
+      accuracy: 100,
+      perfectCount: 0,
+      greatCount: 0,
+      goodCount: 0,
+      missCount: 0,
+      wrongMovesCount: 0,
+      totalFailures: 0,
+      quackPose: 'idle',
+      lastRating: null,
+      lastDeltaMs: null,
+      feedbackMessage: '',
+      isMissShaking: false,
     }));
   }, []);
   // Handle directional input from Desktop (Keyboard) or Mobile (Buttons)
@@ -270,8 +343,11 @@ export function useLevel3Game(
       }, 350);
 
       syncStats();
+      if (rating === 'wrong' || rating === 'miss') {
+        checkMissLimit();
+      }
     },
-    [syncStats]
+    [syncStats, checkMissLimit]
   );
 
   // Main update animation loop
@@ -296,6 +372,7 @@ export function useLevel3Game(
       if (!g.finishedDispatched && duration > 10 && currentT >= Math.min(duration - 0.5, 257)) {
         g.finishedDispatched = true;
         const totalJudged = g.perfect + g.great + g.good + g.miss + g.wrongMoves;
+        const totalFailures = g.miss + g.wrongMoves;
         const acc =
           totalJudged === 0
             ? 100
@@ -310,7 +387,7 @@ export function useLevel3Game(
           wrongMoves: g.wrongMoves,
           maxCombo: g.maxCombo,
           fullGrooves: g.fullGrooves,
-          cleared: acc >= cfg.clearAccuracyThreshold,
+          cleared: acc >= cfg.clearAccuracyThreshold && totalFailures <= 10,
         };
         setState((s) => ({ ...s, phase: 'finished', phaseBanner: 'LEVEL COMPLETE' }));
         onFinish?.(summary);
@@ -494,6 +571,7 @@ export function useLevel3Game(
             }, 350);
 
             syncStats();
+            checkMissLimit();
           }
         });
       } else {
@@ -530,9 +608,9 @@ export function useLevel3Game(
 
     animId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animId);
-  }, [config, onFinish, handleDirectionInput, syncStats]);
+  }, [config, onFinish, handleDirectionInput, syncStats, checkMissLimit]);
 
-  // Keyboard controls
+  // Keyboard controls (Arrows & WASD)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
@@ -543,6 +621,7 @@ export function useLevel3Game(
       else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') dir = 'down';
 
       if (dir) {
+        e.preventDefault();
         handleDirectionInput(dir);
       }
     };
@@ -561,6 +640,7 @@ export function useLevel3Game(
     setAutoplay,
     syncStats,
     handleDirectionInput,
+    restartLevel,
     gameRef,
   };
 }

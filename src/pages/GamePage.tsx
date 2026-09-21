@@ -215,6 +215,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
           {level.id === 'level3' && (
             <Level3Stage
               onLevelComplete={(summary) => onFinish(summary)}
+              onExit={onExit}
             />
           )}
 
@@ -243,7 +244,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
       </div>
 
       {/* Crowd Duck Silhouettes along the floor (Only for disco nightclub levels 2, 3, 4) */}
-      {level.id !== 'level1' && level.id !== 'level3' && <CrowdSilhouettes currentBeat={currentBeat} combo={combo} />}
+      {level.id !== 'level1' && <CrowdSilhouettes currentBeat={currentBeat} combo={combo} />}
 
       {/* Bottom control tip (Only for levels 2, 3, 4) */}
       {level.id !== 'level1' && (
@@ -254,7 +255,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
               {level.id === 'level2'
                 ? 'CLICK OR TAP THE TARGET CIRCLES IN RHYTHM'
                 : level.id === 'level3'
-                ? 'WATCH → REMEMBER → REPEAT DIRECTIONAL DANCE COMMANDS'
+                ? 'WASD OR ARROWS (W: ↑, A: ←, S: ↓, D: →) • TAP 4-WAY PAD'
                 : 'SPACEBAR • CLICK • TOUCH TO JUMP / FLAP / GROOVE'}
             </span>
           </div>
