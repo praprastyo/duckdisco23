@@ -70,24 +70,19 @@ export class InputManager {
 
     if (code === 'Space' || code === 'Enter') {
       e.preventDefault();
-      e.stopImmediatePropagation();
       (document.activeElement as HTMLElement)?.blur();
       this.startPress('tap');
     } else if (code === 'ArrowLeft' || code === 'KeyA') {
       e.preventDefault();
-      e.stopImmediatePropagation();
       this.triggerAction('left');
     } else if (code === 'ArrowRight' || code === 'KeyD') {
       e.preventDefault();
-      e.stopImmediatePropagation();
       this.triggerAction('right');
     } else if (code === 'ArrowUp' || code === 'KeyW') {
       e.preventDefault();
-      e.stopImmediatePropagation();
       this.triggerAction('up');
     } else if (code === 'ArrowDown' || code === 'KeyS') {
       e.preventDefault();
-      e.stopImmediatePropagation();
       this.triggerAction('down');
     }
   };

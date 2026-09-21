@@ -216,6 +216,7 @@ export const GamePage: React.FC<GamePageProps> = ({ levelId, onFinish, onExit })
             <Level3Stage
               onLevelComplete={(summary) => onFinish(summary)}
               onExit={onExit}
+              actionEvent={actionEvent}
             />
           )}
 

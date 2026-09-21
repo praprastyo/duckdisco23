@@ -12,6 +12,7 @@ import { DevModeService } from '../../services/DevModeService';
 interface Level3StageProps {
   onLevelComplete?: (summary: ScoreSummary, extraL3?: Level3Summary) => void;
   onExit?: () => void;
+  actionEvent?: { id: number; action: string } | null;
 }
 
 const ARROW_SYMBOLS: Record<Direction, string> = { left: '←', up: '↑', right: '→', down: '↓' };
@@ -22,7 +23,7 @@ const MOVE_TITLES: Record<Direction, string> = {
   down: 'LOW GROOVE',
 };
 
-export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExit }) => {
+export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExit, actionEvent }) => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   const handleFinish = (summary: Level3Summary) => {
@@ -43,7 +44,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
   };
 
   const { state, config, setConfig, autoplay, setAutoplay, handleDirectionInput, restartLevel } =
-    useLevel3Game(handleFinish);
+    useLevel3Game(handleFinish, false, actionEvent);
 
   const {
     songTime,

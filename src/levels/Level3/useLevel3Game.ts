@@ -51,11 +51,13 @@ export interface Level3GameState {
 
 export function useLevel3Game(
   onFinish?: (summary: Level3Summary) => void,
-  initialAutoplay = false
+  initialAutoplay = false,
+  externalAction?: { id: number; action: string } | null
 ) {
   const [config, setConfig] = useState<Level3Config>(() => loadLevel3Config());
   const [autoplay, setAutoplay] = useState(initialAutoplay);
   const poseTimerRef = useRef<number | null>(null);
+  const lastInputTimeRef = useRef<{ dir: Direction; time: number }>({ dir: 'left', time: 0 });
 
   const [state, setState] = useState<Level3GameState>(() => ({
     songTime: 0,
@@ -217,17 +219,49 @@ export function useLevel3Game(
   // Handle directional input from Desktop (Keyboard) or Mobile (Buttons)
   const handleDirectionInput = useCallback(
     (inputDir: Direction, isAutoplayTrigger = false) => {
+      const now = performance.now();
+      if (!isAutoplayTrigger && lastInputTimeRef.current.dir === inputDir && now - lastInputTimeRef.current.time < 35) {
+        return;
+      }
+      lastInputTimeRef.current = { dir: inputDir, time: now };
+
       const audio = AudioEngine.getInstance();
       const currentAudioTime = audio.getCurrentTime();
       const g = gameRef.current;
       const cfg = g.config;
 
-      if (g.activeRoundIndex < 0 || g.activeRoundIndex >= cfg.rounds.length) return;
+      // Always give instant visual illumination on the pad
+      setState((s) => ({ ...s, activePlayerDirection: inputDir }));
+      setTimeout(() => {
+        setState((s) => (s.activePlayerDirection === inputDir ? { ...s, activePlayerDirection: null } : s));
+      }, 180);
+
+      // If failed or finished, do not score
+      if (g.finishedDispatched) return;
+
+      // If no active round or song hasn't reached first round
+      if (g.activeRoundIndex < 0 || g.activeRoundIndex >= cfg.rounds.length) {
+        audio.playSfx('cowbell');
+        setState((s) => ({
+          ...s,
+          feedbackMessage: 'READY! Round starts soon — watch DJ Quack first!',
+        }));
+        return;
+      }
+
       const round = cfg.rounds[g.activeRoundIndex];
       const adjustedInputTime = currentAudioTime - cfg.inputLatencyOffset;
 
-      // Allow input slightly before responseStart (early window tolerance)
-      if (adjustedInputTime < round.responseStart - cfg.hitWindows.good - 0.25) {
+      // If pressed before YOUR TURN phase
+      if (adjustedInputTime < round.responseStart - cfg.hitWindows.good - 0.15) {
+        audio.playSfx('cowbell');
+        setState((s) => ({
+          ...s,
+          feedbackMessage:
+            adjustedInputTime < round.responseStart - 1.2
+              ? '👀 WATCH DJ QUACK! Wait for YOUR TURN!'
+              : 'GET READY! Almost your turn...',
+        }));
         return;
       }
 
@@ -613,12 +647,18 @@ export function useLevel3Game(
   // Keyboard controls (Arrows & WASD)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // If modal or text input is focused, don't capture
+      if (document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement) {
+        return;
+      }
       if (e.repeat) return;
+      const k = e.key;
+      const c = e.code;
       let dir: Direction | null = null;
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') dir = 'left';
-      else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') dir = 'up';
-      else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') dir = 'right';
-      else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') dir = 'down';
+      if (k === 'ArrowLeft' || k === 'a' || k === 'A' || c === 'ArrowLeft' || c === 'KeyA') dir = 'left';
+      else if (k === 'ArrowUp' || k === 'w' || k === 'W' || c === 'ArrowUp' || c === 'KeyW') dir = 'up';
+      else if (k === 'ArrowRight' || k === 'd' || k === 'D' || c === 'ArrowRight' || c === 'KeyD') dir = 'right';
+      else if (k === 'ArrowDown' || k === 's' || k === 'S' || c === 'ArrowDown' || c === 'KeyS') dir = 'down';
 
       if (dir) {
         e.preventDefault();
@@ -626,9 +666,18 @@ export function useLevel3Game(
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => window.removeEventListener('keydown', handleKeyDown, { capture: true });
   }, [handleDirectionInput]);
+
+  // Secondary pipeline for external inputs from InputManager / RhythmEngine
+  useEffect(() => {
+    if (!externalAction || !externalAction.id) return;
+    const act = externalAction.action;
+    if (act === 'left' || act === 'up' || act === 'right' || act === 'down') {
+      handleDirectionInput(act as Direction);
+    }
+  }, [externalAction, handleDirectionInput]);
 
 
   return {
