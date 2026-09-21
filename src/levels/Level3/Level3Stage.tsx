@@ -57,6 +57,10 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
     combo,
     lastRating,
     lastDeltaMs,
+    feedbackMessage,
+    expectedDirection,
+    countIn,
+    isMissShaking,
     energy,
     isSpecialFinish,
   } = state;
@@ -65,7 +69,18 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
   const progressPercent = Math.min(100, Math.max(0, (songTime / 257) * 100));
 
   return (
-    <div className="relative w-full max-w-5xl h-[520px] sm:h-[620px] bg-[#070312] border-2 border-yellow-400/60 rounded-3xl overflow-hidden select-none shadow-[0_0_50px_rgba(250,204,21,0.3)] flex flex-col justify-between p-4">
+    <div
+      className={`relative w-full max-w-5xl h-[520px] sm:h-[620px] bg-[#070312] border-2 rounded-3xl overflow-hidden select-none flex flex-col justify-between p-4 transition-all duration-150 ${
+        isMissShaking
+          ? 'border-rose-500 shadow-[0_0_80px_rgba(244,63,94,0.85)] ring-4 ring-rose-500/50'
+          : 'border-yellow-400/60 shadow-[0_0_50px_rgba(250,204,21,0.3)]'
+      }`}
+    >
+      {/* Red Screen Flash on Miss / Wrong Move */}
+      {isMissShaking && (
+        <div className="absolute inset-0 bg-rose-600/25 pointer-events-none z-30 animate-pulse" />
+      )}
+
       <Level3Floor
         currentSectionId={currentSection.id}
         bpm={currentSection.bpm}
@@ -139,30 +154,36 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
           bassEnergy={energy.bass}
         />
 
-        {/* Tactile Rating */}
-        <div className="h-7 flex items-center justify-center mt-1">
-          {lastRating && (
-            <div className="flex items-center gap-1.5">
-              <span
-                className={`font-disco font-black text-xs uppercase px-2 py-0.5 rounded ${
-                  lastRating === 'perfect'
-                    ? 'bg-yellow-400 text-black'
-                    : lastRating === 'great'
-                    ? 'bg-cyan-400 text-black'
-                    : lastRating === 'good'
-                    ? 'bg-emerald-400 text-black'
-                    : 'bg-rose-500 text-white'
-                }`}
-              >
-                {lastRating === 'wrong' ? 'WRONG MOVE!' : lastRating.toUpperCase()}
-              </span>
-              {DevModeService.isEnabled() && lastDeltaMs !== null && (
-                <span className="text-[9px] font-mono-rhythm text-white/70">
-                  {lastDeltaMs > 0 ? `+${lastDeltaMs}ms` : `${lastDeltaMs}ms`}
-                </span>
-              )}
+        {/* Prominent Feedback Banner & Miss Reason Notification */}
+        <div className="h-8 flex items-center justify-center mt-1 z-20">
+          {feedbackMessage ? (
+            <div
+              className={`px-3.5 py-1 rounded-full border text-xs font-mono-rhythm font-bold flex items-center gap-2 animate-bounce shadow-lg ${
+                lastRating === 'wrong' || lastRating === 'miss'
+                  ? 'bg-rose-950/95 border-rose-500 text-rose-300 shadow-[0_0_20px_rgba(244,63,94,0.7)]'
+                  : lastRating === 'early'
+                  ? 'bg-amber-950/95 border-amber-400 text-amber-300'
+                  : lastRating === 'perfect'
+                  ? 'bg-yellow-400 text-black border-yellow-200 shadow-[0_0_20px_rgba(250,204,21,0.8)]'
+                  : 'bg-cyan-950/95 border-cyan-400 text-cyan-300'
+              }`}
+            >
+              <span>{feedbackMessage}</span>
             </div>
-          )}
+          ) : expectedDirection && phase === 'response' ? (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono-rhythm text-yellow-400 font-bold uppercase tracking-wider">
+                YOUR STEP:
+              </span>
+              <span className="px-2.5 py-0.5 rounded bg-yellow-400/20 border border-yellow-400 text-yellow-300 font-disco font-black text-xs animate-pulse">
+                {ARROW_SYMBOLS[expectedDirection]} {MOVE_TITLES[expectedDirection]}
+              </span>
+            </div>
+          ) : countIn && phase === 'get-ready' ? (
+            <span className="text-2xl font-black font-disco text-yellow-300 animate-ping">
+              {countIn}
+            </span>
+          ) : null}
         </div>
       </div>
 
@@ -171,7 +192,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete }) => 
         <Level3VirtualPad
           onDirectionPress={(dir) => handleDirectionInput(dir)}
           activeDirection={activePlayerDirection || activeDemoDirection}
-          disabled={phase !== 'response'}
+          disabled={phase !== 'response' && countIn !== '1'}
         />
         <div className="flex items-center justify-between w-full pt-2">
           <span className="text-[10px] font-mono-rhythm text-white/50 uppercase">

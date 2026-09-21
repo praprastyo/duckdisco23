@@ -1,6 +1,6 @@
 import { Level3Config } from './level3Types';
 
-export const LEVEL3_STORAGE_KEY = 'duckdisco_level3_config';
+export const LEVEL3_STORAGE_KEY = 'duckdisco_level3_config_v2';
 
 export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
   sections: [
@@ -56,8 +56,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-01',
       sectionId: 'part-1',
-      demoStart: 4.0,
-      responseStart: 7.5,
+      demoStart: 4.174,
+      responseStart: 8.348,
       difficulty: 1,
       commands: [
         { direction: 'left', offset: 0 },
@@ -67,8 +67,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-02',
       sectionId: 'part-1',
-      demoStart: 11.0,
-      responseStart: 14.5,
+      demoStart: 12.522,
+      responseStart: 16.696,
       difficulty: 1,
       commands: [
         { direction: 'up', offset: 0 },
@@ -78,8 +78,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-03',
       sectionId: 'part-1',
-      demoStart: 18.5,
-      responseStart: 22.5,
+      demoStart: 20.870,
+      responseStart: 25.043,
       difficulty: 2,
       commands: [
         { direction: 'left', offset: 0 },
@@ -90,8 +90,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-04',
       sectionId: 'part-1',
-      demoStart: 27.0,
-      responseStart: 31.5,
+      demoStart: 29.217,
+      responseStart: 35.478,
       difficulty: 2,
       commands: [
         { direction: 'left', offset: 0 },
@@ -103,8 +103,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-05',
       sectionId: 'part-1',
-      demoStart: 37.0,
-      responseStart: 41.5,
+      demoStart: 39.652,
+      responseStart: 45.913,
       difficulty: 3,
       commands: [
         { direction: 'left', offset: 0 },
@@ -116,8 +116,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-06',
       sectionId: 'part-1',
-      demoStart: 48.0,
-      responseStart: 53.5,
+      demoStart: 50.087,
+      responseStart: 58.435,
       difficulty: 3,
       commands: [
         { direction: 'left', offset: 0 },
@@ -132,7 +132,7 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
       id: 'round-07',
       sectionId: 'part-2',
       demoStart: 73.5,
-      responseStart: 80.5,
+      responseStart: 81.97,
       difficulty: 3,
       commands: [
         { direction: 'left', offset: 0 },
@@ -145,7 +145,7 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
       id: 'round-08',
       sectionId: 'part-2',
       demoStart: 88.0,
-      responseStart: 95.5,
+      responseStart: 96.47,
       difficulty: 4,
       commands: [
         { direction: 'left', offset: 0 },
@@ -158,7 +158,7 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
       id: 'round-09',
       sectionId: 'part-2',
       demoStart: 104.0,
-      responseStart: 112.5,
+      responseStart: 113.88,
       difficulty: 4,
       commands: [
         { direction: 'up', offset: 0 },
@@ -172,7 +172,7 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
       id: 'round-10',
       sectionId: 'part-2',
       demoStart: 122.0,
-      responseStart: 131.5,
+      responseStart: 133.29,
       difficulty: 5,
       commands: [
         { direction: 'down', offset: 0 },
@@ -188,7 +188,7 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
       id: 'round-11',
       sectionId: 'part-3',
       demoStart: 156.0,
-      responseStart: 160.5,
+      responseStart: 161.85,
       difficulty: 4,
       commands: [
         { direction: 'left', offset: 0 },
@@ -200,8 +200,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-12',
       sectionId: 'part-3',
-      demoStart: 165.5,
-      responseStart: 171.0,
+      demoStart: 166.0,
+      responseStart: 173.80,
       difficulty: 5,
       commands: [
         { direction: 'left', offset: 0 },
@@ -215,8 +215,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-13',
       sectionId: 'part-3',
-      demoStart: 178.0,
-      responseStart: 184.5,
+      demoStart: 179.0,
+      responseStart: 186.80,
       difficulty: 5,
       commands: [
         { direction: 'up', offset: 0 },
@@ -231,8 +231,8 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
     {
       id: 'round-14',
       sectionId: 'part-3',
-      demoStart: 193.0,
-      responseStart: 200.0,
+      demoStart: 194.0,
+      responseStart: 201.80,
       difficulty: 6,
       commands: [
         { direction: 'left', offset: 0 },
@@ -248,7 +248,7 @@ export const DEFAULT_LEVEL3_CONFIG: Level3Config = {
       id: 'round-15',
       sectionId: 'part-3',
       demoStart: 210.0,
-      responseStart: 218.5,
+      responseStart: 221.70,
       difficulty: 7,
       commands: [
         { direction: 'left', offset: 0 },

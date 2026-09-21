@@ -37,6 +37,10 @@ export interface Level3GameState {
   fullGroovesCount: number;
   lastRating: JudgementRating | null;
   lastDeltaMs: number | null;
+  feedbackMessage: string;
+  expectedDirection: Direction | null;
+  countIn: string | null;
+  isMissShaking: boolean;
   energy: EnergyData;
   autoplay: boolean;
   isSpecialFinish: boolean;
@@ -48,6 +52,7 @@ export function useLevel3Game(
 ) {
   const [config, setConfig] = useState<Level3Config>(() => loadLevel3Config());
   const [autoplay, setAutoplay] = useState(initialAutoplay);
+  const poseTimerRef = useRef<number | null>(null);
 
   const [state, setState] = useState<Level3GameState>(() => ({
     songTime: 0,
@@ -72,6 +77,10 @@ export function useLevel3Game(
     fullGroovesCount: 0,
     lastRating: null,
     lastDeltaMs: null,
+    feedbackMessage: '',
+    expectedDirection: null,
+    countIn: null,
+    isMissShaking: false,
     energy: { bass: 0.1, lowMid: 0.1, mid: 0.1, high: 0.1, overall: 0.1 },
     autoplay: initialAutoplay,
     isSpecialFinish: false,
@@ -99,8 +108,10 @@ export function useLevel3Game(
     finishedDispatched: false,
   });
 
-  gameRef.current.config = config;
-  gameRef.current.autoplay = autoplay;
+  useEffect(() => {
+    gameRef.current.config = config;
+    gameRef.current.autoplay = autoplay;
+  }, [config, autoplay]);
 
   // Helper to re-sync stats into React state
   const syncStats = useCallback(() => {
@@ -138,25 +149,44 @@ export function useLevel3Game(
       const g = gameRef.current;
       const cfg = g.config;
 
-      // Only accept scored inputs during 'response' phase!
       if (g.activeRoundIndex < 0 || g.activeRoundIndex >= cfg.rounds.length) return;
       const round = cfg.rounds[g.activeRoundIndex];
       const adjustedInputTime = currentAudioTime - cfg.inputLatencyOffset;
 
-      // Find the first unjudged real command in the active round
-      const unjudgedIdx = g.realCommands.findIndex((c) => !c.judged);
-      if (unjudgedIdx === -1) return;
+      // Allow input slightly before responseStart (early window tolerance)
+      if (adjustedInputTime < round.responseStart - cfg.hitWindows.good - 0.25) {
+        return;
+      }
 
-      const target = g.realCommands[unjudgedIdx];
+      // Find the first unjudged real command in the active round
+      const target = g.realCommands.find((c) => !c.judged);
+      if (!target) return;
+
       const timingError = isAutoplayTrigger ? 0 : adjustedInputTime - target.absTime;
       const absError = Math.abs(timingError);
       const deltaMs = Math.round(timingError * 1000);
 
-      // Check direction match
-      const isDirCorrect = inputDir === target.command.direction;
+      // 1. If pressed significantly too early before this note's window:
+      if (!isAutoplayTrigger && timingError < -cfg.hitWindows.good - 0.08) {
+        audio.playSfx('miss');
+        setState((s) => ({
+          ...s,
+          lastRating: 'early',
+          lastDeltaMs: deltaMs,
+          feedbackMessage: `TOO EARLY (${deltaMs}ms)! Hold the groove!`,
+          isMissShaking: false,
+        }));
+        return;
+      }
 
+      // 2. Normal judging within window
+      const isDirCorrect = inputDir === target.command.direction;
       let rating: JudgementRating = 'miss';
       let scoreGained = 0;
+      let feedbackMsg = '';
+      let isShake = false;
+
+      const ARROW_SYM: Record<Direction, string> = { left: '←', up: '↑', right: '→', down: '↓' };
 
       if (!isDirCorrect) {
         rating = 'wrong';
@@ -165,6 +195,8 @@ export function useLevel3Game(
         g.hasFailedAnyInRound = true;
         g.isAllPerfectInRound = false;
         audio.playSfx('miss');
+        isShake = true;
+        feedbackMsg = `WRONG MOVE! Expected ${ARROW_SYM[target.command.direction]} (${target.command.direction.toUpperCase()}), pressed ${ARROW_SYM[inputDir]}`;
       } else {
         if (absError <= cfg.hitWindows.perfect) {
           rating = 'perfect';
@@ -172,6 +204,7 @@ export function useLevel3Game(
           g.perfect++;
           g.combo++;
           audio.playSfx('clap');
+          feedbackMsg = `PERFECT! +300 (${deltaMs > 0 ? '+' : ''}${deltaMs}ms)`;
         } else if (absError <= cfg.hitWindows.great) {
           rating = 'great';
           scoreGained = 200;
@@ -179,12 +212,14 @@ export function useLevel3Game(
           g.combo++;
           g.isAllPerfectInRound = false;
           audio.playSfx('cowbell');
-        } else if (absError <= cfg.hitWindows.good) {
+          feedbackMsg = `GREAT! +200 (${deltaMs > 0 ? '+' : ''}${deltaMs}ms)`;
+        } else if (absError <= cfg.hitWindows.good + 0.06) {
           rating = 'good';
           scoreGained = 100;
           g.good++;
           g.isAllPerfectInRound = false;
           audio.playSfx('quack');
+          feedbackMsg = `GOOD! +100 (${deltaMs > 0 ? '+' : ''}${deltaMs}ms)`;
         } else {
           rating = 'miss';
           g.miss++;
@@ -192,6 +227,8 @@ export function useLevel3Game(
           g.hasFailedAnyInRound = true;
           g.isAllPerfectInRound = false;
           audio.playSfx('miss');
+          isShake = true;
+          feedbackMsg = `LATE MISS (${deltaMs}ms)!`;
         }
       }
 
@@ -199,7 +236,8 @@ export function useLevel3Game(
       g.maxCombo = Math.max(g.maxCombo, g.combo);
       g.score += scoreGained;
 
-      // Pose for DJ Quack
+      const nextTarget = g.realCommands.find((c) => !c.judged);
+
       const poseMap: Record<Direction, DJQuackPose> = {
         left: 'player-left',
         up: 'player-up',
@@ -215,7 +253,21 @@ export function useLevel3Game(
         activePlayerDirection: inputDir,
         lastRating: rating,
         lastDeltaMs: deltaMs,
+        feedbackMessage: feedbackMsg,
+        expectedDirection: nextTarget ? nextTarget.command.direction : null,
+        isMissShaking: isShake,
       }));
+
+      // Auto-recovery timer so DJ Quack returns to idle after 350ms
+      if (poseTimerRef.current) clearTimeout(poseTimerRef.current);
+      poseTimerRef.current = window.setTimeout(() => {
+        setState((prev) => ({
+          ...prev,
+          quackPose: 'idle',
+          activePlayerDirection: null,
+          isMissShaking: false,
+        }));
+      }, 350);
 
       syncStats();
     },
@@ -359,13 +411,45 @@ export function useLevel3Game(
               activeDemoDirection: d.command.direction,
               isDemoFake: Boolean(d.command.fake),
               quackPose: poseMap[d.command.direction],
+              feedbackMessage: d.command.fake
+                ? `👻 FAKE CUE: ${d.command.direction.toUpperCase()} (DO NOT REPEAT!)`
+                : `WATCH: ${d.command.direction.toUpperCase()}`,
             }));
+
+            if (poseTimerRef.current) clearTimeout(poseTimerRef.current);
+            poseTimerRef.current = window.setTimeout(() => {
+              setState((prev) => ({
+                ...prev,
+                activeDemoDirection: null,
+                quackPose: 'idle',
+              }));
+            }, 350);
           }
         });
       } else if (currentT >= demoEnd && currentT < responseStart) {
         curPhase = 'get-ready';
-        banner = 'GET READY';
-        setState((s) => ({ ...s, activeDemoDirection: null, isDemoFake: false, quackPose: 'idle' }));
+        const beatDuration = 60 / Math.max(60, currentSec.bpm);
+        const timeToResponse = responseStart - currentT;
+        const beatsToResponse = Math.ceil(timeToResponse / beatDuration);
+
+        let countText = 'GET READY';
+        if (beatsToResponse <= 3 && beatsToResponse > 1) {
+          countText = `GET READY... ${beatsToResponse}`;
+        } else if (beatsToResponse === 1) {
+          countText = 'GET READY... GO!';
+        }
+        banner = countText;
+
+        const firstExpected = g.realCommands.find((c) => !c.judged);
+        setState((s) => ({
+          ...s,
+          activeDemoDirection: null,
+          isDemoFake: false,
+          quackPose: 'idle',
+          countIn: beatsToResponse <= 3 ? String(beatsToResponse) : null,
+          expectedDirection: firstExpected ? firstExpected.command.direction : null,
+          feedbackMessage: beatsToResponse <= 3 ? `COUNT-IN: ${beatsToResponse}` : 'GET READY!',
+        }));
       } else if (currentT >= responseStart && currentT < responseEnd) {
         curPhase = 'response';
         banner = 'YOUR TURN';
@@ -377,20 +461,38 @@ export function useLevel3Game(
           }
         }
 
+        const ARROW_SYM: Record<Direction, string> = { left: '←', up: '↑', right: '→', down: '↓' };
+
         g.realCommands.forEach((c) => {
-          if (!c.judged && currentT > c.absTime + cfg.hitWindows.good + 0.05) {
+          if (!c.judged && currentT > c.absTime + cfg.hitWindows.good + 0.08) {
             c.judged = true;
             g.miss++;
             g.combo = 0;
             g.hasFailedAnyInRound = true;
             g.isAllPerfectInRound = false;
             audio.playSfx('miss');
+
+            const nextTarget = g.realCommands.find((cmd) => !cmd.judged);
+
             setState((s) => ({
               ...s,
               quackPose: 'miss',
               lastRating: 'miss',
               lastDeltaMs: null,
+              feedbackMessage: `MISSED! Too late on ${ARROW_SYM[c.command.direction]} (${c.command.direction.toUpperCase()})`,
+              expectedDirection: nextTarget ? nextTarget.command.direction : null,
+              isMissShaking: true,
             }));
+
+            if (poseTimerRef.current) clearTimeout(poseTimerRef.current);
+            poseTimerRef.current = window.setTimeout(() => {
+              setState((prev) => ({
+                ...prev,
+                quackPose: 'idle',
+                isMissShaking: false,
+              }));
+            }, 350);
+
             syncStats();
           }
         });

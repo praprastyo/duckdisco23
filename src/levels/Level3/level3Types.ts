@@ -74,7 +74,7 @@ export type DJQuackPose =
   | 'celebrate'
   | 'special';
 
-export type JudgementRating = 'perfect' | 'great' | 'good' | 'miss' | 'wrong';
+export type JudgementRating = 'perfect' | 'great' | 'good' | 'miss' | 'wrong' | 'early';
 
 export interface CommandJudgement {
   roundId: string;
