@@ -1,71 +1,16 @@
 /**
- * Whimsical Duck Disco Story for Typing Battle (~600 words across 60 lines).
- * Difficulty smoothly progresses from simple punctuation to theatrical dialogue and complex symbols.
+ * Whimsical Duck Disco Story for Typing Battle (~100 words across 10 lines).
  */
 export const typingStoryLines: string[] = [
-  // Beginning: Simple phrasing and gentle punctuation (Lines 1-20)
-  "The grand ballroom was quiet before the music began.",
-  "One tiny disco ball reflected sparkles across the floor.",
-  "A dapper duck stepped up wearing shiny patent shoes.",
-  "He adjusted his neat silver bowtie with great pride.",
-  "From the corner came the lively sound of brass.",
-  "Every feathered guest turned around to watch the dance.",
-  "The rhythm pulsed slowly like a cheerful heartbeat tonight.",
-  "Step to the left and glide across the wooden boards.",
-  "The colored floor tiles glowed with warm velvet light.",
-  "A soft quack echoed above the gentle trumpet hum.",
-  "The music grew louder with each passing joyful moment.",
-  "Nobody could sit still while the bassline was rolling.",
-  "Two dancers twirled beneath the spinning purple strobe light.",
-  "Their white feathers fluttered in the disco breeze.",
-  "A silver saxophone took over with an energetic groove.",
-  "Glasses clinked softly over at the bubbling lemonade fountain.",
-  "The evening was young and full of delightful surprises.",
-  "Every duck bobbed their head in perfect smooth rhythm.",
-  "The whole dance floor began to shimmer and shake.",
-  "Suddenly the spotlight swung straight toward the center stage.",
-
-  // Middle: Dialogue, commas, and playful banter (Lines 21-40)
-  "\"Are you ready to dance?\" asked the Professor, smiling.",
-  "\"I have been ready all night,\" replied the challenger boldly.",
-  "The tempo quickened, and the drums hit a crisp cadence.",
-  "\"Watch this move!\" someone quacked from across the room.",
-  "Feet tapped faster, wings flapped, and hips swayed smoothly.",
-  "The DJ spun the golden vinyl, raising the crowd's energy.",
-  "\"Never underestimate a duck who loves funk,\" he whispered.",
-  "A sudden trumpet flare made the whole room cheer loudly.",
-  "Dancing together, they floated across the illuminated dance tiles.",
-  "\"Keep up with the pace,\" laughed the speedy Professor.",
-  "Bright beams of laser light painted stars on the ceiling.",
-  "\"I am just getting warmed up,\" came the happy reply.",
-  "The keyboardist played a glittering riff, fast and sweet.",
-  "Everyone joined in, clapping along with the vibrant melody.",
-  "\"This beat is unstoppable,\" shouted the enthusiastic bar duck.",
-  "Swirling feathers created a cloud of sparkling disco dust.",
-  "\"Don't lose your focus now,\" the maestro chuckled warmly.",
-  "Two quick hops, a wing glide, and a classic spin followed.",
-  "The rhythm hit double time, daring both dancers forward.",
-  "Hearts were racing, but smiles remained brighter than before.",
-
-  // End: Complex punctuation, symbols, and theatrical climax (Lines 41-60)
-  "Look at that speed: 100% pure groove in full swing!",
-  "\"Can you match my rhythm (and my style)?\" Quill challenged.",
-  "Click-clack; keys rattled as the beat reached 128 BPM!",
-  "\"Faster, faster—don't miss even one beat!\" yelled the crowd.",
-  "Every step counts: left, right, jump, spin; hold the pose!",
-  "The synthesizer roared (a 1970s dream come true!), thrilling everyone.",
-  "Wait—did the disco duck just do a 360-degree flip?!",
-  "\"Impossible!\" gasped the judges; their scorecards read: 10/10!",
-  "Confetti burst upward: gold, ruby-red, and radiant neon-blue sparks!",
-  "\"It's almost over—give it everything you've got right now!\"",
-  "The final chorus dropped with heart-stopping, thunderous disco power.",
-  "Wings in the air; feathers shaking to the highest tempo!",
-  "\"Is this the best dancer alive?\" the announcer declared.",
-  "One last beat approaches: 3... 2... 1... make it count!",
-  "Strike a dazzling grand finale pose beneath the spotlight's glare!",
-  "The entire ballroom exploded in cheers, quacks, and loud applause.",
-  "Prof. Quill adjusted his glasses (wiping away a proud tear).",
-  "\"You truly are the supreme champion of the dance floor!\"",
-  "A golden envelope fell softly from the glowing disco ceiling.",
-  "Victory is sweet; the disco duck legend shall live forever!"
+  "The grand disco ballroom shimmers under spinning mirror lights.",
+  "Prof. Quill adjusts his glasses and prepares his vintage typewriter.",
+  "\"Are you ready for the ultimate dance battle?\" he asked.",
+  "Music pulses through the room with a lively funk groove.",
+  "Feathers flutter gracefully as the tempo climbs higher and higher.",
+  "The crowd cheers loudly around the glowing disco dance floor.",
+  "Click, clack; typewriter keys rattle with pure rhythmic energy tonight!",
+  "Quick steps, swift fingers, and bright sparks fill the air.",
+  "One last final chorus drops with heart-stopping disco magic.",
+  "Strike a champion pose; the disco duck victory is yours!"
 ];
+

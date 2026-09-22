@@ -25,10 +25,10 @@ const NPC_CONFIGS: Record<DuckNpcId, ApproachConfig> = {
     role: 'Speed Typewriter',
     variant: 'talk',
     intro:
-      '"So you actually came over. I type around sixty words per minute. On a good day, anyway. Six hundred words. First one to finish wins."',
+      '"So you actually came over. I type around sixty words per minute. On a good day, anyway. One hundred words. First one to finish wins."',
     prompt: 'START TYPING BATTLE?',
     acceptLabel: 'CHALLENGE',
-    completedText: '"Don\'t make me type another six hundred words."',
+    completedText: '"Don\'t make me type another hundred words."',
   },
   puzzle: {
     name: 'Dr. Bones',

@@ -24,6 +24,8 @@ export type NpcInteractionState =
   | 'completed';
 
 export type RevealSuspenseStage =
+  | 'initial_dark_mask'
+
   | 'inspect_closed'
   | 'anticipation_rumble'
   | 'box_tremors'

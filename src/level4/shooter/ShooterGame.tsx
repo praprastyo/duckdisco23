@@ -64,25 +64,31 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
     startTimeRef.current = null;
   }, []);
 
-  // Duel Start Countdown Sequence
+  // Duel Start Countdown Sequence - Reliable Chained Transitions
   useEffect(() => {
-    if (countdown !== 'READY') return;
-    const t1 = setTimeout(() => setCountdown('3'), 900);
-    const t2 = setTimeout(() => setCountdown('2'), 1800);
-    const t3 = setTimeout(() => setCountdown('1'), 2700);
-    const t4 = setTimeout(() => {
-      setCountdown('DRAW!');
-      startTimeRef.current = performance.now();
-    }, 3600);
-    const t5 = setTimeout(() => setCountdown(null), 4400);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      clearTimeout(t5);
-    };
+    if (countdown === 'READY') {
+      const t = setTimeout(() => setCountdown('3'), 800);
+      return () => clearTimeout(t);
+    }
+    if (countdown === '3') {
+      const t = setTimeout(() => setCountdown('2'), 800);
+      return () => clearTimeout(t);
+    }
+    if (countdown === '2') {
+      const t = setTimeout(() => setCountdown('1'), 800);
+      return () => clearTimeout(t);
+    }
+    if (countdown === '1') {
+      const t = setTimeout(() => {
+        setCountdown('DRAW!');
+        startTimeRef.current = performance.now();
+      }, 800);
+      return () => clearTimeout(t);
+    }
+    if (countdown === 'DRAW!') {
+      const t = setTimeout(() => setCountdown(null), 700);
+      return () => clearTimeout(t);
+    }
   }, [countdown]);
 
   // Main 60 FPS physics & game clock

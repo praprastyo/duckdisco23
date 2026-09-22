@@ -12,8 +12,8 @@ interface GiftReveal3DProps {
 
 export const GiftReveal3D: React.FC<GiftReveal3DProps> = ({ onOpenLetter, onExit }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
-  const [suspenseStage, setSuspenseStage] = useState<RevealSuspenseStage>('inspect_closed');
-  const stageRef = useRef<RevealSuspenseStage>('inspect_closed');
+  const [suspenseStage, setSuspenseStage] = useState<RevealSuspenseStage>('initial_dark_mask');
+  const stageRef = useRef<RevealSuspenseStage>('initial_dark_mask');
   const audio = AudioManager.getInstance();
 
   const modelRef = useRef<GiftBoxModel | null>(null);
@@ -22,6 +22,15 @@ export const GiftReveal3D: React.FC<GiftReveal3DProps> = ({ onOpenLetter, onExit
     stageRef.current = next;
     setSuspenseStage(next);
   };
+
+  // Initial Dark Mystery Shroud: Shrouds the box in darkness for 2.8s before spotlight reveals it
+  useEffect(() => {
+    audio.playHeartbeatPulse();
+    const t = setTimeout(() => {
+      updateStage('inspect_closed');
+    }, 2800);
+    return () => clearTimeout(t);
+  }, [audio]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -219,6 +228,22 @@ export const GiftReveal3D: React.FC<GiftReveal3DProps> = ({ onOpenLetter, onExit
         className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
       />
 
+      {/* Initial Mystery Darkness Mask (shrouds box for 2.8s before spotlight strikes) */}
+      <div
+        className={`absolute inset-0 z-45 bg-[#06030e] flex flex-col items-center justify-center pointer-events-none transition-opacity duration-1000 ${
+          suspenseStage === 'initial_dark_mask' ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="flex flex-col items-center text-center p-6 animate-pulse">
+          <span className="text-xs font-mono-rhythm text-yellow-400 font-bold uppercase tracking-widest mb-2">
+            THE FINAL DISCO MYSTERY
+          </span>
+          <p className="font-mono text-xs sm:text-sm text-white/70 tracking-wider">
+            An unopened gift emerges from the shadows...
+          </p>
+        </div>
+      </div>
+
       {/* 1. Fullscreen Blackout Fakeout (0.5s dead silence) */}
       {suspenseStage === 'fakeout_blackout' && (
         <div className="absolute inset-0 z-50 bg-black pointer-events-none" />
@@ -230,7 +255,11 @@ export const GiftReveal3D: React.FC<GiftReveal3DProps> = ({ onOpenLetter, onExit
       )}
 
       {/* Top Bar */}
-      <div className="relative z-30 flex items-center justify-between w-full max-w-5xl mx-auto p-4 pointer-events-auto">
+      <div
+        className={`relative z-30 flex items-center justify-between w-full max-w-5xl mx-auto p-4 pointer-events-auto transition-opacity duration-700 ${
+          suspenseStage === 'initial_dark_mask' ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+      >
         <button
           onClick={onExit}
           className="px-3.5 py-1.5 rounded-xl bg-black/60 hover:bg-black/80 border border-white/10 text-xs font-mono-rhythm text-white/80 cursor-pointer"

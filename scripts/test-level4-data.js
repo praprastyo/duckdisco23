@@ -8,10 +8,10 @@ import { getNpcSpritePath } from '../src/level4/config/level4Config';
 console.log('🧪 Testing Level 4 Data & Mechanics...');
 
 // 1. Typing Story Tests
-assert.strictEqual(typingStoryLines.length, 60, 'Should have exactly 60 lines');
+assert.strictEqual(typingStoryLines.length, 10, 'Should have exactly 10 lines');
 const totalWords = typingStoryLines.reduce((acc, line) => acc + line.trim().split(/\s+/).length, 0);
-console.log(`✓ Typing story: ${typingStoryLines.length} lines, ${totalWords} total words (target ~600).`);
-assert(totalWords >= 500 && totalWords <= 700, 'Total story word count should be around 600 words');
+console.log(`✓ Typing story: ${typingStoryLines.length} lines, ${totalWords} total words (target ~100).`);
+assert(totalWords >= 80 && totalWords <= 120, 'Total story word count should be around 100 words');
 
 // 2. Typing WPM formula test
 // 300 chars in 1 minute = (300 / 5) / 1 = 60 WPM
