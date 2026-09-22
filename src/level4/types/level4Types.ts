@@ -51,6 +51,8 @@ export type DuckNpcVariant =
   | 'shoot'
   | 'dance'
   | 'win'
+  | 'happy'
+
   | 'lose';
 
 export interface GameProgress {

@@ -47,6 +47,7 @@ export function getNpcSpritePath(npcId: DuckNpcId, variant: DuckNpcVariant): str
   let filename: string = variant;
   if (variant === 'type' && npcId !== 'typing') filename = npcId === 'puzzle' ? 'look' : 'aim';
   if (variant === 'shoot' && npcId !== 'cowboy') filename = 'talk';
+  if (variant === 'happy') filename = 'happy';
   return `/assets/npc/${npcId}/${filename}.png`;
 }
 

@@ -31,10 +31,9 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
   actionText,
   spriteSrc,
 }) => {
-  const [imgError, setImgError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Determine active variant (1. idle, 2. action, 3. talk/shoot, 4. dance, 5. win, 6. lose)
+  // Determine active variant (1. idle, 2. action, 3. talk/shoot, 4. dance, 5. win/happy, 6. lose)
   const activeVariant: DuckNpcVariant =
     variant ||
     (isCompleted
@@ -50,6 +49,21 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
       : 'idle');
 
   const resolvedSpriteUrl = spriteSrc || getNpcSpritePath(id, activeVariant);
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const [imgError, setImgError] = useState(false);
+
+  const imgSrc =
+    failedUrl === resolvedSpriteUrl
+      ? `/assets/npc/${id}/idle.png`
+      : resolvedSpriteUrl;
+
+  const handleImageError = () => {
+    if (failedUrl !== resolvedSpriteUrl) {
+      setFailedUrl(resolvedSpriteUrl);
+    } else {
+      setImgError(true);
+    }
+  };
 
   const sizeClasses =
     size === 'sm'
@@ -108,11 +122,11 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
       >
         {!imgError ? (
           <img
-            src={resolvedSpriteUrl}
+            src={imgSrc}
             alt={name}
             width={172}
             height={206}
-            onError={() => setImgError(true)}
+            onError={handleImageError}
             className="w-full h-full object-contain [image-rendering:pixelated]"
           />
         ) : (

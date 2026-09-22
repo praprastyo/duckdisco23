@@ -3,7 +3,7 @@ import { AudioManager } from '../audio/AudioManager';
 import { ShooterEngine } from './ShooterEngine';
 import { CowboyDuckAI, CowboyAimStatus } from './CowboyDuckAI';
 import { ShooterTarget } from '../types/level4Types';
-import { TARGET_DEFS } from './targetConfig';
+import { TargetGraphic } from './TargetGraphic';
 import { DuckNpc } from '../ballroom/DuckNpc';
 
 interface ShooterGameProps {
@@ -308,27 +308,22 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
           </span>
         </div>
 
-        {/* Target Flying Area */}
-        <div className="relative flex-1 h-full pointer-events-none">
-          {/* Animated Flying Targets */}
-          {targets.map((t) => {
-            const def = TARGET_DEFS[t.type];
-            return (
-              <div
-                key={t.id}
-                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-75 z-15"
-                style={{
-                  left: `${t.x}%`,
-                  top: `${t.y}%`,
-                  transform: `translate(-50%, -50%) rotate(${t.rotation}deg) scale(${t.scale})`,
-                }}
-              >
-                <div className="w-14 h-14 rounded-full flex items-center justify-center text-3xl drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">
-                  {def.icon}
-                </div>
-              </div>
-            );
-          })}
+        {/* Target Flying Area - Aligned to Full Playfield Coordinates */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+          {/* Animated Flying Targets with Vivid Graphics */}
+          {targets.map((t) => (
+            <div
+              key={t.id}
+              className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-75"
+              style={{
+                left: `${t.x}%`,
+                top: `${t.y}%`,
+                transform: `translate(-50%, -50%) rotate(${t.rotation}deg) scale(${t.scale})`,
+              }}
+            >
+              <TargetGraphic type={t.type} />
+            </div>
+          ))}
 
           {/* Floating Hit Feedback Text */}
           {feedbacks.map((fb) => (
