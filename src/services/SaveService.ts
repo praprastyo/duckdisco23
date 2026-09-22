@@ -20,6 +20,14 @@ export interface Collectibles {
 }
 
 
+export interface Level4SaveData {
+  typingCompleted: boolean;
+  puzzleCompleted: boolean;
+  shooterCompleted: boolean;
+  finalGiftUnlocked: boolean;
+  finalGiftOpened: boolean;
+}
+
 export interface SaveData {
   levels: {
     level1: LevelScoreRecord;
@@ -30,6 +38,7 @@ export interface SaveData {
   collectibles: Collectibles;
   finalUnlocked: boolean;
   settings: GameSettings;
+  level4Data?: Level4SaveData;
 }
 
 const STORAGE_KEY = 'disco_duck_savedata_v1';
@@ -39,6 +48,14 @@ const DEFAULT_LEVEL_RECORD: LevelScoreRecord = {
   bestScore: 0,
   bestAccuracy: 0,
   maxCombo: 0,
+};
+
+const DEFAULT_LEVEL4_DATA: Level4SaveData = {
+  typingCompleted: false,
+  puzzleCompleted: false,
+  shooterCompleted: false,
+  finalGiftUnlocked: false,
+  finalGiftOpened: false,
 };
 
 const DEFAULT_SAVE_DATA: SaveData = {
@@ -61,6 +78,7 @@ const DEFAULT_SAVE_DATA: SaveData = {
     reducedMotion: false,
     timingOffset: 0,
   },
+  level4Data: { ...DEFAULT_LEVEL4_DATA },
 };
 
 /**
@@ -99,6 +117,10 @@ export class SaveService {
           settings: {
             ...DEFAULT_SAVE_DATA.settings,
             ...(parsed.settings || {}),
+          },
+          level4Data: {
+            ...DEFAULT_LEVEL4_DATA,
+            ...(parsed.level4Data || {}),
           },
         };
         return this.cachedData;
@@ -157,6 +179,57 @@ export class SaveService {
       if (levelId === 'level4') next.finalUnlocked = true;
     }
 
+    this.save(next);
+    return next;
+  }
+
+  /**
+   * Get Level 4 progress
+   */
+  public static getLevel4Data(): Level4SaveData {
+    const current = this.load();
+    return current.level4Data || { ...DEFAULT_LEVEL4_DATA };
+  }
+
+  /**
+   * Update and persist Level 4 progress
+   */
+  public static saveLevel4Progress(progress: Partial<Level4SaveData>): SaveData {
+    const current = this.load();
+    const prevL4 = current.level4Data || { ...DEFAULT_LEVEL4_DATA };
+    const mergedL4: Level4SaveData = {
+      ...prevL4,
+      ...progress,
+    };
+
+    mergedL4.finalGiftUnlocked =
+      mergedL4.typingCompleted &&
+      mergedL4.puzzleCompleted &&
+      mergedL4.shooterCompleted;
+
+    const next: SaveData = {
+      ...current,
+      level4Data: mergedL4,
+    };
+
+    if (mergedL4.finalGiftOpened) {
+      next.finalUnlocked = true;
+      next.levels.level4.cleared = true;
+    }
+
+    this.save(next);
+    return next;
+  }
+
+  /**
+   * Reset Level 4 specific progress
+   */
+  public static resetLevel4Progress(): SaveData {
+    const current = this.load();
+    const next: SaveData = {
+      ...current,
+      level4Data: { ...DEFAULT_LEVEL4_DATA },
+    };
     this.save(next);
     return next;
   }

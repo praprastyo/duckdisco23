@@ -3,6 +3,7 @@ import { HomePage } from '../pages/HomePage';
 import { LevelSelectPage } from '../pages/LevelSelectPage';
 import { GamePage } from '../pages/GamePage';
 import { ResultsPage } from '../pages/ResultsPage';
+import { Level4 } from '../level4/Level4';
 import { DiscoEnvironment } from '../visuals/DiscoEnvironment';
 import { AudioEngine } from '../audio/AudioEngine';
 import { ScoreSummary } from '../game/ScoringEngine';
@@ -54,8 +55,8 @@ export const App: React.FC = () => {
     <div className={`relative min-h-screen w-full overflow-x-hidden select-none transition-colors duration-500 ${
       view === 'game' && selectedLevelId === 'level1' ? 'bg-[#5ec5f8]' : 'bg-[#07040e] text-white'
     }`}>
-      {/* Background music-reactive canvas (Disabled for sunny beach Level 1) */}
-      {!(view === 'game' && selectedLevelId === 'level1') && (
+      {/* Background music-reactive canvas (Disabled for sunny beach Level 1 and Ballroom Level 4) */}
+      {!(view === 'game' && (selectedLevelId === 'level1' || selectedLevelId === 'level4')) && (
         <DiscoEnvironment
           analyser={AudioEngine.getInstance().getAnalyser()}
           intensity={intensity}
@@ -73,7 +74,11 @@ export const App: React.FC = () => {
         />
       )}
 
-      {view === 'game' && (
+      {view === 'game' && selectedLevelId === 'level4' && (
+        <Level4 onExit={handleBackToSelect} />
+      )}
+
+      {view === 'game' && selectedLevelId !== 'level4' && (
         <GamePage
           levelId={selectedLevelId}
           onFinish={handleFinishLevel}
