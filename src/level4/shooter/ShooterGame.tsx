@@ -40,6 +40,7 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
     state: 'idle',
   });
 
+  const [countdown, setCountdown] = useState<'READY' | '3' | '2' | '1' | 'DRAW!' | null>('READY');
   const [isGameOver, setIsGameOver] = useState(false);
   const [playerWon, setPlayerWon] = useState(false);
 
@@ -59,12 +60,34 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
     setFeedbacks([]);
     setIsGameOver(false);
     setPlayerWon(false);
-    startTimeRef.current = performance.now();
+    setCountdown('READY');
+    startTimeRef.current = null;
   }, []);
+
+  // Duel Start Countdown Sequence
+  useEffect(() => {
+    if (countdown !== 'READY') return;
+    const t1 = setTimeout(() => setCountdown('3'), 900);
+    const t2 = setTimeout(() => setCountdown('2'), 1800);
+    const t3 = setTimeout(() => setCountdown('1'), 2700);
+    const t4 = setTimeout(() => {
+      setCountdown('DRAW!');
+      startTimeRef.current = performance.now();
+    }, 3600);
+    const t5 = setTimeout(() => setCountdown(null), 4400);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [countdown]);
 
   // Main 60 FPS physics & game clock
   useEffect(() => {
-    startTimeRef.current = performance.now();
+    if (!startTimeRef.current) return;
     let lastTime = performance.now();
     let animId: number;
 
@@ -113,7 +136,7 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
 
     animId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animId);
-  }, [playerScore, cowboyScore, audio, onWin]);
+  }, [countdown, playerScore, cowboyScore, audio, onWin]);
 
   // SINGLE POINTER HANDLERS — Local playfield coordinates only
   const handlePlayfieldPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -227,8 +250,8 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
         </div>
 
         <div className="text-right text-[10px] font-mono-rhythm text-white/60">
-          HIT: <span className="text-emerald-400 font-bold">🍾 +1</span> | AVOID:{' '}
-          <span className="text-rose-400 font-bold">🍸💩🌵 -1</span>
+          HIT: <span className="text-emerald-400 font-bold">BOTTLE (+1)</span> | AVOID:{' '}
+          <span className="text-rose-400 font-bold">FORBIDDEN (-1)</span>
         </div>
       </div>
 
@@ -239,6 +262,15 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
         onPointerDown={handlePlayfieldPointerDown}
         className="relative shooter-playfield flex-1 w-full max-w-5xl mx-auto my-2 rounded-3xl border-2 border-amber-600/30 bg-gradient-to-b from-[#1a0a2e] via-[#0d0718] to-[#120803] overflow-hidden shadow-2xl [cursor:none] select-none flex"
       >
+        {/* Duel Start Countdown Banner */}
+        {countdown !== null && (
+          <div className="absolute inset-0 z-40 bg-black/50 flex items-center justify-center pointer-events-none animate-fadeIn">
+            <span className="font-disco text-5xl sm:text-7xl font-bold tracking-widest text-yellow-400 drop-shadow-[0_0_30px_rgba(250,204,21,0.9)] animate-pulse">
+              {countdown}
+            </span>
+          </div>
+        )}
+
         {/* Left Side: Cowboy Duck Stance (~22% width) */}
         <div className="w-[110px] sm:w-[150px] h-full flex flex-col justify-end items-center pb-4 pl-2 pointer-events-none z-20">
           <div className="bg-black/50 border border-amber-500/30 rounded-2xl p-2 flex flex-col items-center shadow-lg">
@@ -247,11 +279,11 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
               name="Billy"
               role={
                 cowboyAim.state === 'aiming'
-                  ? '🎯 AIMING...'
+                  ? 'AIMING'
                   : cowboyAim.state === 'shooting'
-                  ? '💥 FIRING!'
+                  ? 'FIRING'
                   : cowboyAim.state === 'miss_reaction'
-                  ? '💢 MISSED!'
+                  ? 'MISSED'
                   : 'READY'
               }
               actionText=""
@@ -265,7 +297,6 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
 
         {/* Bartender Duck behind the bar counter tossing bottles */}
         <div className="absolute bottom-12 left-[36%] pointer-events-none opacity-85 z-10 flex flex-col items-center">
-          <div className="text-3xl animate-bounce">🍸🦆</div>
           <span className="text-[8px] font-mono-rhythm text-amber-300 font-bold tracking-wider">
             BARTENDER
           </span>
@@ -344,21 +375,20 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
       {/* Win Modal */}
       {isGameOver && playerWon && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn pointer-events-auto">
-          <div className="text-6xl mb-4 animate-bounce">🎯</div>
           <span className="text-xs font-mono-rhythm text-yellow-400 font-bold uppercase tracking-widest mb-1">
             QUICKER THAN THE COWBOY
           </span>
-          <h2 className="font-disco text-4xl sm:text-5xl text-white mb-2">
+          <h2 className="font-disco text-3xl sm:text-4xl text-white mb-2">
             FINAL SCORE: {playerScore} VS {cowboyScore}
           </h2>
-          <p className="font-mono-rhythm text-sm text-white/70 mb-6">
-            Billy the Quack holsters his finger gun: "Fast hands, partner. You earned this."
+          <p className="font-mono-rhythm text-sm text-white/80 mb-6 max-w-md">
+            Billy the Quack lowers his arm and tips his hat: "You're quick. Too quick."
           </p>
           <button
             onClick={onWin}
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco font-bold cursor-pointer"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco font-bold cursor-pointer uppercase tracking-wider"
           >
-            CLAIM SHOOTER SEAL ✓
+            CLAIM SHOOTER SEAL
           </button>
         </div>
       )}
@@ -366,7 +396,6 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
       {/* Game Over Modal */}
       {isGameOver && !playerWon && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn pointer-events-auto">
-          <div className="text-6xl mb-4 animate-bounce">🤠</div>
           <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
             NOT FAST ENOUGH
           </span>
@@ -374,20 +403,20 @@ export const ShooterGame: React.FC<ShooterGameProps> = ({ onWin, onExit }) => {
             COWBOY OUT-SHOT YOU ({cowboyScore} VS {playerScore})
           </h2>
           <p className="font-mono-rhythm text-xs text-white/60 mb-6 max-w-sm">
-            Focus on the green bottles and avoid clicking cocktails, poop, or cactus!
+            Focus on the bottles and avoid clicking cocktails, mud, or cactus.
           </p>
           <div className="flex gap-3">
             <button
               onClick={handleRestart}
-              className="px-5 py-3 rounded-xl bg-yellow-400 text-black font-disco font-bold cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-yellow-400 text-black font-disco font-bold cursor-pointer uppercase"
             >
-              🔁 RETRY SHOOTOUT
+              RETRY SHOOTOUT
             </button>
             <button
               onClick={onExit}
-              className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco cursor-pointer uppercase"
             >
-              🚪 BALLROOM
+              BALLROOM
             </button>
           </div>
         </div>

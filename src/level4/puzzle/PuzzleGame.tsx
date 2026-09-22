@@ -178,12 +178,11 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
 
           {/* 2. Bartender Duck in the Center behind Bar Counter */}
           <div className="flex flex-col items-center pb-2 opacity-75 pointer-events-none">
-            <div className="text-3xl animate-bounce">🍸🦆</div>
-            <span className="text-[9px] font-mono-rhythm text-amber-300">BALLROOM BAR</span>
-            <div className="w-32 h-2 bg-gradient-to-r from-transparent via-amber-700/60 to-transparent mt-1" />
+            <span className="text-[10px] font-mono-rhythm text-amber-300 font-bold uppercase">BALLROOM BAR</span>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-transparent via-amber-700/60 to-transparent mt-1" />
           </div>
 
-          {/* 3. Player / Widut on the Right */}
+          {/* 3. Player Widut on the Right (with actual photo) */}
           <div
             className={`flex flex-col items-center transition-all duration-300 ${
               speaker === 'player'
@@ -191,11 +190,16 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
                 : 'opacity-55 scale-95'
             }`}
           >
-            <div className="w-[100px] h-[135px] bg-black/50 border-2 border-cyan-400/40 rounded-2xl flex flex-col items-center justify-center p-2 shadow-inner">
-              <span className="text-4xl animate-pulse">🕺</span>
-              <span className="text-[10px] font-mono-rhythm text-cyan-300 mt-2 font-bold uppercase">
+            <div className="w-[110px] h-[145px] bg-black/60 border-2 border-cyan-400/50 rounded-2xl flex flex-col items-center justify-center p-2 shadow-inner">
+              <img
+                src="/assets/widut.jpg"
+                alt="Widut"
+                className="w-16 h-16 rounded-full object-cover border-2 border-cyan-300 shadow-md mb-2"
+              />
+              <span className="text-[10px] font-mono-rhythm text-cyan-300 font-bold uppercase tracking-wider">
                 WIDUT
               </span>
+              <span className="text-[8px] font-mono-rhythm text-white/50 uppercase">CHALLENGER</span>
             </div>
           </div>
         </div>
@@ -205,7 +209,7 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
           <div>
             <div className="flex justify-between items-center text-[10px] font-mono-rhythm text-amber-400 uppercase tracking-wider mb-1">
               <span>
-                {speaker === 'duck' ? '🎙️ DR. BONES SPEAKS' : '✍️ YOUR TURN TO RESPOND'}
+                {speaker === 'duck' ? 'DR. BONES SPEAKS' : 'YOUR TURN TO RESPOND'}
               </span>
               <span className="text-white/40">CLUE {currentIndex + 1} / {questions.length}</span>
             </div>
@@ -220,7 +224,7 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
 
             {dialogueReaction && (
               <div className="mt-2 text-xs font-mono-rhythm font-bold text-cyan-300 animate-fadeIn">
-                💬 {dialogueReaction}
+                Dr. Bones: "{dialogueReaction}"
               </div>
             )}
           </div>
@@ -254,21 +258,20 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
       {/* Win Modal */}
       {isWon && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn">
-          <div className="text-6xl mb-4 animate-bounce">📜</div>
           <span className="text-xs font-mono-rhythm text-yellow-400 font-bold uppercase tracking-widest mb-1">
             MYSTERY SOLVED
           </span>
-          <h2 className="font-disco text-4xl sm:text-5xl text-white mb-2">
-            ALL 10 CLUES CONFIRMED!
+          <h2 className="font-disco text-3xl sm:text-4xl text-white mb-3">
+            ALL 10 CLUES CONFIRMED
           </h2>
-          <p className="font-mono-rhythm text-sm text-white/70 mb-6">
-            Dr. Bones tips his explorer hat: "The ancient duck scrolls have confirmed your truth."
+          <p className="font-mono-rhythm text-sm text-white/80 mb-6 max-w-md">
+            Dr. Bones closes his journal: "Ten out of ten mysteries solved. I may need a new profession."
           </p>
           <button
             onClick={onWin}
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco font-bold cursor-pointer"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco font-bold cursor-pointer uppercase tracking-wider"
           >
-            CLAIM PUZZLE SEAL ✓
+            CLAIM PUZZLE SEAL
           </button>
         </div>
       )}
@@ -276,7 +279,6 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
       {/* Game Over Modal */}
       {isGameOver && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn">
-          <div className="text-6xl mb-4 animate-bounce">🏺</div>
           <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
             TOO MANY WRONG ANSWERS
           </span>
@@ -284,20 +286,20 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
             THE RUINS HAVE CLOSED
           </h2>
           <p className="font-mono-rhythm text-xs text-white/60 mb-6 max-w-sm">
-            You made 3 incorrect guesses. Take a moment to think and try again!
+            You made 3 incorrect guesses. Take a moment to think and try again.
           </p>
           <div className="flex gap-3">
             <button
               onClick={handleRestart}
-              className="px-5 py-3 rounded-xl bg-yellow-400 text-black font-disco font-bold cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-yellow-400 text-black font-disco font-bold cursor-pointer uppercase"
             >
-              🔁 RETRY PUZZLE
+              RETRY PUZZLE
             </button>
             <button
               onClick={onExit}
-              className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-disco cursor-pointer uppercase"
             >
-              🚪 BALLROOM
+              BALLROOM
             </button>
           </div>
         </div>

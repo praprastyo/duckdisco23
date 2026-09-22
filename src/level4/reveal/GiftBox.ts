@@ -5,7 +5,10 @@ export interface GiftBoxModel {
   rootGroup: THREE.Group;
   lidGroup: THREE.Group;
   envelopeMesh: THREE.Mesh;
+  silhouetteMesh: THREE.Mesh;
   setOpenProgress: (progress: number) => void;
+  setMode: (mode: 'closed' | 'silhouette' | 'revealed') => void;
+  setTremor: (intensity: number) => void;
 }
 
 function createFallbackTexture(label: string, color: string): THREE.CanvasTexture {
@@ -169,35 +172,94 @@ export function createGiftBoxMesh(
   lidGroup.add(lidMesh);
   rootGroup.add(lidGroup);
 
-  // Interior Golden Light
-  const interiorLight = new THREE.PointLight(0xfef08a, 0, 5);
+  // Interior Golden Bloom Light
+  const interiorLight = new THREE.PointLight(0xfef08a, 0, 8);
   interiorLight.position.set(0, baseHeight * 0.7, 0);
   rootGroup.add(interiorLight);
 
-  // Glowing Letter Envelope
+  // 1. Mysterious Dark Silhouette Mesh (Unlit pure dark shape floating during mystery phase)
+  const silGeo = new THREE.PlaneGeometry(1.2, 0.85);
+  const silMat = new THREE.MeshBasicMaterial({
+    color: 0x07050d,
+    side: THREE.DoubleSide,
+  });
+  const silhouetteMesh = new THREE.Mesh(silGeo, silMat);
+  silhouetteMesh.position.set(0, baseHeight * 0.45, 0);
+  silhouetteMesh.rotation.x = -Math.PI / 8;
+  silhouetteMesh.visible = false;
+  rootGroup.add(silhouetteMesh);
+
+  // 2. Closed Letter Envelope with Wax Seal (Only revealed after the final flash)
   const envGeo = new THREE.PlaneGeometry(1.2, 0.85);
   const envMat = new THREE.MeshStandardMaterial({
     color: 0xfffbeb,
     emissive: 0xfef08a,
-    emissiveIntensity: 0.4,
+    emissiveIntensity: 0.25,
     side: THREE.DoubleSide,
     roughness: 0.35,
   });
   const envelopeMesh = new THREE.Mesh(envGeo, envMat);
-  envelopeMesh.position.set(0, baseHeight * 0.4, 0);
+  envelopeMesh.position.set(0, baseHeight * 0.45, 0);
   envelopeMesh.rotation.x = -Math.PI / 8;
+  envelopeMesh.visible = false;
+
+  // Add decorative red wax seal emblem to envelope
+  const sealGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.04, 16);
+  const sealMat = new THREE.MeshStandardMaterial({
+    color: 0xdc2626,
+    roughness: 0.2,
+    metalness: 0.1,
+  });
+  const sealMesh = new THREE.Mesh(sealGeo, sealMat);
+  sealMesh.rotation.x = Math.PI / 2;
+  sealMesh.position.set(0, 0, 0.02);
+  envelopeMesh.add(sealMesh);
+
   rootGroup.add(envelopeMesh);
+
+  const setMode = (mode: 'closed' | 'silhouette' | 'revealed') => {
+    if (mode === 'closed') {
+      silhouetteMesh.visible = false;
+      envelopeMesh.visible = false;
+    } else if (mode === 'silhouette') {
+      silhouetteMesh.visible = true;
+      envelopeMesh.visible = false;
+    } else if (mode === 'revealed') {
+      silhouetteMesh.visible = false;
+      envelopeMesh.visible = true;
+    }
+  };
 
   const setOpenProgress = (p: number) => {
     const clamped = Math.max(0, Math.min(1, p));
     lidGroup.rotation.x = -clamped * (Math.PI * 0.65);
-    interiorLight.intensity = clamped * 3.5;
-    envelopeMesh.position.y = baseHeight * 0.4 + clamped * (baseHeight * 1.15);
+    interiorLight.intensity = clamped * 5.0;
+
+    const targetY = baseHeight * 0.45 + clamped * (baseHeight * 1.15);
+    silhouetteMesh.position.y = targetY;
+    silhouetteMesh.rotation.y = clamped * Math.PI * 0.15;
+
+    envelopeMesh.position.y = targetY;
     envelopeMesh.rotation.y = clamped * Math.PI * 0.08;
-    envelopeMesh.scale.setScalar(1 + clamped * 0.3);
+    envelopeMesh.scale.setScalar(1 + clamped * 0.25);
+  };
+
+  const setTremor = (magnitude: number) => {
+    rootGroup.position.x = (Math.random() - 0.5) * magnitude;
+    rootGroup.position.y = baseHeight / 2 + (Math.random() - 0.5) * (magnitude * 0.5);
+    rootGroup.rotation.z = (Math.random() - 0.5) * (magnitude * 0.6);
   };
 
   setOpenProgress(0);
+  setMode('closed');
 
-  return { rootGroup, lidGroup, envelopeMesh, setOpenProgress };
+  return {
+    rootGroup,
+    lidGroup,
+    envelopeMesh,
+    silhouetteMesh,
+    setOpenProgress,
+    setMode,
+    setTremor,
+  };
 }

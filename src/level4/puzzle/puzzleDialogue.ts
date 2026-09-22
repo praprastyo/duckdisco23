@@ -1,25 +1,25 @@
 export const CORRECT_REACTIONS = [
-  "Aha! The ancient duck scroll agrees.",
+  "Of course! The ancient clues agree.",
   "Correct. Suspiciously correct.",
-  "Excellent! You may proceed.",
-  "You remembered that? Impressive.",
-  "The artifact vibrates with pure approval!",
+  "Spot on. Impressive memory.",
+  "Aha! Exactly as written in the scrolls.",
+  "Excellent! You remembered that.",
 ];
 
 export const WRONG_REACTIONS = [
-  "The artifact says... absolutely not.",
-  "Hmm. The ancient duck spirits disagree.",
+  "Hmm... My notes strongly disagree.",
+  "Are you sure about that?",
+  "The ancient artifact disagrees with that answer.",
+  "Careful. Think back carefully.",
   "That answer belongs in a different timeline.",
-  "Careful. The ruins are judging you.",
-  "A false inscription! Try once more.",
 ];
 
 export const LEAD_IN_PHRASES = [
+  "Let's start with something simple.",
   "Hmm... I've been thinking about something.",
-  "The duck scroll mentions a curious detail:",
-  "Let me consult my expedition notes...",
-  "The ancient artifacts pose this riddle:",
+  "Let me consult my expedition notes:",
   "Now, think back carefully on this one:",
+  "The duck scroll mentions a curious detail:",
   "A classic mystery from the archives:",
 ];
 
@@ -31,3 +31,4 @@ export function getRandomReaction(type: 'correct' | 'wrong'): string {
   const pool = type === 'correct' ? CORRECT_REACTIONS : WRONG_REACTIONS;
   return pool[Math.floor(Math.random() * pool.length)];
 }
+

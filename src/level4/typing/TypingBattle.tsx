@@ -283,13 +283,17 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
         )}
       </div>
 
-      {/* PLAYER DESK: Ribbon Meter */}
+      {/* PLAYER DESK: Widut's Desk & Ribbon Meter */}
       <div className="relative z-20 w-full max-w-3xl mx-auto bg-black/70 border border-yellow-500/30 rounded-2xl px-5 py-2.5 shadow-xl backdrop-blur-md flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm">🕺</span>
+        <div className="flex items-center gap-3">
+          <img
+            src="/assets/widut.jpg"
+            alt="Widut"
+            className="w-9 h-9 rounded-full object-cover border border-yellow-400"
+          />
           <div>
             <span className="text-[10px] font-mono-rhythm text-yellow-400 uppercase font-bold block">
-              YOUR TYPEWRITER
+              WIDUT'S TYPEWRITER
             </span>
             <span className="text-xs font-mono-rhythm text-white/70">
               {playerWpm} WPM • {playerProgress}% COMPLETE
@@ -303,19 +307,22 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
           />
         </div>
       </div>
+
       {/* Win Modal */}
       {isWon && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn">
-          <div className="text-6xl mb-4 animate-bounce">🏆</div>
           <span className="text-xs font-mono-rhythm text-yellow-400 font-bold uppercase tracking-widest mb-1">
             SPEED TYPING MASTER
           </span>
-          <h2 className="font-disco text-4xl sm:text-5xl text-white mb-2">YOU OUT-TYPED THE DUCK!</h2>
-          <p className="font-mono-rhythm text-sm text-white/70 mb-6">
-            Prof. Quill bows: "Fine. Your fingers fly faster than my wings."
+          <h2 className="font-disco text-3xl sm:text-4xl text-white mb-2">TYPING DUEL VICTORY</h2>
+          <p className="font-mono-rhythm text-sm text-white/80 mb-6 max-w-md">
+            Prof. Quill looks at your completed pages: "You actually beat me? ...fine. You earned it."
           </p>
-          <button onClick={onWin} className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco font-bold cursor-pointer">
-            CLAIM TYPING SEAL ✓
+          <button
+            onClick={onWin}
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-disco font-bold cursor-pointer uppercase tracking-wider"
+          >
+            CLAIM TYPING SEAL
           </button>
         </div>
       )}

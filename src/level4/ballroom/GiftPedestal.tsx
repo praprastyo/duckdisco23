@@ -58,8 +58,8 @@ export const GiftPedestal: React.FC<GiftPedestalProps> = ({
           <div className="absolute -top-3 w-10 h-6 rounded-full border-2 border-rose-400 bg-rose-500 shadow-lg" />
 
           {/* Central Emblem */}
-          <div className="relative z-10 text-4xl drop-shadow-md">
-            {isUnlocked ? '✨' : '🎁'}
+          <div className="relative z-10 font-disco text-xs sm:text-sm font-bold tracking-widest text-slate-900 bg-amber-200/90 px-3 py-1 rounded-full shadow-md">
+            {isUnlocked ? 'UNLOCKED' : 'LOCKED'}
           </div>
         </div>
 
@@ -76,13 +76,13 @@ export const GiftPedestal: React.FC<GiftPedestalProps> = ({
         {isUnlocked ? (
           <>
             <span className="text-[10px] font-mono-rhythm text-yellow-300 font-bold uppercase tracking-widest animate-pulse">
-              THE GIFT IS READY.
+              THE FINAL GIFT IS READY
             </span>
             <button
               onClick={onOpenGift}
               className="px-7 py-3 rounded-full bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 text-black font-disco text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_35px_rgba(250,204,21,0.9)] animate-bounce cursor-pointer hover:brightness-110 active:scale-95"
             >
-              ✨ OPEN IT ✨
+              OPEN THE FINAL GIFT
             </button>
           </>
         ) : (
@@ -98,15 +98,13 @@ export const GiftPedestal: React.FC<GiftPedestalProps> = ({
 const StatusBadge: React.FC<{ label: string; cleared: boolean; icon: string }> = ({
   label,
   cleared,
-  icon,
 }) => (
   <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono-rhythm font-bold tracking-wider transition-all ${
     cleared
       ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-400/40 shadow-[0_0_10px_rgba(52,211,153,0.3)]'
       : 'bg-white/5 text-white/40 border border-white/10'
   }`}>
-    <span>{icon}</span>
     <span>{label}</span>
-    <span>{cleared ? '✓' : '🔒'}</span>
+    <span>{cleared ? 'BROKEN' : 'LOCKED'}</span>
   </div>
 );

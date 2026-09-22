@@ -234,4 +234,90 @@ export class AudioManager {
     osc.start(now);
     osc.stop(now + 1.35);
   }
+
+  public playHeartbeatPulse(): void {
+    const ctx = this.ensureCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(65, now);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 0.18);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.sfxGain!);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  }
+
+  public playBoxTremor(): void {
+    const ctx = this.ensureCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(45, now);
+    osc.frequency.linearRampToValueAtTime(30, now + 0.25);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.sfxGain!);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  public playLightLeakChime(): void {
+    const ctx = this.ensureCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(2400, now + 0.35);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(this.sfxGain!);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
+
+  public playFakeoutQuack(): void {
+    const ctx = this.ensureCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const biquad = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(200, now + 0.22);
+    biquad.type = 'bandpass';
+    biquad.frequency.setValueAtTime(850, now);
+    biquad.Q.setValueAtTime(3.5, now);
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(biquad);
+    biquad.connect(gain);
+    gain.connect(this.sfxGain!);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  public playWaxSealCrack(): void {
+    const ctx = this.ensureCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1400, now);
+    osc.frequency.exponentialRampToValueAtTime(300, now + 0.08);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    osc.connect(gain);
+    gain.connect(this.sfxGain!);
+    osc.start(now);
+    osc.stop(now + 0.09);
+  }
 }

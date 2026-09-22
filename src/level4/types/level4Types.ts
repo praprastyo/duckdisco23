@@ -6,6 +6,37 @@ export type Level4Scene =
   | 'shooter'
   | 'giftReveal'
   | 'letter';
+export type BallroomIntroStage =
+  | 'doors_open'
+  | 'wide_disco_gift'
+  | 'pan_typing_duck'
+  | 'pan_puzzle_duck'
+  | 'pan_cowboy_duck'
+  | 'player_control_ready';
+
+export type NpcInteractionState =
+  | 'idle'
+  | 'hovered'
+  | 'approached'
+  | 'talking'
+  | 'challengePrompt'
+  | 'playing'
+  | 'completed';
+
+export type RevealSuspenseStage =
+  | 'inspect_closed'
+  | 'anticipation_rumble'
+  | 'box_tremors'
+  | 'light_leak'
+  | 'mystery_silhouette'
+  | 'particle_buildup'
+  | 'fakeout_blackout'
+  | 'fakeout_quack'
+  | 'final_flash'
+  | 'envelope_closed'
+  | 'envelope_unfolding'
+  | 'letter_reading';
+
 
 export type DuckNpcId = 'typing' | 'puzzle' | 'cowboy';
 

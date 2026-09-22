@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { GameProgress, DuckNpcId } from '../types/level4Types';
+import { GameProgress, DuckNpcId, BallroomIntroStage } from '../types/level4Types';
 import { DuckNpc } from './DuckNpc';
 import { GiftPedestal } from './GiftPedestal';
+import { NpcApproachModal } from './NpcApproachModal';
+import { AudioManager } from '../audio/AudioManager';
 import confetti from 'canvas-confetti';
 
 interface BallroomHubProps {
@@ -19,8 +21,10 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
   onOpenGift,
   onExit,
 }) => {
+  const [introStage, setIntroStage] = useState<BallroomIntroStage>('doors_open');
+  const [approachedNpc, setApproachedNpc] = useState<DuckNpcId | null>(null);
   const [npcDialogue, setNpcDialogue] = useState<string | null>(null);
-  const [showFirstRevealToast, setShowFirstRevealToast] = useState(true);
+  const audio = AudioManager.getInstance();
 
   const completedCount = [
     progress.typingCompleted,
@@ -28,12 +32,29 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
     progress.shooterCompleted,
   ].filter(Boolean).length;
 
+  // 6–10s Automated Opening Cutscene Timeline
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowFirstRevealToast(false);
-    }, 4500);
-    return () => clearTimeout(timer);
-  }, []);
+    const t1 = setTimeout(() => setIntroStage('wide_disco_gift'), 1200);
+    const t2 = setTimeout(() => setIntroStage('pan_typing_duck'), 3000);
+    const t3 = setTimeout(() => setIntroStage('pan_puzzle_duck'), 5200);
+    const t4 = setTimeout(() => {
+      setIntroStage('pan_cowboy_duck');
+      audio.playShooterPop('bottle');
+    }, 7400);
+    const t5 = setTimeout(() => setIntroStage('player_control_ready'), 9600);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [audio]);
+
+  const handleSkipIntro = () => {
+    setIntroStage('player_control_ready');
+  };
 
   // Trigger celebration confetti when 3/3 cleared
   useEffect(() => {
@@ -48,19 +69,8 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
   }, [isUnlocked]);
 
   const handleNpcClick = (id: DuckNpcId) => {
-    if (id === 'typing' && progress.typingCompleted) {
-      setNpcDialogue('Typing Duck: "Fine. You type faster. This time." 🕶️');
-      return;
-    }
-    if (id === 'puzzle' && progress.puzzleCompleted) {
-      setNpcDialogue('Puzzle Duck: "The ancient clues approve." 📜');
-      return;
-    }
-    if (id === 'cowboy' && progress.shooterCompleted) {
-      setNpcDialogue('Cowboy Duck: "Fast hands, partner." 🤠');
-      return;
-    }
-    onSelectGame(id);
+    if (introStage !== 'player_control_ready') return;
+    setApproachedNpc(id);
   };
 
   return (
@@ -100,7 +110,7 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
           </span>
           <span className="font-disco text-sm sm:text-base text-white">
             {isUnlocked
-              ? '🎉 ALL RIVALS DEFEATED! THE FINAL GIFT IS READY!'
+              ? 'ALL RIVALS DEFEATED • THE FINAL GIFT IS READY'
               : `${3 - completedCount} CHALLENGES REMAIN • CHOOSE FREELY`}
           </span>
         </div>
@@ -110,10 +120,26 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
         </div>
       </div>
 
-      {/* First Reveal Toast */}
-      {showFirstRevealToast && (
-        <div className="relative z-30 self-center my-1 px-5 py-2 rounded-2xl bg-black/85 border border-yellow-400/70 shadow-[0_0_25px_rgba(250,204,21,0.4)] text-xs font-mono-rhythm text-yellow-300 font-bold flex items-center gap-2 animate-bounce">
-          <span>✨ 3 RIVALS AWAIT IN THE BALLROOM • EXPLORE FREELY ✨</span>
+      {/* Opening Cutscene Banner (during 6-10s intro) */}
+      {introStage !== 'player_control_ready' && (
+        <div className="relative z-30 self-center my-1 px-6 py-2.5 rounded-2xl bg-black/90 border border-yellow-400 shadow-2xl text-xs font-mono-rhythm text-yellow-300 font-bold flex items-center justify-between gap-4 max-w-xl animate-fadeIn">
+          {introStage === 'doors_open' && <span>ENTERING THE GRAND DISCO BALLROOM...</span>}
+          {introStage === 'wide_disco_gift' && <span>3 CHALLENGES • 3 LOCKS • 1 FINAL GIFT</span>}
+          {introStage === 'pan_typing_duck' && (
+            <span>Prof. Quill: "Oh... another typist? Think you can finish before I do?"</span>
+          )}
+          {introStage === 'pan_puzzle_duck' && (
+            <span>Dr. Bones: "I've been looking for someone who knows the answers to a few mysteries..."</span>
+          )}
+          {introStage === 'pan_cowboy_duck' && (
+            <span>Billy the Quack: "Well, well... Think you're quicker than me? Come find out."</span>
+          )}
+          <button
+            onClick={handleSkipIntro}
+            className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] text-white/80 cursor-pointer uppercase"
+          >
+            SKIP
+          </button>
         </div>
       )}
 
@@ -235,7 +261,7 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
               onClick={() => handleNpcClick('cowboy')}
             />
             <div className="flex flex-col text-[10px] font-mono-rhythm text-white/60">
-              <span className="font-bold text-rose-300">🎯 SHOOTING GALLERY</span>
+              <span className="font-bold text-rose-300">SHOOTING GALLERY</span>
               <span>60s Quickdraw duel</span>
               <span className="text-[9px] text-white/40">Bottle targets only</span>
             </div>
@@ -247,6 +273,19 @@ export const BallroomHub: React.FC<BallroomHubProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Interactive In-World Character Conversation Modal */}
+      {approachedNpc && (
+        <NpcApproachModal
+          npcId={approachedNpc}
+          progress={progress}
+          onAccept={(id) => {
+            setApproachedNpc(null);
+            onSelectGame(id);
+          }}
+          onClose={() => setApproachedNpc(null)}
+        />
+      )}
     </div>
   );
 };

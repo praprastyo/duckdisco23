@@ -76,8 +76,8 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
 
       {/* Interactive Speech Bubble on Hover */}
       {dialoguePrompt && isHovered && !isCompleted && (
-        <div className="absolute -top-14 z-30 px-3 py-1.5 rounded-xl bg-yellow-400 text-slate-950 font-mono text-xs font-bold shadow-xl whitespace-nowrap animate-bounce flex items-center gap-1.5 border border-yellow-200">
-          <span>💬 "{dialoguePrompt}"</span>
+        <div className="absolute -top-12 z-30 px-3 py-1.5 rounded-xl bg-yellow-400 text-slate-950 font-mono text-xs font-bold shadow-xl whitespace-nowrap animate-bounce flex items-center gap-1.5 border border-yellow-200">
+          <span>"{dialoguePrompt}"</span>
           <span className="px-1.5 py-0.5 rounded bg-black text-white text-[9px] uppercase tracking-wider">
             CHALLENGE
           </span>
@@ -87,10 +87,7 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
       {actionText && (
         <div className="mb-2 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono-rhythm font-bold uppercase tracking-wider backdrop-blur-md border transition-colors shadow-lg bg-black/70 border-white/20">
           {isCompleted ? (
-            <>
-              <span className="text-emerald-400">✓ DEFEATED</span>
-              <span className="text-yellow-400">👑</span>
-            </>
+            <span className="text-emerald-400">COMPLETED</span>
           ) : (
             <>
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
@@ -121,7 +118,6 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
         ) : (
           <DuckSvgGraphic id={id} />
         )}
-        {isCompleted && <div className="absolute -top-3 text-2xl animate-bounce">👑</div>}
       </div>
 
       <div className="mt-2 text-center">

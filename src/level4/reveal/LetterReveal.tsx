@@ -37,7 +37,7 @@ export const LetterReveal: React.FC<LetterRevealProps> = ({ onBackToBallroom }) 
           </span>
         </div>
 
-        <div className="text-xl animate-bounce">💌</div>
+        <div className="w-12" />
       </div>
 
       {/* Parchment Letter Card */}
@@ -63,7 +63,6 @@ export const LetterReveal: React.FC<LetterRevealProps> = ({ onBackToBallroom }) 
             )}
           </div>
           <div className="w-14 h-16 rounded-md border-2 border-dashed border-amber-600/50 bg-amber-100 flex flex-col items-center justify-center text-xs select-none">
-            <span className="text-xl">🪩</span>
             <span className="text-[8px] font-mono-rhythm text-amber-800 font-bold mt-1">2026</span>
           </div>
         </div>
@@ -87,11 +86,6 @@ export const LetterReveal: React.FC<LetterRevealProps> = ({ onBackToBallroom }) 
               {FINAL_LETTER_DEFAULT.signature}
             </p>
           </div>
-          <div className="flex items-center gap-2 text-2xl select-none">
-            <span>✨</span>
-            <span>💖</span>
-            <span>🦆</span>
-          </div>
         </div>
       </div>
 
@@ -101,7 +95,7 @@ export const LetterReveal: React.FC<LetterRevealProps> = ({ onBackToBallroom }) 
           onClick={onBackToBallroom}
           className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-disco text-xs sm:text-sm font-bold tracking-wider uppercase shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
         >
-          ✨ BACK TO BALLROOM HUB
+          BACK TO BALLROOM HUB
         </button>
       </div>
     </div>
