@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AudioManager } from '../audio/AudioManager';
 import { PUZZLE_QUESTIONS_RAW, shuffleQuestions, checkAnswer } from './puzzleQuestions';
-import { getRandomReaction } from './puzzleDialogue';
+import { getRandomReaction, getLeadInPhrase } from './puzzleDialogue';
 import { DuckNpc } from '../ballroom/DuckNpc';
+import { DuckNpcVariant } from '../types/level4Types';
 
 interface PuzzleGameProps {
   onWin: () => void;
@@ -15,6 +16,7 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
   const [inputVal, setInputVal] = useState('');
   const [mistakes, setMistakes] = useState(0);
   const [dialogueReaction, setDialogueReaction] = useState<string | null>(null);
+  const [speaker, setSpeaker] = useState<'duck' | 'player'>('duck');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isWon, setIsWon] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -22,10 +24,16 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const audio = AudioManager.getInstance();
   const currentQ = questions[currentIndex];
+  const leadIn = getLeadInPhrase(currentIndex);
 
+  // Turn-based focus timing: Duck talks first, then player focus opens
   useEffect(() => {
-    inputRef.current?.focus();
-  }, [currentIndex, isProcessing]);
+    const timer = setTimeout(() => {
+      setSpeaker('player');
+      inputRef.current?.focus();
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [currentIndex]);
 
   const handleRestart = () => {
     setQuestions(shuffleQuestions(PUZZLE_QUESTIONS_RAW));
@@ -33,6 +41,7 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
     setInputVal('');
     setMistakes(0);
     setDialogueReaction(null);
+    setSpeaker('duck');
     setIsProcessing(false);
     setIsWon(false);
     setIsGameOver(false);
@@ -45,6 +54,7 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
 
     const isCorrect = checkAnswer(currentQ.answers, inputVal);
     setIsProcessing(true);
+    setSpeaker('duck');
 
     if (isCorrect) {
       audio.playPuzzleBlip(true);
@@ -61,7 +71,7 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
           setDialogueReaction(null);
           setIsProcessing(false);
         }
-      }, 900);
+      }, 1100);
     } else {
       audio.playPuzzleBlip(false);
       const newMistakes = mistakes + 1;
@@ -75,13 +85,26 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
           setInputVal('');
           setDialogueReaction(null);
           setIsProcessing(false);
+          setSpeaker('player');
         }
-      }, 1000);
+      }, 1200);
     }
   };
 
+  const puzzleDuckVariant: DuckNpcVariant = isGameOver
+    ? 'lose'
+    : isWon
+    ? 'win'
+    : isProcessing
+    ? dialogueReaction && mistakes > 0
+      ? 'lose'
+      : 'win'
+    : speaker === 'duck'
+    ? 'talk'
+    : 'look';
+
   return (
-    <div className="relative w-full min-h-screen bg-[#070312] text-white flex flex-col justify-between p-4 select-none overflow-hidden">
+    <div className="relative w-full min-h-screen bg-[#070312] text-white flex flex-col justify-between p-3 sm:p-4 select-none overflow-hidden">
       {/* Top Header */}
       <div className="relative z-20 flex items-center justify-between w-full max-w-4xl mx-auto">
         <button
@@ -91,93 +114,141 @@ export const PuzzleGame: React.FC<PuzzleGameProps> = ({ onWin, onExit }) => {
           ← RETURN TO BALLROOM
         </button>
 
-        <div className="text-center">
-          <span className="text-[10px] font-mono-rhythm text-yellow-400 font-bold tracking-widest block uppercase">
-            PUZZLE DIALOGUE • DR. BONES
+        {/* 10 Artifact Fragments Progress */}
+        <div className="flex flex-col items-center">
+          <span className="text-[10px] font-mono-rhythm text-amber-400 font-bold tracking-widest uppercase">
+            ANCIENT ARTIFACT FRAGMENTS
           </span>
-          <span className="text-xs font-mono-rhythm text-white/60">
-            QUESTION {currentIndex + 1} / {questions.length}
-          </span>
+          <div className="flex items-center gap-1.5 font-mono text-sm tracking-widest mt-0.5">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <span
+                key={i}
+                className={
+                  i < currentIndex
+                    ? 'text-amber-400 text-base drop-shadow-[0_0_8px_#facc15]'
+                    : i === currentIndex
+                    ? 'text-cyan-300 text-base animate-pulse'
+                    : 'text-slate-600'
+                }
+              >
+                {i < currentIndex ? '◆' : '◇'}
+              </span>
+            ))}
+          </div>
         </div>
 
+        {/* 3 Life Seals */}
         <div className="flex items-center gap-1 bg-black/60 px-3 py-1.5 rounded-xl border border-white/10">
-          <span className="text-[10px] font-mono-rhythm text-rose-400 mr-1 font-bold">MISTAKES:</span>
+          <span className="text-[10px] font-mono-rhythm text-rose-400 mr-1 font-bold">SEALS:</span>
           {Array.from({ length: 3 }).map((_, i) => (
-            <span key={i} className="text-sm">
-              {i < mistakes ? '💔' : '❤️'}
+            <span
+              key={i}
+              className={`text-sm transition-opacity duration-300 ${
+                i < mistakes ? 'opacity-20 grayscale' : 'opacity-100'
+              }`}
+            >
+              🏺
             </span>
           ))}
         </div>
       </div>
 
-      {/* Main RPG Dialogue Stage */}
-      <div className="relative z-20 w-full max-w-3xl mx-auto my-auto flex flex-col items-center gap-6">
-        <div className="w-full flex items-center justify-center gap-1.5 sm:gap-2">
-          {questions.map((q, idx) => (
-            <div
-              key={q.id}
-              className={`h-2.5 flex-1 max-w-8 rounded-full border transition-all duration-300 ${
-                idx < currentIndex
-                  ? 'bg-cyan-400 border-cyan-300 shadow-[0_0_8px_#22d3ee]'
-                  : idx === currentIndex
-                  ? 'bg-yellow-400 border-yellow-300 animate-pulse'
-                  : 'bg-slate-800 border-white/10'
-              }`}
-            />
-          ))}
-        </div>
-
-        <div className="w-full bg-[#110d24] border-4 border-amber-500/80 rounded-3xl p-6 sm:p-8 shadow-[0_0_40px_rgba(245,158,11,0.25)] flex flex-col md:flex-row items-center gap-6">
-          <div className="w-[100px] h-[140px] flex-shrink-0 bg-black/50 rounded-2xl border-2 border-amber-400/40 flex items-center justify-center p-1 shadow-inner">
+      {/* Main Bar Table Scene (Two Characters Talking Across Bar) */}
+      <div className="relative z-20 w-full max-w-3xl mx-auto my-auto flex flex-col items-center gap-4">
+        <div className="w-full flex items-end justify-between px-4 sm:px-8 relative">
+          {/* 1. Dr. Bones on the Left */}
+          <div
+            className={`flex flex-col items-center transition-all duration-300 ${
+              speaker === 'duck'
+                ? 'opacity-100 scale-105 drop-shadow-[0_0_20px_rgba(250,204,21,0.5)]'
+                : 'opacity-55 scale-95'
+            }`}
+          >
             <DuckNpc
               id="puzzle"
               name="Dr. Bones"
               role="Archaeologist"
               actionText=""
-              size="sm"
+              size="md"
+              variant={puzzleDuckVariant}
               isCompleted={false}
-              animState={isProcessing ? 'talk' : 'idle'}
               onClick={() => {}}
             />
           </div>
 
-          <div className="flex-1 w-full flex flex-col justify-between min-h-[140px]">
-            <div>
-              <div className="text-[10px] font-mono-rhythm text-amber-400 uppercase tracking-wider mb-1">
-                DR. BONES INQUIRES:
-              </div>
-              <h3 className="font-mono text-lg sm:text-xl text-yellow-100 font-bold leading-relaxed">
-                "{currentQ?.question}"
-              </h3>
-              {dialogueReaction && (
-                <div className="mt-2 text-xs font-mono-rhythm font-bold text-cyan-300 animate-fadeIn">
-                  💬 {dialogueReaction}
-                </div>
-              )}
+          {/* 2. Bartender Duck in the Center behind Bar Counter */}
+          <div className="flex flex-col items-center pb-2 opacity-75 pointer-events-none">
+            <div className="text-3xl animate-bounce">🍸🦆</div>
+            <span className="text-[9px] font-mono-rhythm text-amber-300">BALLROOM BAR</span>
+            <div className="w-32 h-2 bg-gradient-to-r from-transparent via-amber-700/60 to-transparent mt-1" />
+          </div>
+
+          {/* 3. Player / Widut on the Right */}
+          <div
+            className={`flex flex-col items-center transition-all duration-300 ${
+              speaker === 'player'
+                ? 'opacity-100 scale-105 drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]'
+                : 'opacity-55 scale-95'
+            }`}
+          >
+            <div className="w-[100px] h-[135px] bg-black/50 border-2 border-cyan-400/40 rounded-2xl flex flex-col items-center justify-center p-2 shadow-inner">
+              <span className="text-4xl animate-pulse">🕺</span>
+              <span className="text-[10px] font-mono-rhythm text-cyan-300 mt-2 font-bold uppercase">
+                WIDUT
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Turn-Based Dialogue Box */}
+        <div className="w-full bg-[#110d24] border-4 border-amber-500/80 rounded-3xl p-5 sm:p-7 shadow-[0_0_40px_rgba(245,158,11,0.25)] flex flex-col justify-between min-h-[160px]">
+          <div>
+            <div className="flex justify-between items-center text-[10px] font-mono-rhythm text-amber-400 uppercase tracking-wider mb-1">
+              <span>
+                {speaker === 'duck' ? '🎙️ DR. BONES SPEAKS' : '✍️ YOUR TURN TO RESPOND'}
+              </span>
+              <span className="text-white/40">CLUE {currentIndex + 1} / {questions.length}</span>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-4 flex items-center gap-2">
-              <div className="relative flex-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-400 font-mono font-bold text-sm">&gt;</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={inputVal}
-                  disabled={isProcessing || isWon || isGameOver}
-                  onChange={(e) => setInputVal(e.target.value)}
-                  placeholder="Ketik jawaban kamu di sini..."
-                  className="w-full pl-8 pr-4 py-2.5 rounded-xl bg-black/60 border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 transition-all"
-                />
+            <p className="font-mono text-xs text-amber-300/80 italic mb-1">
+              "{leadIn}"
+            </p>
+
+            <h3 className="font-mono text-base sm:text-xl text-yellow-100 font-bold leading-relaxed">
+              "{currentQ?.question}"
+            </h3>
+
+            {dialogueReaction && (
+              <div className="mt-2 text-xs font-mono-rhythm font-bold text-cyan-300 animate-fadeIn">
+                💬 {dialogueReaction}
               </div>
-              <button
-                type="submit"
-                disabled={isProcessing || isWon || isGameOver || !inputVal.trim()}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-disco text-xs font-bold uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 disabled:opacity-40 transition-all cursor-pointer"
-              >
-                JAWAB ↵
-              </button>
-            </form>
+            )}
           </div>
+
+          {/* Answer Input Form */}
+          <form onSubmit={handleSubmit} className="mt-4 flex items-center gap-2">
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-400 font-mono font-bold text-sm">
+                &gt;
+              </span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputVal}
+                disabled={isProcessing || isWon || isGameOver}
+                onChange={(e) => setInputVal(e.target.value)}
+                placeholder="Ketik jawaban kamu di sini..."
+                className="w-full pl-8 pr-4 py-2.5 rounded-xl bg-black/60 border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 transition-all"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isProcessing || isWon || isGameOver || !inputVal.trim()}
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-disco text-xs font-bold uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 disabled:opacity-40 transition-all cursor-pointer"
+            >
+              JAWAB ↵
+            </button>
+          </form>
         </div>
       </div>
       {/* Win Modal */}

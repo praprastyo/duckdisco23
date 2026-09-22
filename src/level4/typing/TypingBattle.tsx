@@ -3,6 +3,8 @@ import { AudioManager } from '../audio/AudioManager';
 import { typingStoryLines } from './typingStory';
 import { TOTAL_STORY_CHARS, calculateWpm } from './TypingEngine';
 import { TypingDuckAI } from './TypingDuckAI';
+import { DuckNpc } from '../ballroom/DuckNpc';
+import { DuckNpcVariant } from '../types/level4Types';
 
 interface TypingBattleProps {
   onWin: () => void;
@@ -20,6 +22,9 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
   const [aiWpm, setAiWpm] = useState(60);
   const [aiProgress, setAiProgress] = useState(0);
   const [playerTotalChars, setPlayerTotalChars] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [duckBubble, setDuckBubble] = useState<string | null>(null);
+  const [duckReactionVariant, setDuckReactionVariant] = useState<DuckNpcVariant | null>(null);
 
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWon, setIsWon] = useState(false);
@@ -46,6 +51,7 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
     setAiWpm(60);
     setAiProgress(0);
     setPlayerTotalChars(0);
+    setHasStarted(false);
     setIsGameOver(false);
     setIsWon(false);
     setGameOverReason(null);
@@ -106,6 +112,7 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
     }
 
     if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (!hasStarted) setHasStarted(true);
       e.preventDefault();
       const expectedChar = currentExpectedLine[typedLine.length];
 
@@ -123,6 +130,15 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
         const newMistakes = mistakes + 1;
         setMistakes(newMistakes);
         setTypedLine('');
+
+        // Smug rival reaction
+        setDuckBubble(Math.random() > 0.5 ? 'Oops? 🕶️' : 'Careful! 🦆');
+        setDuckReactionVariant('talk');
+        setTimeout(() => {
+          setDuckBubble(null);
+          setDuckReactionVariant(null);
+        }, 1200);
+
         if (newMistakes >= 3) {
           setIsGameOver(true);
           setGameOverReason('TOO MANY MISTAKES (3/3)!');
@@ -131,10 +147,24 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
     }
   };
 
+  const aiVariant: DuckNpcVariant = isGameOver
+    ? isWon
+      ? 'lose'
+      : 'win'
+    : isWon
+    ? 'lose'
+    : duckReactionVariant
+    ? duckReactionVariant
+    : aiWpm > 65
+    ? 'type'
+    : !hasStarted
+    ? 'idle'
+    : 'type';
+
   return (
     <div
       onClick={() => inputRef.current?.focus()}
-      className="relative w-full min-h-screen bg-[#070312] text-white flex flex-col justify-between p-4 select-none cursor-text overflow-hidden"
+      className="relative w-full min-h-screen bg-[#070312] text-white flex flex-col justify-between p-3 sm:p-4 select-none cursor-text overflow-hidden"
     >
       <input
         ref={inputRef}
@@ -144,6 +174,7 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
         onKeyDown={handleKeyDown}
         readOnly
       />
+
       {/* Top HUD */}
       <div className="relative z-20 flex items-center justify-between w-full max-w-5xl mx-auto">
         <button
@@ -155,7 +186,7 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
 
         <div className="text-center">
           <span className="text-[10px] font-mono-rhythm text-cyan-400 font-bold tracking-widest block uppercase">
-            TYPING BATTLE VS PROF. QUILL
+            TYPING DUEL • BALLROOM FLOOR
           </span>
           <span className="text-xs font-mono-rhythm text-white/60">
             LINE {lineIndex + 1} / {typingStoryLines.length}
@@ -172,46 +203,65 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
         </div>
       </div>
 
-      {/* Progress Bars */}
-      <div className="relative z-20 w-full max-w-3xl mx-auto bg-black/70 border border-white/10 rounded-2xl p-4 shadow-xl backdrop-blur-md">
-        <div className="mb-3">
-          <div className="flex justify-between text-xs font-mono-rhythm mb-1">
-            <span className="text-yellow-400 font-bold flex items-center gap-1.5">
-              <span>🕺 YOU</span>
-              <span className="text-white/60 font-normal">({playerWpm} WPM)</span>
-            </span>
-            <span className="text-yellow-400 font-bold">{playerProgress}%</span>
+      {/* RIVAL DESK: Prof. Quill sitting at his typewriter */}
+      <div className="relative z-20 flex flex-col items-center mt-1">
+        <div className="flex items-center gap-4 bg-black/70 border border-cyan-500/30 rounded-2xl px-5 py-2 shadow-xl backdrop-blur-md relative">
+          <div className="relative">
+            <DuckNpc
+              id="typing"
+              name="Prof. Quill"
+              role={aiWpm > 65 ? '🔥 TYPING FAST' : 'SPEED TYPEWRITER'}
+              actionText=""
+              size="sm"
+              variant={aiVariant}
+              isCompleted={false}
+              onClick={() => {}}
+            />
+            {duckBubble && (
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-slate-950 font-mono text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md whitespace-nowrap animate-bounce z-30">
+                {duckBubble}
+              </div>
+            )}
           </div>
-          <div className="h-3 w-full bg-slate-800 rounded-full overflow-hidden border border-white/10">
-            <div className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-150" style={{ width: `${playerProgress}%` }} />
-          </div>
-        </div>
 
-        <div>
-          <div className="flex justify-between text-xs font-mono-rhythm mb-1">
-            <span className="text-cyan-400 font-bold flex items-center gap-1.5">
-              <span>🦆 PROF. QUILL</span>
-              <span className="text-white/60 font-normal">({aiWpm} WPM)</span>
-            </span>
-            <span className="text-cyan-400 font-bold">{aiProgress}%</span>
-          </div>
-          <div className="h-3 w-full bg-slate-800 rounded-full overflow-hidden border border-white/10">
-            <div className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-150" style={{ width: `${aiProgress}%` }} />
+          {/* Duck's Live Ribbon Meter */}
+          <div className="flex flex-col text-[11px] font-mono-rhythm text-cyan-300">
+            <div className="flex justify-between items-center gap-4">
+              <span>DUCK TYPEWRITER</span>
+              <span className="font-bold text-white text-xs">{aiWpm} WPM • {aiProgress}%</span>
+            </div>
+            <div className="w-36 sm:w-48 h-2 bg-slate-800 rounded-full overflow-hidden mt-1 border border-cyan-400/30">
+              <div
+                className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-150"
+                style={{ width: `${aiProgress}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Typewriter Line */}
-      <div className="relative z-20 w-full max-w-3xl mx-auto my-auto flex flex-col items-center">
-        <div className={`w-full bg-[#f8fafc] text-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl border-4 border-amber-600/60 font-mono transition-transform duration-150 ${
-          shakeLine ? 'translate-x-3 border-rose-600 bg-rose-50 ring-4 ring-rose-500/50' : ''
-        }`}>
-          <div className="text-lg sm:text-2xl font-bold leading-relaxed tracking-wide min-h-[3.5rem] flex flex-wrap items-center">
+      {/* Middle Typewriter Arena */}
+      <div className="relative z-20 w-full max-w-3xl mx-auto my-2 flex flex-col items-center">
+        <div
+          className={`w-full bg-[#f8fafc] text-slate-900 rounded-2xl p-5 sm:p-7 shadow-2xl border-4 border-amber-600/60 font-mono transition-transform duration-150 ${
+            shakeLine ? 'translate-x-3 border-rose-600 bg-rose-50 ring-4 ring-rose-500/50' : ''
+          }`}
+        >
+          <div className="text-base sm:text-2xl font-bold leading-relaxed tracking-wide min-h-[3.2rem] flex flex-wrap items-center">
             {currentExpectedLine.split('').map((char, i) => {
               const isTyped = i < typedLine.length;
               const isCurrent = i === typedLine.length;
               return (
-                <span key={i} className={isTyped ? 'text-emerald-700 bg-emerald-100/80 rounded-xs' : isCurrent ? 'text-slate-950 underline decoration-amber-500 decoration-4 bg-amber-200' : 'text-slate-400'}>
+                <span
+                  key={i}
+                  className={
+                    isTyped
+                      ? 'text-emerald-700 bg-emerald-100/80 rounded-xs'
+                      : isCurrent
+                      ? 'text-slate-950 underline decoration-amber-500 decoration-4 bg-amber-200'
+                      : 'text-slate-400'
+                  }
+                >
                   {char === ' ' ? '\u00A0' : char}
                 </span>
               );
@@ -219,18 +269,39 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
           </div>
 
           {lineCompletedWaitingEnter && (
-            <div className="mt-4 pt-3 border-t border-slate-300 flex items-center justify-between text-xs sm:text-sm font-bold text-amber-700 animate-pulse">
-              <span>🔔 LINE FINISHED! PRESS [ ENTER ↵ ] TO ADVANCE CARRIAGE</span>
+            <div className="mt-3 pt-3 border-t border-slate-300 flex items-center justify-between text-xs sm:text-sm font-bold text-amber-700 animate-pulse">
+              <span>🔔 LINE COMPLETE! PRESS [ ENTER ↵ ] TO RETURN CARRIAGE</span>
               <kbd className="px-3 py-1 rounded-md bg-amber-600 text-white shadow-md">ENTER ↵</kbd>
             </div>
           )}
         </div>
 
         {lineIndex + 1 < typingStoryLines.length && (
-          <div className="mt-3 text-xs font-mono-rhythm text-white/40 text-center">
+          <div className="mt-2 text-xs font-mono-rhythm text-white/40 text-center">
             NEXT: "{typingStoryLines[lineIndex + 1]}"
           </div>
         )}
+      </div>
+
+      {/* PLAYER DESK: Ribbon Meter */}
+      <div className="relative z-20 w-full max-w-3xl mx-auto bg-black/70 border border-yellow-500/30 rounded-2xl px-5 py-2.5 shadow-xl backdrop-blur-md flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-sm">🕺</span>
+          <div>
+            <span className="text-[10px] font-mono-rhythm text-yellow-400 uppercase font-bold block">
+              YOUR TYPEWRITER
+            </span>
+            <span className="text-xs font-mono-rhythm text-white/70">
+              {playerWpm} WPM • {playerProgress}% COMPLETE
+            </span>
+          </div>
+        </div>
+        <div className="w-44 sm:w-64 h-2.5 bg-slate-800 rounded-full overflow-hidden border border-yellow-400/30">
+          <div
+            className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-150"
+            style={{ width: `${playerProgress}%` }}
+          />
+        </div>
       </div>
       {/* Win Modal */}
       {isWon && (

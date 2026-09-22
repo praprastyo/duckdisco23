@@ -13,9 +13,17 @@ export class ShooterEngine {
   }
 
   public update(elapsedSec: number, deltaSec: number): void {
-    // 1. Spawning logic based on elapsed seconds
+    // 1. Spawning logic based on elapsed seconds (accelerates in final 10s)
     const spawnInterval =
-      elapsedSec < 15 ? 1.4 : elapsedSec < 30 ? 1.0 : elapsedSec < 45 ? 0.75 : 0.55;
+      elapsedSec >= 50
+        ? 0.38
+        : elapsedSec < 15
+        ? 1.3
+        : elapsedSec < 30
+        ? 0.95
+        : elapsedSec < 45
+        ? 0.7
+        : 0.5;
 
     if (elapsedSec - this.lastSpawnTime >= spawnInterval && elapsedSec < 60) {
       this.lastSpawnTime = elapsedSec;
@@ -23,7 +31,7 @@ export class ShooterEngine {
     }
 
     // 2. Trajectory physics
-    const gravity = 38; // percentage units per sec^2
+    const gravity = 40; // percentage units per sec^2
     this.targets.forEach((t) => {
       if (!t.active) return;
       t.x += t.velocityX * deltaSec;
@@ -32,7 +40,7 @@ export class ShooterEngine {
       t.rotation += 180 * deltaSec;
 
       // Deactivate if out of playfield bounds
-      if (t.y > 115 || t.x < -10 || t.x > 110) {
+      if (t.y > 115 || t.x < 15 || t.x > 105) {
         t.active = false;
       }
     });
@@ -56,14 +64,12 @@ export class ShooterEngine {
       type = roll < 0.55 ? 'bottle' : roll < 0.7 ? 'cocktail' : roll < 0.85 ? 'poop' : 'cactus';
     }
 
-    // Launch from left or right bar counter with upward arc
-    const launchFromLeft = Math.random() > 0.5;
-    const x = launchFromLeft ? 5 + Math.random() * 15 : 80 + Math.random() * 15;
-    const y = 90;
-    const velocityX = launchFromLeft
-      ? 15 + Math.random() * 20
-      : -(15 + Math.random() * 20);
-    const velocityY = -(45 + Math.random() * 20);
+    // Bartender tosses from bar counter (middle/right: x = 38% - 78%)
+    const x = 38 + Math.random() * 40;
+    const y = 82;
+    // Toss with slight angle toward center or right
+    const velocityX = (Math.random() - 0.5) * 22;
+    const velocityY = -(48 + Math.random() * 18);
 
     const target: ShooterTarget = {
       id: `target_${this.nextId++}`,

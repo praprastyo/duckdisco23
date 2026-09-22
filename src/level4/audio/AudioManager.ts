@@ -7,6 +7,7 @@ export class AudioManager {
   private static instance: AudioManager | null = null;
   private ctx: AudioContext | null = null;
   private musicGain: GainNode | null = null;
+  private musicFilter: BiquadFilterNode | null = null;
   private sfxGain: GainNode | null = null;
   private bgmAudio: HTMLAudioElement | null = null;
   private isBgmPlaying: boolean = false;
@@ -22,11 +23,18 @@ export class AudioManager {
       const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       this.ctx = new Ctx();
       this.musicGain = this.ctx.createGain();
+      this.musicFilter = this.ctx.createBiquadFilter();
+      this.musicFilter.type = 'lowpass';
+      this.musicFilter.frequency.setValueAtTime(20000, this.ctx.currentTime);
+
       this.sfxGain = this.ctx.createGain();
       const s = SaveService.load().settings;
       this.musicGain.gain.setValueAtTime(s.musicVolume, this.ctx.currentTime);
       this.sfxGain.gain.setValueAtTime(s.sfxVolume, this.ctx.currentTime);
-      this.musicGain.connect(this.ctx.destination);
+
+      // Audio Graph: musicSource -> musicGain -> musicFilter (lowpass muffled) -> destination
+      this.musicGain.connect(this.musicFilter);
+      this.musicFilter.connect(this.ctx.destination);
       this.sfxGain.connect(this.ctx.destination);
     }
     if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
@@ -68,9 +76,22 @@ export class AudioManager {
     const scale = LEVEL4_AUDIO_CONFIG.volume[mode] ?? 1.0;
     const now = this.ctx.currentTime;
     const dur = LEVEL4_AUDIO_CONFIG.fadeDurationMs / 1000;
+
+    // Volume ducking
     this.musicGain.gain.cancelScheduledValues(now);
     this.musicGain.gain.setValueAtTime(this.musicGain.gain.value, now);
     this.musicGain.gain.linearRampToValueAtTime(vol * scale, now + dur);
+
+    // Muffled low-pass filter: 20kHz in hub, 900Hz in minigames, 18kHz in reveal
+    if (this.musicFilter) {
+      const targetCutoff = mode === 'hub' ? 20000 : mode === 'minigame' ? 900 : 18000;
+      this.musicFilter.frequency.cancelScheduledValues(now);
+      this.musicFilter.frequency.setValueAtTime(this.musicFilter.frequency.value, now);
+      this.musicFilter.frequency.exponentialRampToValueAtTime(
+        Math.max(200, targetCutoff),
+        now + dur
+      );
+    }
   }
 
   public getFocus(): BallroomFocusMode {

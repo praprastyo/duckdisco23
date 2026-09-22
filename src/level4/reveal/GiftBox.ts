@@ -58,14 +58,30 @@ function createFallbackTexture(label: string, color: string): THREE.CanvasTextur
   return texture;
 }
 
+function enhanceTextureContrast(image: HTMLImageElement): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth || image.width || 1024;
+  canvas.height = image.naturalHeight || image.height || 1024;
+  const ctx = canvas.getContext('2d')!;
+
+  // Boost contrast (+32%) and saturation (+22%) to eliminate faded appearance
+  ctx.filter = 'contrast(1.32) saturate(1.22) brightness(1.02)';
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 function loadFaceTexture(url: string, label: string, fallbackColor: string): THREE.Material {
   const textureLoader = new THREE.TextureLoader();
   const fallback = createFallbackTexture(label, fallbackColor);
 
   const mat = new THREE.MeshStandardMaterial({
     map: fallback,
-    roughness: 0.35,
-    metalness: 0.25,
+    roughness: 0.6,
+    metalness: 0.0, // Non-metallic prevents milky white specular washout
   });
 
   const extensions = ['.jpeg', '.jpg', '.png'];
@@ -81,8 +97,18 @@ function loadFaceTexture(url: string, label: string, fallbackColor: string): THR
     textureLoader.load(
       currentUrl,
       (loadedTex) => {
-        loadedTex.colorSpace = THREE.SRGBColorSpace;
-        mat.map = loadedTex;
+        if (loadedTex.image && loadedTex.image instanceof HTMLImageElement) {
+          try {
+            const enhanced = enhanceTextureContrast(loadedTex.image);
+            mat.map = enhanced;
+          } catch {
+            loadedTex.colorSpace = THREE.SRGBColorSpace;
+            mat.map = loadedTex;
+          }
+        } else {
+          loadedTex.colorSpace = THREE.SRGBColorSpace;
+          mat.map = loadedTex;
+        }
         mat.needsUpdate = true;
       },
       undefined,

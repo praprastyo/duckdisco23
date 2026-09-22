@@ -30,11 +30,11 @@ export const GiftPedestal: React.FC<GiftPedestalProps> = ({
     <div className="relative flex flex-col items-center">
       {/* 3 Progress Indicators Strip */}
       <div className="mb-4 flex items-center gap-2 sm:gap-3 bg-black/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 shadow-xl">
-        <StatusBadge label="TYPING" cleared={progress.typingCompleted} icon="⌨️" />
+        <StatusBadge label="TYPEWRITER" cleared={progress.typingCompleted} icon="⌨️" />
         <span className="text-white/20 font-bold">•</span>
-        <StatusBadge label="PUZZLE" cleared={progress.puzzleCompleted} icon="🔍" />
+        <StatusBadge label="ARTIFACT" cleared={progress.puzzleCompleted} icon="📜" />
         <span className="text-white/20 font-bold">•</span>
-        <StatusBadge label="SHOOTER" cleared={progress.shooterCompleted} icon="🎯" />
+        <StatusBadge label="CROSSHAIR" cleared={progress.shooterCompleted} icon="🎯" />
       </div>
 
       {/* Central Pedestal & Gift Box */}
@@ -72,17 +72,22 @@ export const GiftPedestal: React.FC<GiftPedestalProps> = ({
       </div>
 
       {/* Call to Action Button */}
-      <div className="mt-4">
+      <div className="mt-4 flex flex-col items-center gap-1.5">
         {isUnlocked ? (
-          <button
-            onClick={onOpenGift}
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 text-black font-disco text-xs sm:text-sm font-bold tracking-wider uppercase shadow-[0_0_30px_rgba(250,204,21,0.8)] animate-bounce cursor-pointer hover:brightness-110 active:scale-95"
-          >
-            ✨ OPEN THE FINAL GIFT ✨
-          </button>
+          <>
+            <span className="text-[10px] font-mono-rhythm text-yellow-300 font-bold uppercase tracking-widest animate-pulse">
+              THE GIFT IS READY.
+            </span>
+            <button
+              onClick={onOpenGift}
+              className="px-7 py-3 rounded-full bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 text-black font-disco text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_35px_rgba(250,204,21,0.9)] animate-bounce cursor-pointer hover:brightness-110 active:scale-95"
+            >
+              ✨ OPEN IT ✨
+            </button>
+          </>
         ) : (
           <span className="text-[11px] font-mono-rhythm text-white/50 uppercase tracking-widest">
-            DEFEAT ALL 3 DUCKS TO UNLOCK
+            {3 - completedCount} SEALS REMAIN • DEFEAT RIVALS TO UNLOCK
           </span>
         )}
       </div>

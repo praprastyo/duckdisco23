@@ -12,6 +12,7 @@ interface DuckNpcProps {
   animState?: DuckAnimationState;
   variant?: DuckNpcVariant;
   size?: 'sm' | 'md' | 'lg';
+  dialoguePrompt?: string;
   onClick: () => void;
   actionText: string;
   spriteSrc?: string;
@@ -25,17 +26,21 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
   animState = 'idle',
   variant,
   size = 'lg',
+  dialoguePrompt,
   onClick,
   actionText,
   spriteSrc,
 }) => {
   const [imgError, setImgError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Determine active variant (1. idle, 2. action, 3. talk/shoot, 4. dance, 5. win, 6. lose)
   const activeVariant: DuckNpcVariant =
     variant ||
     (isCompleted
       ? 'win'
+      : isHovered
+      ? 'talk'
       : animState === 'celebrate'
       ? 'win'
       : animState === 'talk'
@@ -56,10 +61,29 @@ export const DuckNpc: React.FC<DuckNpcProps> = ({
   return (
     <div
       onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className={`group relative flex flex-col items-center cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-        isCompleted ? 'brightness-110 drop-shadow-[0_0_15px_rgba(52,211,153,0.6)]' : 'hover:drop-shadow-[0_0_20px_rgba(250,204,21,0.6)]'
+        isCompleted ? 'brightness-110 drop-shadow-[0_0_15px_rgba(52,211,153,0.6)]' : 'hover:drop-shadow-[0_0_25px_rgba(250,204,21,0.7)]'
       }`}
     >
+      {/* Overhead Spotlight on Hover */}
+      <div
+        className={`absolute -top-16 inset-x-0 mx-auto w-32 h-44 bg-gradient-to-b from-yellow-300/25 via-yellow-400/10 to-transparent pointer-events-none rounded-full blur-md transition-opacity duration-300 ${
+          isHovered ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
+      {/* Interactive Speech Bubble on Hover */}
+      {dialoguePrompt && isHovered && !isCompleted && (
+        <div className="absolute -top-14 z-30 px-3 py-1.5 rounded-xl bg-yellow-400 text-slate-950 font-mono text-xs font-bold shadow-xl whitespace-nowrap animate-bounce flex items-center gap-1.5 border border-yellow-200">
+          <span>💬 "{dialoguePrompt}"</span>
+          <span className="px-1.5 py-0.5 rounded bg-black text-white text-[9px] uppercase tracking-wider">
+            CHALLENGE
+          </span>
+        </div>
+      )}
+
       {actionText && (
         <div className="mb-2 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono-rhythm font-bold uppercase tracking-wider backdrop-blur-md border transition-colors shadow-lg bg-black/70 border-white/20">
           {isCompleted ? (

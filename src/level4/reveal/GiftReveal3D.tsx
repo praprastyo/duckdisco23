@@ -32,19 +32,32 @@ export const GiftReveal3D: React.FC<GiftReveal3DProps> = ({ onOpenLetter, onExit
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // ACES Filmic Tone Mapping gives rich deep blacks and prevents faded/washed-out look
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.18;
     container.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-    const spot = new THREE.SpotLight(0xfef08a, 4.5, 20, Math.PI / 4, 0.4);
-    spot.position.set(0, 7, 3);
-    scene.add(spot);
+    // Balanced ambient lighting (prevents milky flat fogging)
+    scene.add(new THREE.AmbientLight(0xffffff, 0.45));
 
-    const p1 = new THREE.PointLight(0x06b6d4, 3, 10);
-    p1.position.set(-3, 2, -2);
+    // Crisp Key Light from front-top to illuminate textures cleanly
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    keyLight.position.set(0, 5, 5);
+    scene.add(keyLight);
+
+    // Warm back-fill light
+    const backLight = new THREE.DirectionalLight(0xfff7ed, 1.0);
+    backLight.position.set(2, 6, -4);
+    scene.add(backLight);
+
+    // Colorful rim accent lights
+    const p1 = new THREE.PointLight(0x06b6d4, 2.8, 12);
+    p1.position.set(-4, 2, -2);
     scene.add(p1);
 
-    const p2 = new THREE.PointLight(0xec4899, 3, 10);
-    p2.position.set(3, 2, -2);
+    const p2 = new THREE.PointLight(0xec4899, 2.8, 12);
+    p2.position.set(4, 2, -2);
     scene.add(p2);
 
     const giftBox = createGiftBoxMesh(DEFAULT_GIFT_DIMENSIONS, DEFAULT_GIFT_TEXTURES);
