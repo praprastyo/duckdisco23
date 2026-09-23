@@ -80,7 +80,7 @@ export function useLevel3Game(
     missCount: 0,
     wrongMovesCount: 0,
     totalFailures: 0,
-    maxMisses: 10,
+    maxMisses: 30,
     isFailed: false,
     fullGroovesCount: 0,
     lastRating: null,
@@ -154,7 +154,7 @@ export function useLevel3Game(
   const checkMissLimit = useCallback(() => {
     const g = gameRef.current;
     const totalFailures = g.miss + g.wrongMoves;
-    if (totalFailures >= 10 && !g.finishedDispatched) {
+    if (totalFailures >= 30 && !g.finishedDispatched) {
       g.finishedDispatched = true;
       const audio = AudioEngine.getInstance();
       audio.pause();
@@ -164,7 +164,7 @@ export function useLevel3Game(
         isFailed: true,
         phaseBanner: 'OUT OF GROOVE',
         quackPose: 'miss',
-        feedbackMessage: 'OUT OF GROOVE! 10 Miss limit reached.',
+        feedbackMessage: 'OUT OF GROOVE! 30 Miss limit reached.',
         isMissShaking: true,
       }));
       return true;
@@ -431,7 +431,7 @@ export function useLevel3Game(
           wrongMoves: g.wrongMoves,
           maxCombo: g.maxCombo,
           fullGrooves: g.fullGrooves,
-          cleared: acc >= cfg.clearAccuracyThreshold && totalFailures <= 10,
+          cleared: acc >= cfg.clearAccuracyThreshold && totalFailures <= 30,
         };
         setState((s) => ({ ...s, phase: 'finished', phaseBanner: 'LEVEL COMPLETE' }));
         onFinish?.(summary);

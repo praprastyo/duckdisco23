@@ -64,6 +64,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
     countIn,
     isMissShaking,
     totalFailures,
+    maxMisses,
     isFailed,
     energy,
     isSpecialFinish,
@@ -99,7 +100,7 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
         <div className="h-full bg-gradient-to-r from-cyan-400 via-yellow-400 to-fuchsia-500 transition-all duration-100" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      {/* Top HUD: Score, Section/BPM + Speed (1x, 1.5x, 2x), Combo, and Miss Limit (Max 10) */}
+      {/* Top HUD: Score, Section/BPM + Speed (1x, 1.5x, 2x), Combo, and Miss Limit (Max 30) */}
       <div className="relative z-20 flex items-center justify-between w-full">
         <div>
           <span className="text-[10px] font-mono-rhythm text-white/50 tracking-widest block">SCORE</span>
@@ -120,14 +121,14 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
             <span className="text-white/50 text-[10px] font-mono-rhythm">MISS:</span>
             <span
               className={`font-mono-rhythm font-black text-xs ${
-                totalFailures >= 8
+                totalFailures >= maxMisses - 5
                   ? 'text-rose-400 animate-pulse'
-                  : totalFailures >= 5
+                  : totalFailures >= maxMisses / 2
                   ? 'text-amber-300'
                   : 'text-emerald-400'
               }`}
             >
-              {totalFailures}/10
+              {totalFailures}/{maxMisses}
             </span>
           </div>
         </div>
@@ -229,20 +230,20 @@ export const Level3Stage: React.FC<Level3StageProps> = ({ onLevelComplete, onExi
         </div>
       </div>
 
-      {/* 10 Miss Limit Reached Failure Overlay */}
+      {/* 30 Miss Limit Reached Failure Overlay */}
       {isFailed && (
         <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center select-none animate-fadeIn">
           <div className="w-16 h-16 rounded-full bg-rose-600/30 border-2 border-rose-500 flex items-center justify-center text-3xl mb-3 animate-bounce">
             😵
           </div>
           <span className="text-xs font-mono-rhythm text-rose-400 font-bold uppercase tracking-widest mb-1">
-            OUT OF GROOVE • 10 MISS LIMIT REACHED
+            OUT OF GROOVE • {maxMisses} MISS LIMIT REACHED
           </span>
           <h2 className="font-disco text-3xl sm:text-4xl text-white neon-glow-magenta mb-2">
             KEEP TO THE GROOVE!
           </h2>
           <p className="max-w-md text-white/70 text-xs font-mono-rhythm mb-6 leading-relaxed">
-            10 steps fell off-beat! Relax, watch DJ Quack's dance cues closely, and try again to unlock the Mirror Feather.
+            {maxMisses} steps fell off-beat! Relax, watch DJ Quack's dance cues closely, and try again to unlock the Mirror Feather.
           </p>
           <div className="flex gap-3 w-full max-w-xs">
             <button

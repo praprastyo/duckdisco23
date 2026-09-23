@@ -27,12 +27,12 @@ export const DEFAULT_GIFT_TEXTURES: GiftTexturesConfig = {
 };
 
 export const FINAL_LETTER_DEFAULT: FinalLetterConfig = {
-  title: 'Happy 27th Birthday, Widut! 🎂',
+  title: 'Happy 28th Birthday, Widut! 🎂',
   subtitle: 'Surat Spesial Dari Punyo',
   paragraphs: [
     'Pagi, siang, sore atau malam dimanapun kamu berada widut. Makasih banyak dan selamat udh bisa nyelesain gamenya, punyo seneng banget.',
-    'Ini surat dibuat buat kamu yang baru ultah ke 27, ga tau kenapa punyo seneng banget kalo tiap ulang tahun bisa ngasih game ke widut yang pendek itu.',
-    'Pesennya buat umur ke 27 ini semoga makin cantik, semoga sehat terus, semoga punyo makin ganteng, semoga nupet bisa sekola. Widut yang udah umur 27 ini harusnya bisa makin tinggi kayak punyo.',
+    'Ini surat dibuat buat kamu yang baru ultah ke 28, ga tau kenapa punyo seneng banget kalo tiap ulang tahun bisa ngasih game ke widut yang pendek itu.',
+    'Pesennya buat umur ke 28 ini semoga makin cantik, semoga sehat terus, semoga punyo makin ganteng, semoga nupet bisa sekola. Widut yang udah umur 28 ini harusnya bisa makin tinggi kayak punyo.',
     'Oia jangan lupa lanjut lagi HSK 5 supaya nanti dapet beasiswa lebih gampang makin cepet pergi ke china nya, karna widut cita-citanya jadi chindo kan ya. Semoga apa yang dipengenin widut bisa punyo usahakan.',
   ],
   signature: 'Salam hangat — Suamimu tercinta, Punyo 💖',

@@ -44,6 +44,8 @@ export class RhythmEngine {
     this.inputManager.setLatencyOffset(timingOffsetMs);
     if (levelId === 'level2') {
       this.maxMisses = 15; // User requirement: Max 15 misses for Level 2 Quack Beat Pop
+    } else if (levelId === 'level3') {
+      this.maxMisses = 30; // User requirement: Max 30 misses for Level 3 Duck Floor Command
     }
     this.setupListeners();
   }
