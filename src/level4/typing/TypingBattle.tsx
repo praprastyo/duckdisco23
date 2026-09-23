@@ -139,7 +139,7 @@ export const TypingBattle: React.FC<TypingBattleProps> = ({ onWin, onExit }) => 
           setDuckReactionVariant(null);
         }, 1200);
 
-        if (newMistakes >= 3) {
+        if (newMistakes >= 10) {
           setIsGameOver(true);
           setGameOverReason('TOO MANY MISTAKES (3/3)!');
         }
