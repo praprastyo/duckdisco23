@@ -49,6 +49,7 @@ export class UnlockService {
   public static isPreviousLevelCleared(levelId: string, saveData?: SaveData): boolean {
     if (this.devUnlockAll) return true;
     if (levelId === 'level1') return true;
+    if (levelId === 'level4') return true;
     if (!saveData) return false;
 
     if (levelId === 'level2') return Boolean(saveData.levels.level1?.cleared);

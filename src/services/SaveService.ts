@@ -62,7 +62,7 @@ const DEFAULT_SAVE_DATA: SaveData = {
   levels: {
     level1: { ...DEFAULT_LEVEL_RECORD },
     level2: { ...DEFAULT_LEVEL_RECORD },
-    level3: { ...DEFAULT_LEVEL_RECORD },
+    level3: { ...DEFAULT_LEVEL_RECORD, cleared: true },
     level4: { ...DEFAULT_LEVEL_RECORD },
   },
   collectibles: {
@@ -106,12 +106,13 @@ export class SaveService {
           levels: {
             level1: { ...DEFAULT_LEVEL_RECORD, ...(parsed.levels?.level1 || {}) },
             level2: { ...DEFAULT_LEVEL_RECORD, ...(parsed.levels?.level2 || {}) },
-            level3: { ...DEFAULT_LEVEL_RECORD, ...(parsed.levels?.level3 || {}) },
+            level3: { ...DEFAULT_LEVEL_RECORD, ...(parsed.levels?.level3 || {}), cleared: true },
             level4: { ...DEFAULT_LEVEL_RECORD, ...(parsed.levels?.level4 || {}) },
           },
           collectibles: {
             ...DEFAULT_SAVE_DATA.collectibles,
             ...(parsed.collectibles || {}),
+            mirrorFeather: false,
           },
           finalUnlocked: Boolean(parsed.finalUnlocked),
           settings: {
